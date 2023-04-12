@@ -18,6 +18,7 @@ app.use(cookieParser());
 app.use(express.json());
 // add routes folder
 const routes = require('./routes');
+const { ValidationError } = require('sequelize');
 
 // only enable cors in development
 // React frontend will have a different server than Express
@@ -44,5 +45,41 @@ app.use(
 
   // connect routes
   app.use(routes);
+
+  // catch any unhandled requests and send to error handler with generic error message
+  app.use((_req, _res, next) => {
+    const err = new Error("The requested resource couldn't be found.");
+    err.title = "Resource Not Found";
+    err.errors = { message: "The requested resource couldn't be found." };
+    err.status = 404;
+    next(err);
+  });
+
+  // catch Sequelize errors and label them as such
+  app.use((err, _req, _res, next) => {
+    // check if error is a Sequelize error:
+    if (err instanceof ValidationError) {
+      let errors = {};
+      for (let error of err.errors) {
+        errors[error.path] = error.message;
+      }
+      err.title = 'Validation error';
+      err.errors = errors;
+    }
+    next(err);
+  });
+
+  // format errors before returning JSON response
+  // responds with error title, error message, error object, and error stack trace (if in development)
+  app.use((err, _req, res, _next) => {
+    res.status(err.status || 500);
+    console.error(err);
+    res.json({
+      title: err.title || 'Server Error',
+      message: err.message,
+      errors: err.errors,
+      stack: isProduction ? null : err.stack
+    });
+  });
 
   module.exports = app;
