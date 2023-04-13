@@ -1,6 +1,6 @@
 const { validationResult } = require('express-validator');
 
-// generic error formatting for errors from express-validator middleware
+// error formatting middleware
 const handleValidationErrors = (req, _res, next) => {
   const validationErrors = validationResult(req);
 
