@@ -20,18 +20,18 @@ module.exports = {
     */
    options.tableName = 'Spots';
    await queryInterface.bulkInsert(options, [
-    {
-      ownerId: 1,
-      address: '350 Fifth Avenue',
-      city: 'New York',
-      state: 'NY',
-      country: 'USA',
-      lat: 40.75,
-      lng: -73.99,
-      name: 'Empire State Building',
-      description: 'A landmark destination built for a postcard',
-      price: 500000.00,
-    },
+    // {
+    //   ownerId: 1,
+    //   address: '350 Fifth Avenue',
+    //   city: 'New York',
+    //   state: 'NY',
+    //   country: 'USA',
+    //   lat: 40.75,
+    //   lng: -73.99,
+    //   name: 'Empire State Building',
+    //   description: 'A landmark destination built for a postcard',
+    //   price: 500000.00,
+    // },
     {
       ownerId: 1,
       address: '221B Baker Street',

@@ -40,11 +40,11 @@ module.exports = {
       url: "https://toilets.com",
       preview: false
     },
-    {
-      spotId: 4,
-      url: "https://cows.com",
-      preview: true
-    }
+    // {
+    //   spotId: 4,
+    //   url: "https://cows.com",
+    //   preview: true
+    // }
    ])
   },
 
