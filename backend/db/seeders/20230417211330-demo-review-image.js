@@ -22,27 +22,31 @@ module.exports = {
    await queryInterface.bulkInsert(options, [
     {
       reviewId: 1,
-      url: 'https://googlify.com/hamsters'
+      url: 'https://watson.com/1'
+    },
+    {
+      reviewId: 1,
+      url: 'https://lestrade.com/1'
     },
     {
       reviewId: 2,
-      url: 'https://googlify.com/houses'
-    },
-    {
-      reviewId: 3,
-      url: 'https://googlify.com/hotels'
+      url: 'https://watson.com/2'
     },
     {
       reviewId: 4,
-      url: 'https://googlify.com/horses'
-    },
-    {
-      reviewId: 5,
-      url: 'https://googlify.com/hansoms'
+      url: 'https://leith.com'
     },
     {
       reviewId: 6,
-      url: 'https://googlify.com/hotplates'
+      url: 'https://cubs.com'
+    },
+    {
+      reviewId: 3,
+      url: 'https://chippy.com'
+    },
+    {
+      reviewId: 5,
+      url: 'https://artinstitute.com'
     },
    ])
   },
