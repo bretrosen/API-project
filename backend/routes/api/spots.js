@@ -80,8 +80,9 @@ const returnSpotData = async (spots) => {
             }
         });
         // convert the image url from an object to a string
+        if (imageUrl) {
         spotObj.previewImage = imageUrl.toJSON().url;
-
+        }
         // push all spot data, including rating and image url, to array
         spotsWithAvgAndPreview.push(spotObj);
     }
