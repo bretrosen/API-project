@@ -1,5 +1,5 @@
 const express = require('express');
-const { Spot, Review, SpotImage } = require('../../db/models');
+const { User, Spot, Review, SpotImage } = require('../../db/models');
 
 const router = express.Router();
 
@@ -42,6 +42,7 @@ const returnSpotData = async (spots) => {
     return spotsWithAvgAndPreview;
 }
 
+// get details of all spots of the current user
 router.get('/current', async (req, res) => {
     const { user } = req;
 
@@ -60,6 +61,63 @@ router.get('/current', async (req, res) => {
     } else return res.json({ "Spots": null })
 })
 
+// get details of a spot from an id
+router.get('/:spotId', async (req, res, next) => {
+    const spot = await Spot.findByPk(req.params.spotId);
+
+    // error response to return for invalid spotId
+    if (!spot) {
+        const err = new Error("Spot couldn't be found");
+        err.status = 404;
+        err.title = "Spot couldn't be found";
+        return next(err);
+    }
+
+    const spotObj = spot.toJSON();
+
+    // get the total number of reviews for the spot
+    const reviewCount = await Review.count({
+        where: { spotId: spotObj.id }
+    });
+    spotObj.numReviews = reviewCount;
+
+    // get the sum of stars for all reviews for the spot
+    const reviewSum = await Review.sum('stars', {
+        where: { spotId: spotObj.id }
+    });
+    // get the average rating for each spot as a num to 1 decimal
+    const avgRating = (reviewSum / reviewCount).toFixed(1);
+    spotObj.avgStarRating = parseFloat(avgRating);
+
+    // get all the images for the spot
+    const spotImages = await SpotImage.findAll({
+        attributes: ['id', 'url', 'preview'],
+        where: {
+            spotId: req.params.spotId
+        }
+    })
+
+    // convert each image to a JSON object, push them to an array, and add the array as a value in the response
+    const jsonSpotImages = [];
+    spotImages.forEach(image => {
+        jsonImage = image.toJSON();
+        jsonSpotImages.push(jsonImage);
+    })
+    spotObj.SpotImages = jsonSpotImages;
+
+    // get details for the owner of the spot
+    const owner = await User.findByPk(spot.ownerId, {
+        attributes: ['id', 'firstName', 'lastName']
+    });
+
+    // convert owner details to JSON and add to the response
+    const jsonOwner = owner.toJSON();
+    spotObj.Owner = jsonOwner;
+
+    return res.json(spotObj);
+})
+
+// get details of all spots
 router.get('/', async (_req, res) => {
     const spots = await Spot.findAll({
     });
