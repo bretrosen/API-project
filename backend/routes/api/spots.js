@@ -36,10 +36,6 @@ const returnSpotData = async (spots) => {
 
         // push all spot data, including rating and image url, to array
         spotsWithAvgAndPreview.push(spotObj);
-
-        parseFloat(spotObj.lat);
-        parseFloat(spotObj.lng);
-        parseFloat(spotObj.price);
     }
 
     // return array data nested inside an object
@@ -119,10 +115,6 @@ router.get('/:spotId', async (req, res, next) => {
     // convert owner details to JSON and add to the response
     const jsonOwner = owner.toJSON();
     spotObj.Owner = jsonOwner;
-
-    parseFloat(spotObj.lat);
-    parseFloat(spotObj.lng);
-    parseFloat(spotObj.price);
 
     return res.json(spotObj);
 })
