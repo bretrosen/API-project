@@ -21,10 +21,13 @@ router.get('/', async (req, res, next) => {
         spotObj.avgRating = parseFloat(avgRating);
         spotsWithAvgRating.push(spotObj);
 
-        const imageUrl = await SpotImage.findByPk({
+        const imageUrl = await SpotImage.findByPk(spotObj.id, {
             attributes: ['url'],
-            where: {}
-        })
+            where: {preview: true}
+        });
+
+        console.log(imageUrl.toJSON());
+        spotObj.previewImage = imageUrl.toJSON();
     }
 
     // console.log(spotsWithAvgRating);
