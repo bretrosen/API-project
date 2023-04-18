@@ -92,6 +92,42 @@ const returnSpotData = async (spots) => {
 }
 
 
+// add a spot image based on the spot id
+router.post('/:spotId/images', requireAuth, async (req, res, next) => {
+    const spot = await Spot.findByPk(req.params.spotId);
+    const { user } = req;
+
+    // error response for invalid spot
+    if (!spot) {
+        res.status(404);
+        return res.json({
+            message: "Spot couldn't be found"
+        });
+    }
+
+    // error response if current user doesn't own the spot
+    if (spot.ownerId !== user.id) {
+        res.status(403);
+        return res.json({
+            message: "You are not authorized to modify this Spot"
+        })
+    }
+
+    // create a new spot image with spot id in request parameters
+    const spotId = req.params.spotId;
+    const { url, preview } = req.body;
+
+    const newSpotImage = await SpotImage.create({ spotId, url, preview});
+
+    // key into the object to respond with the data values
+    return res.json({
+        "id": parseInt(newSpotImage.dataValues.spotId),
+        "url": newSpotImage.dataValues.url,
+        "preview": newSpotImage.dataValues.preview
+    });
+})
+
+
 // get details of all spots of the current user
 router.get('/current', requireAuth, async (req, res) => {
     const { user } = req;
@@ -114,10 +150,10 @@ router.get('/:spotId', async (req, res, next) => {
 
     // error response to return for invalid spotId
     if (!spot) {
-        const err = new Error("Spot couldn't be found");
-        err.status = 404;
-        err.title = "Spot couldn't be found";
-        return next(err);
+        res.status(404);
+        return res.json({
+            message: "Spot couldn't be found"
+        });
     }
 
     const spotObj = spot.toJSON();
@@ -177,7 +213,7 @@ router.get('/', async (_req, res) => {
 
 
 // create a new spot
-router.post('/', requireAuth, validateSpot, async (req, res, next) => {
+router.post('/', requireAuth, validateSpot, async (req, res) => {
     const { ownerId, address, city, state, country, lat, lng, name, description, price } = req.body;
 
     const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price});
