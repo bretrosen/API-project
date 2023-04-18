@@ -1,12 +1,10 @@
 const express = require('express');
-const {Spot, Review, SpotImage } = require('../../db/models');
+const { Spot, Review, SpotImage } = require('../../db/models');
 
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {
-    const spots = await Spot.findAll({
-    });
-
+// helper function to return spot data including average rating and preview image
+const returnSpotData = async (spots) => {
     // create an array to push data for each spot to
     const spotsWithAvgAndPreview = [];
 
@@ -15,11 +13,11 @@ router.get('/', async (req, res, next) => {
         const spotObj = spots[i].toJSON();
         // get the total number of reviews for each spot
         const reviewCount = await Review.count({
-            where: {spotId: spotObj.id}
+            where: { spotId: spotObj.id }
         });
         // get the sum of stars for all reviews for each spot
         const reviewSum = await Review.sum('stars', {
-            where: {spotId: spotObj.id}
+            where: { spotId: spotObj.id }
         });
         // get the average rating for each spot as a num to 1 decimal
         const avgRating = (reviewSum / reviewCount).toFixed(1);
@@ -40,8 +38,35 @@ router.get('/', async (req, res, next) => {
         spotsWithAvgAndPreview.push(spotObj);
     }
 
-    // respond with the array data nested inside an object
-    return res.json({'Spots': spotsWithAvgAndPreview});
+    // return array data nested inside an object
+    return spotsWithAvgAndPreview;
+}
+
+router.get('/current', async (req, res) => {
+    const { user } = req;
+
+    if (user) {
+        const spots = await Spot.findAll({
+            where: {
+                ownerId: user.id
+            }
+        });
+
+        // get spot data with helper function and respond with it
+        const spotData = await returnSpotData(spots);
+        return res.json({ 'Spots': spotData });
+
+        // respond with null if there isn't a logged-in user
+    } else return res.json({ "Spots": null })
+})
+
+router.get('/', async (_req, res) => {
+    const spots = await Spot.findAll({
+    });
+
+    // get spot data from helper function and respond with it
+    const spotData = await returnSpotData(spots);
+    return res.json({ 'Spots': spotData });
 })
 
 module.exports = router;
