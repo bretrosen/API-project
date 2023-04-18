@@ -36,11 +36,16 @@ const returnSpotData = async (spots) => {
 
         // push all spot data, including rating and image url, to array
         spotsWithAvgAndPreview.push(spotObj);
+
+        parseFloat(spotObj.lat);
+        parseFloat(spotObj.lng);
+        parseFloat(spotObj.price);
     }
 
     // return array data nested inside an object
     return spotsWithAvgAndPreview;
 }
+
 
 // get details of all spots of the current user
 router.get('/current', async (req, res) => {
@@ -60,6 +65,7 @@ router.get('/current', async (req, res) => {
         // respond with null if there isn't a logged-in user
     } else return res.json({ "Spots": null })
 })
+
 
 // get details of a spot from an id
 router.get('/:spotId', async (req, res, next) => {
@@ -114,8 +120,13 @@ router.get('/:spotId', async (req, res, next) => {
     const jsonOwner = owner.toJSON();
     spotObj.Owner = jsonOwner;
 
+    parseFloat(spotObj.lat);
+    parseFloat(spotObj.lng);
+    parseFloat(spotObj.price);
+
     return res.json(spotObj);
 })
+
 
 // get details of all spots
 router.get('/', async (_req, res) => {
