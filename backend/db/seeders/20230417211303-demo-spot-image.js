@@ -21,8 +21,8 @@ module.exports = {
    options.tableName = 'SpotImages';
    await queryInterface.bulkInsert(options, [
     {
-      spotId: 1,
-      url: "https://sherlock.com",
+      spotId: 4,
+      url: "https://ny.com",
       preview: true
     },
     {
@@ -31,9 +31,24 @@ module.exports = {
       preview: false
     },
     {
+      spotId: 1,
+      url: "https://sherlock.com",
+      preview: true
+    },
+    {
+      spotId: 4,
+      url: "https://ny.com",
+      preview: false
+    },
+    {
       spotId: 2,
       url: "https://scotland.com",
       preview: true
+    },
+    {
+      spotId: 3,
+      url: "https://chicago.com",
+      preview: false
     },
     {
       spotId: 2,
@@ -45,11 +60,6 @@ module.exports = {
       url: "https://chicago.com",
       preview: true
     },
-    {
-      spotId: 3,
-      url: "https://chicago.com",
-      preview: false
-    }
    ])
   },
 
@@ -63,7 +73,7 @@ module.exports = {
     options.tableName = 'SpotImages';
     const Op = Sequelize.Op;
     await queryInterface.bulkDelete(options, {
-      spotId: { [Op.in]: [1, 2, 3]}
+      spotId: { [Op.in]: [1, 2, 3, 4]}
     }, {});
   }
 };
