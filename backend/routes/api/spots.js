@@ -4,7 +4,7 @@ const {Spot, Review, ReviewImage } = require('../../db/models');
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
-    const spots = Spot.findAll();
+    const spots = await Spot.findAll();
 
     return res.json(spots);
 })
