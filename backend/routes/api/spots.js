@@ -7,7 +7,7 @@ router.get('/', async (req, res, next) => {
     const spots = await Spot.findAll({
     });
 
-    const spotsWithAvgRating = [];
+    const spotsWithAvgAndPreview = [];
 
     for (let i = 0; i < spots.length; i++) {
         const spotObj = spots[i].toJSON();
@@ -19,20 +19,22 @@ router.get('/', async (req, res, next) => {
         });
         const avgRating = (reviewSum / reviewCount).toFixed(1);
         spotObj.avgRating = parseFloat(avgRating);
-        spotsWithAvgRating.push(spotObj);
 
-        const imageUrl = await SpotImage.findByPk(spotObj.id, {
+        const imageUrl = await SpotImage.findOne({
             attributes: ['url'],
-            where: {preview: true}
+            where: {
+                spotId: spotObj.id,
+                preview: true
+            }
         });
+        spotObj.previewImage = imageUrl.toJSON().url;
 
-        console.log(imageUrl.toJSON());
-        spotObj.previewImage = imageUrl.toJSON();
+        spotsWithAvgAndPreview.push(spotObj);
     }
 
     // console.log(spotsWithAvgRating);
 
-    return res.json({'Spots': spotsWithAvgRating});
+    return res.json({'Spots': spotsWithAvgAndPreview});
 })
 
 module.exports = router;

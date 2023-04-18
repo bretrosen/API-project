@@ -22,29 +22,34 @@ module.exports = {
    await queryInterface.bulkInsert(options, [
     {
       spotId: 1,
-      url: "https://fugazzi.com",
-      preview: true
-    },
-    {
-      spotId: 1,
-      url: "https://fugazzi.com",
-      preview: false
-    },
-    {
-      spotId: 2,
       url: "https://sherlock.com",
       preview: true
     },
     {
-      spotId: 3,
-      url: "https://toilets.com",
+      spotId: 1,
+      url: "https://sherlock.com",
       preview: false
     },
-    // {
-    //   spotId: 4,
-    //   url: "https://cows.com",
-    //   preview: true
-    // }
+    {
+      spotId: 2,
+      url: "https://scotland.com",
+      preview: true
+    },
+    {
+      spotId: 2,
+      url: "https://scotland.com",
+      preview: false
+    },
+    {
+      spotId: 3,
+      url: "https://chicago.com",
+      preview: true
+    },
+    {
+      spotId: 3,
+      url: "https://chicago.com",
+      preview: false
+    }
    ])
   },
 
