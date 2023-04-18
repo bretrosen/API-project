@@ -1,7 +1,17 @@
 const express = require('express');
 const { User, Spot, Review, SpotImage } = require('../../db/models');
+const { requireAuth } = require('../../utils/auth');
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
+
+const validateSpot = [
+    check('ownerId')
+        .exists({ checkFalsy: true})
+        .withMessage("Please provide an owner ID.")
+
+]
 
 // helper function to return spot data including average rating and preview image
 const returnSpotData = async (spots) => {
@@ -44,11 +54,10 @@ const returnSpotData = async (spots) => {
 
 
 // get details of all spots of the current user
-router.get('/current', async (req, res) => {
+router.get('/current', requireAuth, async (req, res) => {
     const { user } = req;
 
-    if (user) {
-        const spots = await Spot.findAll({
+    const spots = await Spot.findAll({
             where: {
                 ownerId: user.id
             }
@@ -57,9 +66,6 @@ router.get('/current', async (req, res) => {
         // get spot data with helper function and respond with it
         const spotData = await returnSpotData(spots);
         return res.json({ 'Spots': spotData });
-
-        // respond with null if there isn't a logged-in user
-    } else return res.json({ "Spots": null })
 })
 
 
@@ -128,6 +134,17 @@ router.get('/', async (_req, res) => {
     // get spot data from helper function and respond with it
     const spotData = await returnSpotData(spots);
     return res.json({ 'Spots': spotData });
+})
+
+
+// create a new spot
+router.post('/', requireAuth, async (req, res, next) => {
+    const { ownerId, address, city, state, country, lat, lng, name, description, price } = req.body;
+
+    const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price});
+
+    res.statusCode = 201;
+    return res.json(newSpot);
 })
 
 module.exports = router;
