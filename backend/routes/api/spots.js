@@ -144,20 +144,20 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     const spot = await Spot.findByPk(req.params.spotId);
     const { user } = req;
 
-    // error response if current user doesn't own the spot
-    if (spot.ownerId !== user.id) {
-        res.status(403);
-        return res.json({
-            message: "You are not authorized to modify this Spot"
-        })
-    }
-
     // error response for invalid spot
     if (!spot) {
         res.status(404);
         return res.json({
             message: "Spot couldn't be found"
         });
+    }
+
+    // error response if current user doesn't own the spot
+    if (spot.ownerId !== user.id) {
+        res.status(403);
+        return res.json({
+            message: "You are not authorized to modify this Spot"
+        })
     }
 
     // create a new spot image with spot id in request parameters
@@ -330,7 +330,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
     }
 
     await spot.destroy();
-    return res.json({ message: 'Successfully deleted'});
+    return res.json({ message: 'Successfully deleted' });
 })
 
 module.exports = router;
