@@ -10,43 +10,93 @@ const router = express.Router();
 const validateSpot = [
     check('address')
         .exists({ checkFalsy: true })
-        .isLength({min: 5, max: 100})
+        .isLength({ min: 5, max: 100 })
         .withMessage("Street address is required"),
     check('city')
         .exists({ checkFalsy: true })
-        .isLength({min: 1, max: 30})
+        .isLength({ min: 1, max: 30 })
         .withMessage("City is required"),
     check('state')
         .exists({ checkFalsy: true })
-        .isLength({min: 1, max: 30})
+        .isLength({ min: 1, max: 30 })
         .withMessage("State is required"),
     check('country')
         .exists({ checkFalsy: true })
-        .isLength({min: 2, max: 30})
+        .isLength({ min: 2, max: 30 })
         .withMessage("Country is required"),
     check('lat')
         .exists({ checkFalsy: true })
-        .isLength({min: 4, max: 10})
+        .isLength({ min: 4, max: 10 })
         .withMessage("Latitude is not valid"),
     check('lng')
         .exists({ checkFalsy: true })
-        .isLength({min: 4, max: 10})
+        .isLength({ min: 4, max: 10 })
         .withMessage("Longitude is not valid"),
     check('name')
         .exists({ checkFalsy: true })
-        .isLength({min: 5, max: 50})
+        .isLength({ min: 5, max: 50 })
         .withMessage("Name is required"),
     check('description')
         .exists({ checkFalsy: true })
-        .isLength({min: 10, max: 255})
+        .isLength({ min: 10, max: 255 })
         .withMessage("Description is required"),
     check('price')
         .exists({ checkFalsy: true })
         .isNumeric()
-        .isLength({min: 2, max: 8})
+        .isLength({ min: 2, max: 8 })
         .withMessage("Price per day is required"),
     handleValidationErrors
 ];
+
+const validateUpdatedSpot = [
+    check('address')
+        .optional()
+        .exists({ checkFalsy: true })
+        .isLength({ min: 5, max: 100 })
+        .withMessage("Street address is required"),
+    check('city')
+        .optional()
+        .exists({ checkFalsy: true })
+        .isLength({ min: 1, max: 30 })
+        .withMessage("City is required"),
+    check('state')
+        .optional()
+        .exists({ checkFalsy: true })
+        .isLength({ min: 1, max: 30 })
+        .withMessage("State is required"),
+    check('country')
+        .optional()
+        .exists({ checkFalsy: true })
+        .isLength({ min: 2, max: 30 })
+        .withMessage("Country is required"),
+    check('lat')
+        .optional()
+        .exists({ checkFalsy: true })
+        .isLength({ min: 4, max: 10 })
+        .withMessage("Latitude is not valid"),
+    check('lng')
+        .optional()
+        .exists({ checkFalsy: true })
+        .isLength({ min: 4, max: 10 })
+        .withMessage("Longitude is not valid"),
+    check('name')
+        .optional()
+        .exists({ checkFalsy: true })
+        .isLength({ min: 5, max: 50 })
+        .withMessage("Name is required"),
+    check('description')
+        .optional()
+        .exists({ checkFalsy: true })
+        .isLength({ min: 10, max: 255 })
+        .withMessage("Description is required"),
+    check('price')
+        .optional()
+        .exists({ checkFalsy: true })
+        .isNumeric()
+        .isLength({ min: 2, max: 8 })
+        .withMessage("Price per day is required"),
+    handleValidationErrors
+]
 
 // helper function to return spot data including average rating and preview image
 const returnSpotData = async (spots) => {
@@ -226,7 +276,7 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
 
 
 // edit a spot
-router.put('/:spotId', requireAuth, async (req, res, next) => {
+router.put('/:spotId', requireAuth, validateUpdatedSpot, async (req, res, next) => {
     const spot = await Spot.findByPk(req.params.spotId);
     const { user } = req;
     const ownerId = user.id;
