@@ -222,4 +222,10 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
     return res.json(newSpot);
 })
 
+
+// edit a spot
+router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
+    
+})
+
 module.exports = router;
