@@ -48,6 +48,7 @@ const validateSpot = [
     handleValidationErrors
 ];
 
+// validate fields for updating a spot
 const validateUpdatedSpot = [
     check('address')
         .optional()
@@ -98,6 +99,19 @@ const validateUpdatedSpot = [
     handleValidationErrors
 ]
 
+// validate fields for creating a review
+const validateReview = [
+    check('review')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 4, max: 255 })
+        .withMessage("Review text is required"),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .isInt({ min: 1, max: 5 })
+        .withMessage("Stars must be an integer from 1 to 5"),
+    handleValidationErrors
+]
+
 // helper function to return spot data including average rating and preview image
 const returnSpotData = async (spots) => {
     // create an array to push data for each spot to
@@ -137,6 +151,44 @@ const returnSpotData = async (spots) => {
     // return array data nested inside an object
     return spotsWithAvgAndPreview;
 }
+
+
+
+// create review by spot id
+router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, next) => {
+    const spot = await Spot.findByPk(req.params.spotId);
+    const spotId = req.params.spotId;
+    // check if user has a review for the spot
+    const { user } = req;
+    const userId = user.id;
+    const userReview = await Review.findOne({
+        where: {
+            spotId: req.params.spotId,
+            userId: user.id
+        }
+    });
+
+    // error response for invalid spot
+    if (!spot) {
+        res.status(404);
+        return res.json({
+            message: "Spot couldn't be found"
+        });
+    }
+
+    // error response if user has already reviewed the spot
+    if (userReview) {
+        res.status(500);
+        return res.json({
+            message: "User already has a review for this spot"
+        });
+    }
+
+    // create the new review and return it as the response body
+    const { review, stars } = req.body;
+    const newReview = await Review.create({userId, spotId, review, stars});
+    return res.json(newReview);
+})
 
 
 // add a spot image based on the spot id
@@ -189,10 +241,10 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 
     // query for all reviews of spot and include tables to match response in documentation
     const reviews = await Review.findAll({
-        where: {spotId: spot.id},
+        where: { spotId: spot.id },
         include: [
-            {model: User, attributes: ['id', 'firstName', 'lastName']},
-            { model: ReviewImage, attributes: ['id', 'url']}
+            { model: User, attributes: ['id', 'firstName', 'lastName'] },
+            { model: ReviewImage, attributes: ['id', 'url'] }
         ]
     });
 
