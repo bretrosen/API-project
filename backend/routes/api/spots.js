@@ -9,10 +9,10 @@ const router = express.Router();
 // validate fields for spot on creating spot
 const validateSpot = [
     check('address')
-        .exists({checkFalsy: true})
+        .exists({ checkFalsy: true })
         .withMessage("Street address is required"),
     check('city')
-        .exists({ checkFalsy: true})
+        .exists({ checkFalsy: true })
         .withMessage("City is required"),
     check('state')
         .exists({ checkFalsy: true })
@@ -27,7 +27,7 @@ const validateSpot = [
         .isLength({ min: 4 })
         .withMessage("Latitude is not valid"),
     check('lat')
-        .isLength({ max: 10})
+        .isLength({ max: 10 })
         .withMessage("Latitude is not valid"),
     check('lng')
         .exists({ checkFalsy: true })
@@ -36,11 +36,11 @@ const validateSpot = [
         .isLength({ min: 4 })
         .withMessage("Longitude is not valid"),
     check('lng')
-        .isLength({ max: 10})
+        .isLength({ max: 10 })
         .withMessage("Longitude is not valid"),
     check('name')
         .exists({ checkFalsy: true })
-        .isLength({ max: 50})
+        .isLength({ max: 50 })
         .withMessage("Name must be less than 50 characters"),
     check('description')
         .exists({ checkFalsy: true })
@@ -81,7 +81,7 @@ const returnSpotData = async (spots) => {
         });
         // convert the image url from an object to a string
         if (imageUrl) {
-        spotObj.previewImage = imageUrl.toJSON().url;
+            spotObj.previewImage = imageUrl.toJSON().url;
         }
         // push all spot data, including rating and image url, to array
         spotsWithAvgAndPreview.push(spotObj);
@@ -97,14 +97,6 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     const spot = await Spot.findByPk(req.params.spotId);
     const { user } = req;
 
-    // error response for invalid spot
-    if (!spot) {
-        res.status(404);
-        return res.json({
-            message: "Spot couldn't be found"
-        });
-    }
-
     // error response if current user doesn't own the spot
     if (spot.ownerId !== user.id) {
         res.status(403);
@@ -113,11 +105,19 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
         })
     }
 
+    // error response for invalid spot
+    if (!spot) {
+        res.status(404);
+        return res.json({
+            message: "Spot couldn't be found"
+        });
+    }
+
     // create a new spot image with spot id in request parameters
     const spotId = req.params.spotId;
     const { url, preview } = req.body;
 
-    const newSpotImage = await SpotImage.create({ spotId, url, preview});
+    const newSpotImage = await SpotImage.create({ spotId, url, preview });
 
     // key into the object to respond with the data values
     return res.json({
@@ -133,14 +133,14 @@ router.get('/current', requireAuth, async (req, res) => {
     const { user } = req;
 
     const spots = await Spot.findAll({
-            where: {
-                ownerId: user.id
-            }
-        });
+        where: {
+            ownerId: user.id
+        }
+    });
 
-        // get spot data with helper function and respond with it
-        const spotData = await returnSpotData(spots);
-        return res.json({ 'Spots': spotData });
+    // get spot data with helper function and respond with it
+    const spotData = await returnSpotData(spots);
+    return res.json({ 'Spots': spotData });
 })
 
 
@@ -216,7 +216,7 @@ router.get('/', async (_req, res) => {
 router.post('/', requireAuth, validateSpot, async (req, res) => {
     const { ownerId, address, city, state, country, lat, lng, name, description, price } = req.body;
 
-    const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price});
+    const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
 
     res.statusCode = 201;
     return res.json(newSpot);
@@ -224,8 +224,39 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
 
 
 // edit a spot
-router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
-    
+router.put('/:spotId', requireAuth, async (req, res, next) => {
+    const spot = await Spot.findByPk(req.params.spotId);
+    const { user } = req;
+    const ownerId = user.id;
+
+    // error response if current user doesn't own the spot
+    if (spot.ownerId !== user.id) {
+        res.status(403);
+        return res.json({
+            message: "You are not authorized to modify this Spot"
+        })
+    }
+
+    // error response for invalid spot
+    if (!spot) {
+        res.status(404);
+        return res.json({
+            message: "Spot couldn't be found"
+        });
+    }
+
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+    // update the spot
+    await Spot.update(
+        { ownerId, address, city, state, country, lat, lng, name, description, price }, // attributes to update
+        { where: {id: req.params.spotId}} // specify the record to update
+        );
+
+    // validate spot fields after updating
+    validateSpot;
+
+    return res.json(spot);
 })
 
 module.exports = router;
