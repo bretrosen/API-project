@@ -40,6 +40,8 @@ const validateSpot = [
         .withMessage("Longitude is not valid"),
     check('name')
         .exists({ checkFalsy: true })
+        .withMessage("Name is required"),
+    check('name')
         .isLength({ max: 50})
         .withMessage("Name must be less than 50 characters"),
     check('description')
@@ -214,7 +216,12 @@ router.get('/', async (_req, res) => {
 
 // create a new spot
 router.post('/', requireAuth, validateSpot, async (req, res) => {
-    const { ownerId, address, city, state, country, lat, lng, name, description, price } = req.body;
+    // get the current user's id to use in creating the new spot
+    const { user } = req;
+    const ownerId = user.id;
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+    console.log(ownerId);
 
     const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price});
 
