@@ -10,49 +10,36 @@ const router = express.Router();
 router.get('/current', requireAuth, async (req, res, next) => {
     const { user } = req;
 
-    const reviewArray = [];
-    const allReviewsObj = {};
-
+    // query for reviews by user, including table and attributes as specified in documentation
     const reviews = await Review.findAll({
-        where: { userId: user.id }
+        where: { userId: user.id },
+        include: [
+            { model: User, attributes: ['id', 'firstName', 'lastName'] },
+            {
+                model: Spot, attributes:
+                    ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price']
+            },
+            { model: ReviewImage, attributes: ['id', 'url'] }
+        ]
     });
 
+    // iterate over each review to add the previewImage property
     for (let i = 0; i < reviews.length; i++) {
-        const reviewObj = reviews[i].toJSON();
-
-        const user = await User.findByPk(reviewObj.userId, {
-            attributes: ['id', 'firstName', 'lastName']
-        });
-        const jsonUser = user.toJSON();
-        console.log(jsonUser);
-        reviewObj.User = jsonUser;
-
-        reviewArray.push(reviewObj);
-
-        const spot = await Spot.findByPk(reviewObj.spotId, {
-            attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price']
-        });
-        spotObj = spot.toJSON();
-
+        // find the correct spot image
         const previewImage = await SpotImage.findOne({
             where: {
-                spotId: reviewObj.spotId,
+                spotId: reviews[i].spotId,
                 preview: true
             }
         });
-
-        const url = previewImage.dataValues.url;
-        spotObj.previewImage = url;
-
-        reviewArray.push(spotObj);
-
-
-
+        const url = previewImage.url;
+        // set the preview image property on the Spot table included in the query
+        reviews[i].Spot.dataValues.previewImage = url;
     }
-    allReviewsObj.Reviews = reviewArray;
-    // console.log(allReviewsObj);
-
-    return res.json(allReviewsObj);
+    // format the response according to the documentation
+    const reviewObj = {};
+    reviewObj.Reviews = reviews;
+    res.json(reviewObj);
 
 })
 
