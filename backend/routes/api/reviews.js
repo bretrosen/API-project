@@ -1,5 +1,5 @@
 const express = require('express');
-const { User, Spot, Review, SpotImage } = require('../../db/models');
+const { User, Spot, Review, SpotImage, ReviewImage } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -14,7 +14,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
     const allReviewsObj = {};
 
     const reviews = await Review.findAll({
-        where: {userId: user.id}
+        where: { userId: user.id }
     });
 
     for (let i = 0; i < reviews.length; i++) {
@@ -30,11 +30,19 @@ router.get('/current', requireAuth, async (req, res, next) => {
         reviewArray.push(reviewObj);
 
         const spot = await Spot.findByPk(reviewObj.spotId, {
-            attributes: [['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price']]
+            attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price']
         });
         spotObj = spot.toJSON();
 
-        const previewImage = 
+        const previewImage = await SpotImage.findOne({
+            where: {
+                spotId: reviewObj.spotId,
+                preview: true
+            }
+        });
+
+        const url = previewImage.dataValues.url;
+        spotObj.previewImage = url;
 
         reviewArray.push(spotObj);
 
