@@ -10,45 +10,40 @@ const router = express.Router();
 const validateSpot = [
     check('address')
         .exists({ checkFalsy: true })
+        .isLength({min: 5, max: 100})
         .withMessage("Street address is required"),
     check('city')
         .exists({ checkFalsy: true })
+        .isLength({min: 1, max: 30})
         .withMessage("City is required"),
     check('state')
         .exists({ checkFalsy: true })
+        .isLength({min: 1, max: 30})
         .withMessage("State is required"),
     check('country')
         .exists({ checkFalsy: true })
+        .isLength({min: 2, max: 30})
         .withMessage("Country is required"),
     check('lat')
         .exists({ checkFalsy: true })
-        .withMessage("Latitude is not valid"),
-    check('lat')
-        .isLength({ min: 4 })
-        .withMessage("Latitude is not valid"),
-    check('lat')
-        .isLength({ max: 10 })
+        .isLength({min: 4, max: 10})
         .withMessage("Latitude is not valid"),
     check('lng')
         .exists({ checkFalsy: true })
-        .withMessage("Longitude is not valid"),
-    check('lng')
-        .isLength({ min: 4 })
-        .withMessage("Longitude is not valid"),
-    check('lng')
-        .isLength({ max: 10 })
+        .isLength({min: 4, max: 10})
         .withMessage("Longitude is not valid"),
     check('name')
         .exists({ checkFalsy: true })
+        .isLength({min: 5, max: 50})
         .withMessage("Name is required"),
-    check('name')
-        .isLength({ max: 50})
-        .withMessage("Name must be less than 50 characters"),
     check('description')
         .exists({ checkFalsy: true })
+        .isLength({min: 10, max: 255})
         .withMessage("Description is required"),
     check('price')
         .exists({ checkFalsy: true })
+        .isNumeric()
+        .isLength({min: 2, max: 8})
         .withMessage("Price per day is required"),
     handleValidationErrors
 ];
@@ -236,14 +231,6 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
     const { user } = req;
     const ownerId = user.id;
 
-    // error response if current user doesn't own the spot
-    if (spot.ownerId !== user.id) {
-        res.status(403);
-        return res.json({
-            message: "You are not authorized to modify this Spot"
-        })
-    }
-
     // error response for invalid spot
     if (!spot) {
         res.status(404);
@@ -252,16 +239,19 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
         });
     }
 
+    // error response if current user doesn't own the spot
+    if (spot.ownerId !== user.id) {
+        res.status(403);
+        return res.json({
+            message: "You are not authorized to modify this Spot"
+        })
+    }
+
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
     // update the spot
-    await Spot.update(
-        { ownerId, address, city, state, country, lat, lng, name, description, price }, // attributes to update
-        { where: {id: req.params.spotId}} // specify the record to update
-        );
-
-    // validate spot fields after updating
-    validateSpot;
+    await spot.update({ ownerId, address, city, state, country, lat, lng, name, description, price });
+    await spot.save();
 
     return res.json(spot);
 })
