@@ -6,6 +6,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
 
+
 // get all reviews of the current user
 router.get('/current', requireAuth, async (req, res, next) => {
     const { user } = req;
