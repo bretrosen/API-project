@@ -190,6 +190,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
     return res.json(newReview);
 })
 
+
 // add a spot image based on the spot id
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     const spot = await Spot.findByPk(req.params.spotId);
