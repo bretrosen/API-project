@@ -306,4 +306,31 @@ router.put('/:spotId', requireAuth, validateUpdatedSpot, async (req, res, next) 
     return res.json(spot);
 })
 
+
+// delete a spot
+router.delete('/:spotId', requireAuth, async (req, res, next) => {
+    const spot = await Spot.findByPk(req.params.spotId);
+    const { user } = req;
+
+    // error response for invalid spot
+    if (!spot) {
+        res.status(404);
+        return res.json({
+            message: "Spot couldn't be found"
+        });
+    }
+    console.log(user.id);
+
+    // error response if current user doesn't own the spot
+    if (spot.ownerId !== user.id) {
+        res.status(403);
+        return res.json({
+            message: "You are not authorized to modify this Spot"
+        })
+    }
+
+    await spot.destroy();
+    return res.json({ message: 'Successfully deleted'});
+})
+
 module.exports = router;
