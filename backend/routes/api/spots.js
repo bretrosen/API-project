@@ -1,5 +1,5 @@
 const express = require('express');
-const { User, Spot, Review, SpotImage, ReviewImage } = require('../../db/models');
+const { User, Spot, Review, SpotImage, ReviewImage, Booking } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -224,6 +224,47 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
         "url": newSpotImage.dataValues.url,
         "preview": newSpotImage.dataValues.preview
     });
+})
+
+
+// get bookings by spot id
+router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
+    const { user } = req;
+    const spot = await Spot.findByPk(req.params.spotId);
+
+    // error response for invalid spot
+    if (!spot) {
+        res.status(404);
+        return res.json({
+            message: "Spot couldn't be found"
+        });
+    }
+
+    // query to return for spot owner
+    if (user.id === spot.ownerId) {
+        const ownerBookings = await Booking.findAll({
+            where: { spotId: spot.id },
+            include: {
+                model: User,
+                attributes: ['id', 'firstName', 'lastName']
+            }
+        });
+        // format response according to documentation
+        const ownerBookingsObj = {};
+        ownerBookingsObj.Bookings = ownerBookings;
+        return res.json(ownerBookingsObj);
+    }
+
+    // query to return for all other authenticated users
+    const bookings = await Booking.findAll({
+        where: { spotId: spot.id },
+        attributes: ['spotId', 'startDate', 'endDate']
+    });
+    // format response according to documentation
+    const bookingsObj = {};
+    bookingsObj.Bookings = bookings;
+    return res.json(bookingsObj);
+
 })
 
 
