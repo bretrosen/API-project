@@ -40,6 +40,49 @@ router.get('/current', requireAuth, async (req, res, next) => {
 })
 
 
+// delete a booking
+router.delete('/:bookingId', requireAuth, async (req, res, next) => {
+    const booking = await Booking.findByPk(req.params.bookingId);
+    const { user } = req;
+
+    // error response for invalid booking
+    if (!booking) {
+        res.status(404);
+        return res.json({
+            message: "Booking couldn't be found"
+        });
+    }
+
+    const spot = await Spot.findByPk(booking.spotId);
+
+    // delete if user owns booking or spot
+    if (booking.userId === user.id || spot.ownerId === user.id) {
+        // get times of start and end dates for comparison
+        const timeStartDate = new Date(booking.startDate.toDateString()).getTime();
+        const timeEndDate = new Date(booking.endDate.toDateString()).getTime();
+        const timeNow = new Date().getTime();
+
+        // error response for booking in progress
+        if (timeStartDate <= timeNow && timeEndDate >= timeNow) {
+            res.status(403);
+            return res.json({
+                message: "Bookings that have been started can't be deleted"
+            })
+        }
+
+        await booking.destroy();
+        return res.json({
+            message: "Succesfully deleted"
+        })
+    }
+
+    // error response if current user doesn't own the booking or spot
+    res.status(418);
+    return res.json({
+        message: "Forbidden"
+    })
+})
+
 // edit a booking
 router.put('/:bookingId', requireAuth, async (req, res, next) => {
     const { user } = req;
