@@ -186,7 +186,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
 
     // create the new review and return it as the response body
     const { review, stars } = req.body;
-    const newReview = await Review.create({spotId, userId, review, stars});
+    const newReview = await Review.create({ spotId, userId, review, stars });
     return res.json(newReview);
 })
 
@@ -224,6 +224,111 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
         "url": newSpotImage.dataValues.url,
         "preview": newSpotImage.dataValues.preview
     });
+})
+
+
+// create a booking by spot id
+router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
+    const { user } = req;
+    const userId = user.id;
+    const spotId = parseInt(req.params.spotId);
+    const spot = await Spot.findByPk(spotId);
+    const { startDate, endDate } = req.body;
+
+    // error response for invalid spot
+    if (!spot) {
+        res.status(404);
+        return res.json({
+            message: "Spot couldn't be found"
+        });
+    }
+
+    // error response if current user attempts to book a spot they own
+    if (spot.ownerId === userId) {
+        res.status(418);
+        return res.json({
+            message: "You can't book your own spot"
+        });
+    }
+
+    // convert request body params to times in millisecs for comparisons
+    const objStartDate = new Date(startDate);
+    const stringStartDate = objStartDate.toDateString();
+    const objStringStartDate = new Date(stringStartDate);
+    const timeStartDate = objStringStartDate.getTime();
+
+    const objEndDate = new Date(endDate);
+    const stringEndDate = objEndDate.toDateString();
+    const objStringEndDate = new Date(stringEndDate);
+    const timeEndDate = objStringEndDate.getTime();
+
+    // error response if end date is on or before startDate
+    if (timeEndDate <= timeStartDate) {
+        res.status(400);
+        return res.json({
+            message: "Bad Request",
+            errors: {
+                endDate: "endDate cannot be on or before startDate"
+            }
+        });
+    }
+
+    // get existing bookings for spot
+    const bookings = await Booking.findAll({
+        where: { spotId: spotId },
+        attributes: ['startDate', 'endDate']
+    });
+
+    for (let i = 0; i < bookings.length; i++) {
+        // convert existing start and end date to times for comparison
+        const existingStart = bookings[i].dataValues.startDate;
+        const stringExistingStart = existingStart.toDateString();
+        const objStringExistingStart = new Date(stringExistingStart);
+        const timeExistingStartDate = objStringExistingStart.getTime();
+
+        const existingEnd = bookings[i].dataValues.endDate;
+        const stringExistingEnd = existingEnd.toDateString();
+        const objStringExistingEnd = new Date(stringExistingEnd);
+        const timeExistingEndDate = objStringExistingEnd.getTime();
+
+        // if the requested start date falls between an existing start date and an existing end date, return an error
+        if (timeStartDate >= timeExistingStartDate && timeStartDate < timeExistingEndDate) {
+            res.status(403);
+            return res.json({
+                message: "Sorry, this spot is already booked for the specified dates",
+                errors: {
+                    startDate: "Start date conflicts with an existing booking"
+                }
+            });
+        }
+
+        // if the requested end date falls between an existing start date and an existing end date, return an error
+        if (timeEndDate <= timeExistingEndDate && timeEndDate > timeExistingStartDate) {
+            res.status(403);
+            return res.json({
+                message: "Sorry, this spot is already booked for the specified dates",
+                errors: {
+                    endDate: "End date conflicts with an existing booking"
+                }
+            })
+        }
+
+        // if the requested start date is before an existing start date and the requested end date is after an existing end date, return an error
+        if (timeStartDate <= timeExistingStartDate && timeEndDate >= timeExistingEndDate) {
+            res.status(403);
+            return res.json({
+                message: "Sorry, this spot is already booked for the specified dates",
+                errors: {
+                    startDate: "Start date conflicts with an existing booking",
+                    endDate: "End date conflicts with an existing booking"
+                }
+            })
+        }
+    }
+
+    // create a new booking
+    const newBooking = await Booking.create({ spotId, userId, startDate, endDate });
+    return res.json(newBooking);
 })
 
 
