@@ -94,7 +94,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
             }
         });
         const url = previewImage.url;
-        // set the preview image property on the Spot table included in the query
+        // set the preview image property on the Spot response 
         reviews[i].Spot.dataValues.previewImage = url;
     }
     // format the response according to the documentation
