@@ -278,7 +278,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
         where: { spotId: spotId },
         attributes: ['startDate', 'endDate']
     });
-
+    // check each booking for the spot for conflicts
     for (let i = 0; i < bookings.length; i++) {
         // convert existing start and end date to times for comparison
         const existingStart = bookings[i].dataValues.startDate;
