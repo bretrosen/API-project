@@ -36,9 +36,6 @@ router.get('/current', requireAuth, async (req, res, next) => {
     // format response according to documentation
     const bookingsObj = {};
     bookingsObj.Bookings = bookings;
-
-    console.log(bookingsObj);
-
     res.json(bookingsObj);
 })
 
