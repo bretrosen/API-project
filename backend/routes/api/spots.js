@@ -112,19 +112,6 @@ const validateReview = [
     handleValidationErrors
 ]
 
-// // validate fields for creating a booking
-// const validateBooking = [
-//     check('startDate')
-//         .exists({ checkFalsy: true})
-//         .isDate()
-//         .withMessage("startDate must be a valid date"),
-//     check('endDate')
-//         .exists({ checkFalsy: true})
-//         .isDate()
-//         .withMessage("endDate must be a valid date"),
-//     handleValidationErrors
-// ]
-
 // helper function to return spot data including average rating and preview image
 const returnSpotData = async (spots) => {
     // create an array to push data for each spot to
@@ -199,7 +186,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
 
     // create the new review and return it as the response body
     const { review, stars } = req.body;
-    const newReview = await Review.create({spotId, userId, review, stars});
+    const newReview = await Review.create({ spotId, userId, review, stars });
     return res.json(newReview);
 })
 
@@ -264,22 +251,18 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
         });
     }
 
-    // error response if end date is on or before startDate
-    const objStartDate = new Date (startDate);
+    // convert request body params to times in millisecs for comparisons
+    const objStartDate = new Date(startDate);
     const stringStartDate = objStartDate.toDateString();
-    console.log(stringStartDate);
-    const objStringStartDate = new Date (stringStartDate);
+    const objStringStartDate = new Date(stringStartDate);
     const timeStartDate = objStringStartDate.getTime();
-    console.log(timeStartDate);
 
-    const objEndDate = new Date (endDate);
+    const objEndDate = new Date(endDate);
     const stringEndDate = objEndDate.toDateString();
-    console.log(stringEndDate);
-    const objStringEndDate = new Date (stringEndDate);
+    const objStringEndDate = new Date(stringEndDate);
     const timeEndDate = objStringEndDate.getTime();
-    console.log(timeEndDate);
 
-
+    // error response if end date is on or before startDate
     if (timeEndDate <= timeStartDate) {
         res.status(400);
         return res.json({
@@ -289,6 +272,61 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
             }
         });
     }
+
+    // get existing bookings for spot
+    const bookings = await Booking.findAll({
+        where: { spotId: spotId },
+        attributes: ['startDate', 'endDate']
+    });
+
+    for (let i = 0; i < bookings.length; i++) {
+        // convert existing start and end date to times for comparison
+        const existingStart = bookings[i].dataValues.startDate;
+        const stringExistingStart = existingStart.toDateString();
+        const objStringExistingStart = new Date(stringExistingStart);
+        const timeExistingStartDate = objStringExistingStart.getTime();
+
+        const existingEnd = bookings[i].dataValues.endDate;
+        const stringExistingEnd = existingEnd.toDateString();
+        const objStringExistingEnd = new Date(stringExistingEnd);
+        const timeExistingEndDate = objStringExistingEnd.getTime();
+
+        // if the requested start date falls between an existing start date and an existing end date, return an error
+        if (timeStartDate >= timeExistingStartDate && timeStartDate <= timeExistingEndDate) {
+            res.status(403);
+            return res.json({
+                message: "Sorry, this spot is already booked for the specified dates",
+                errors: {
+                    startDate: "Start date conflicts with an existing booking"
+                }
+            });
+        }
+
+        // if the requested end date falls between an existing start date and an existing end date, return an error
+        if (timeEndDate <= timeExistingEndDate && timeEndDate >= timeExistingStartDate) {
+            res.status(403);
+            return res.json({
+                message: "Sorry, this spot is already booked for the specified dates",
+                errors: {
+                    endDate: "End date conflicts with an existing booking"
+                }
+            })
+        }
+
+        // if the requested start date is before an existing start date and the requested end date is after an existing end date, return an error
+        if (timeStartDate <= timeExistingStartDate && timeEndDate >= timeExistingEndDate) {
+            res.status(403);
+            return res.json({
+                message: "Sorry, this spot is already booked for the specified dates",
+                errors: {
+                    startDate: "Start date conflicts with an existing booking",
+                    endDate: "End date conflicts with an existing booking"
+                }
+            })
+        }
+    }
+    console.log(bookings[0].dataValues.startDate);
+    console.log(bookings[0].dataValues.endDate);
 
     // create a new booking
     const newBooking = await Booking.create({ spotId, userId, startDate, endDate });
