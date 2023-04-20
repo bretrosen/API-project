@@ -6,6 +6,21 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
 
+// validate fields for editing a review
+const validateReview = [
+    check('review')
+        .optional()
+        .exists({ checkFalsy: true })
+        .isLength({ min: 4, max: 255 })
+        .withMessage("Review text is required"),
+    check('stars')
+        .optional()
+        .exists({ checkFalsy: true })
+        .isInt({ min: 1, max: 5 })
+        .withMessage("Stars must be an integer from 1 to 5"),
+    handleValidationErrors
+]
+
 
 // add an image to a review
 router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
@@ -34,7 +49,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
         });
     }
 
-    // error response if current user didn't write review
+    // error response for unauthorized user
     if (review.userId !== user.id) {
         res.status(418);
         return res.json({
@@ -86,7 +101,40 @@ router.get('/current', requireAuth, async (req, res, next) => {
     const reviewObj = {};
     reviewObj.Reviews = reviews;
     res.json(reviewObj);
+})
 
+
+// edit a review
+router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => {
+    const reviewToEdit = await Review.findByPk(req.params.reviewId);
+    const { user } = req;
+
+    // error response for invalid review
+    if (!reviewToEdit) {
+        res.status(404);
+        return res.json({
+            message: "Review couldn't be found"
+        })
+    }
+
+    // error response for unauthorized user
+    if (reviewToEdit.userId !== user.id) {
+        res.status(403);
+        return res.json({
+            message: "Forbidden"
+        })
+    }
+
+    const { review, stars } = req.body;
+
+    // update the review
+    await reviewToEdit.update({
+        review: review,
+        stars: stars
+     });
+     await reviewToEdit.save();
+
+     return res.json(reviewToEdit);
 })
 
 module.exports = router;
