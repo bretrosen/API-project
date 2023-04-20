@@ -292,7 +292,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
         const timeExistingEndDate = objStringExistingEnd.getTime();
 
         // if the requested start date falls between an existing start date and an existing end date, return an error
-        if (timeStartDate >= timeExistingStartDate && timeStartDate <= timeExistingEndDate) {
+        if (timeStartDate >= timeExistingStartDate && timeStartDate < timeExistingEndDate) {
             res.status(403);
             return res.json({
                 message: "Sorry, this spot is already booked for the specified dates",
@@ -303,7 +303,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
         }
 
         // if the requested end date falls between an existing start date and an existing end date, return an error
-        if (timeEndDate <= timeExistingEndDate && timeEndDate >= timeExistingStartDate) {
+        if (timeEndDate <= timeExistingEndDate && timeEndDate > timeExistingStartDate) {
             res.status(403);
             return res.json({
                 message: "Sorry, this spot is already booked for the specified dates",
