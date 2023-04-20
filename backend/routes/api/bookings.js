@@ -57,13 +57,12 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
 
     // delete if user owns booking or spot
     if (booking.userId === user.id || spot.ownerId === user.id) {
-        // get times of start and end dates for comparison
+        // get time of start date for comparison
         const timeStartDate = new Date(booking.startDate.toDateString()).getTime();
-        const timeEndDate = new Date(booking.endDate.toDateString()).getTime();
         const timeNow = new Date().getTime();
 
-        // error response for booking in progress
-        if (timeStartDate <= timeNow && timeEndDate >= timeNow) {
+        // error response for booking that has started
+        if (timeStartDate <= timeNow) {
             res.status(403);
             return res.json({
                 message: "Bookings that have been started can't be deleted"
