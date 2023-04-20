@@ -112,6 +112,19 @@ const validateReview = [
     handleValidationErrors
 ]
 
+// // validate fields for creating a booking
+// const validateBooking = [
+//     check('startDate')
+//         .exists({ checkFalsy: true})
+//         .isDate()
+//         .withMessage("startDate must be a valid date"),
+//     check('endDate')
+//         .exists({ checkFalsy: true})
+//         .isDate()
+//         .withMessage("endDate must be a valid date"),
+//     handleValidationErrors
+// ]
+
 // helper function to return spot data including average rating and preview image
 const returnSpotData = async (spots) => {
     // create an array to push data for each spot to
@@ -224,6 +237,63 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
         "url": newSpotImage.dataValues.url,
         "preview": newSpotImage.dataValues.preview
     });
+})
+
+
+// create a booking by spot id
+router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
+    const { user } = req;
+    const userId = user.id;
+    const spotId = parseInt(req.params.spotId);
+    const spot = await Spot.findByPk(spotId);
+    const { startDate, endDate } = req.body;
+
+    // error response for invalid spot
+    if (!spot) {
+        res.status(404);
+        return res.json({
+            message: "Spot couldn't be found"
+        });
+    }
+
+    // error response if current user attempts to book a spot they own
+    if (spot.ownerId === userId) {
+        res.status(418);
+        return res.json({
+            message: "You can't book your own spot"
+        });
+    }
+
+    // error response if end date is on or before startDate
+    const objStartDate = new Date (startDate);
+    const stringStartDate = objStartDate.toDateString();
+    console.log(stringStartDate);
+    const objStringStartDate = new Date (stringStartDate);
+    const timeStartDate = objStringStartDate.getTime();
+    console.log(timeStartDate);
+
+    const objEndDate = new Date (endDate);
+    const stringEndDate = objEndDate.toDateString();
+    console.log(stringEndDate);
+    const objStringEndDate = new Date (stringEndDate);
+    const timeEndDate = objStringEndDate.getTime();
+    console.log(timeEndDate);
+
+
+    if (timeEndDate <= timeStartDate) {
+        res.status(400);
+        return res.json({
+            message: "Bad Request",
+            errors: {
+                endDate: "endDate cannot be on or before startDate"
+            }
+        });
+    }
+
+    // create a new booking
+    const newBooking = await Booking.create({ spotId, userId, startDate, endDate });
+
+    return res.json(newBooking);
 })
 
 
