@@ -257,7 +257,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
     // key into the object to respond with the data values
     return res.json({
-        "id": parseInt(newSpotImage.dataValues.spotId),
+        "id": newSpotImage.dataValues.id,
         "url": newSpotImage.dataValues.url,
         "preview": newSpotImage.dataValues.preview
     });
