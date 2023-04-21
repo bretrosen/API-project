@@ -72,7 +72,7 @@ router.delete(
     }
 );
 
-// restore user session
+// get current user (authentication not required)
 router.get('/', (req, res) => {
     const { user } = req;
     if (user) {
