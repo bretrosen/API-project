@@ -54,14 +54,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        len: [4, 10]
+        len: [4, 20]
       }
     },
     lng: {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        len: [4, 10]
+        len: [4, 20]
       }
     },
     name: {
