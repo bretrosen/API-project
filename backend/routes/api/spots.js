@@ -26,11 +26,11 @@ const validateSpot = [
         .withMessage("Country is required"),
     check('lat')
         .exists({ checkFalsy: true })
-        .isLength({ min: 4, max: 10 })
+        .isLength({ min: 4, max: 20 })
         .withMessage("Latitude is not valid"),
     check('lng')
         .exists({ checkFalsy: true })
-        .isLength({ min: 4, max: 10 })
+        .isLength({ min: 4, max: 20 })
         .withMessage("Longitude is not valid"),
     check('name')
         .exists({ checkFalsy: true })
@@ -73,12 +73,12 @@ const validateUpdatedSpot = [
     check('lat')
         .optional()
         .exists({ checkFalsy: true })
-        .isLength({ min: 4, max: 10 })
+        .isLength({ min: 4, max: 20 })
         .withMessage("Latitude is not valid"),
     check('lng')
         .optional()
         .exists({ checkFalsy: true })
-        .isLength({ min: 4, max: 10 })
+        .isLength({ min: 4, max: 20 })
         .withMessage("Longitude is not valid"),
     check('name')
         .optional()
