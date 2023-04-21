@@ -124,27 +124,27 @@ const validateQuery = [
         .withMessage("Size must be greater than or equal to 1"),
     check('maxLat')
         .optional()
-        .isDecimal()
+        .isFloat({ min: -90, max: 90})
         .withMessage("Maximum latitude is invalid"),
     check('minLat')
         .optional()
-        .isDecimal()
+        .isFloat({ min: -90, max: 90})
         .withMessage("Minimum latitude is invalid"),
     check('minLng')
         .optional()
-        .isDecimal()
+        .isFloat({ min: -180, max: 180})
         .withMessage("Maximum longitude is invalid"),
     check('maxLng')
         .optional()
-        .isDecimal()
+        .isFloat({ min: -180, max: 180})
         .withMessage("Minimum longitude is invalid"),
     check('minPrice')
         .optional()
-        .isDecimal({ min: 0 })
+        .isFloat({ min: 0 })
         .withMessage("Minimum price must be greater than or equal to 0"),
     check('maxPrice')
         .optional()
-        .isDecimal({ min: 0 })
+        .isFloat({ min: 0 })
         .withMessage("Maximum price must be greater than or equal to 0"),
     handleValidationErrors
 ]
@@ -527,17 +527,27 @@ router.get('/', validateQuery, async (req, res) => {
     if (maxLat) {
         query.where.lat = {[Op.lte]: maxLat}
     }
+    // modify query if multiple search options are selected for a column
+    if (minLat && maxLat) {
+        query.where.lat = {[Op.gte]: minLat, [Op.lte]: maxLat}
+    }
     if (minLng) {
         query.where.lng = {[Op.gte]: minLng}
     }
     if (maxLng) {
         query.where.lng = {[Op.lte]: maxLng}
     }
+    if (minLng && maxLng) {
+        query.where.lng = {[Op.gte]: minLng, [Op.lte]: maxLng}
+    }
     if (minPrice) {
         query.where.price = {[Op.gte]: minPrice}
     }
     if (maxPrice) {
         query.where.price = {[Op.lte]: maxPrice}
+    }
+    if (minPrice && maxPrice) {
+        query.where.price = {[Op.gte]: minPrice, [Op.lte]: maxPrice}
     }
 
     // set pagination options
