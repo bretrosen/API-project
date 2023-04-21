@@ -112,6 +112,41 @@ const validateReview = [
     handleValidationErrors
 ]
 
+// validate query filters
+const validateQuery = [
+    check('page')
+        .isInt({ min: 1, max: 10 })
+        .withMessage("Page must be greater than or equal to 1"),
+    check('size')
+        .isInt({ min: 1, max: 20 })
+        .withMessage("Size must be greater than or equal to 1"),
+    check('maxLat')
+        .optional()
+        .isDecimal()
+        .withMessage("Maximum latitude is invalid"),
+    check('minLat')
+        .optional()
+        .isDecimal()
+        .withMessage("Minimum latitude is invalid"),
+    check('minLng')
+        .optional()
+        .isDecimal()
+        .withMessage("Maximum longitude is invalid"),
+    check('maxLng')
+        .optional()
+        .isDecimal()
+        .withMessage("Minimum longitude is invalid"),
+    check('minPrice')
+        .optional()
+        .isDecimal({ min: 0 })
+        .withMessage("Minimum price must be greater than or equal to 0"),
+    check('maxPrice')
+        .optional()
+        .isDecimal({ min: 0 })
+        .withMessage("Maximum price must be greater than or equal to 0"),
+    handleValidationErrors
+]
+
 // helper function to return spot data including average rating and preview image
 const returnSpotData = async (spots) => {
     // create an array to push data for each spot to
@@ -475,7 +510,7 @@ router.get('/:spotId', async (req, res, next) => {
 
 
 // get details of all spots
-router.get('/', async (_req, res) => {
+router.get('/', validateQuery, async (_req, res) => {
     const spots = await Spot.findAll({
     });
 
