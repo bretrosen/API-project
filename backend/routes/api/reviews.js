@@ -94,7 +94,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
             }
         });
         const url = previewImage.url;
-        // set the preview image property on the Spot response 
+        // set the preview image property on the Spot response
         reviews[i].Spot.dataValues.previewImage = url;
     }
     // format the response according to the documentation
@@ -155,7 +155,7 @@ router.delete('/:reviewId', requireAuth, async (req, res, next) => {
     if (review.userId !== user.id) {
         res.status(403);
         return res.json({
-            messge: "Forbidden"
+            message: "Forbidden"
         });
     }
 
