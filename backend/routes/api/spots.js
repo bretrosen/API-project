@@ -115,9 +115,11 @@ const validateReview = [
 // validate query filters
 const validateQuery = [
     check('page')
+        .optional()
         .isInt({ min: 1, max: 10 })
         .withMessage("Page must be greater than or equal to 1"),
     check('size')
+        .optional()
         .isInt({ min: 1, max: 20 })
         .withMessage("Size must be greater than or equal to 1"),
     check('maxLat')
@@ -510,13 +512,52 @@ router.get('/:spotId', async (req, res, next) => {
 
 
 // get details of all spots
-router.get('/', validateQuery, async (_req, res) => {
-    const spots = await Spot.findAll({
-    });
+router.get('/', validateQuery, async (req, res) => {
+    // query object to build
+    let query = { where: {} };
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+
+    // import operator object for conditionals
+    const { Op } = require('sequelize');
+
+    // query options to add if passed as search parameters
+    if (minLat) {
+        query.where.lat = {[Op.gte]: minLat}
+    }
+    if (maxLat) {
+        query.where.lat = {[Op.lte]: maxLat}
+    }
+    if (minLng) {
+        query.where.lng = {[Op.gte]: minLng}
+    }
+    if (maxLng) {
+        query.where.lng = {[Op.lte]: maxLng}
+    }
+    if (minPrice) {
+        query.where.price = {[Op.gte]: minPrice}
+    }
+    if (maxPrice) {
+        query.where.price = {[Op.lte]: maxPrice}
+    }
+
+    // set pagination options
+    if (!page) page = 1;
+    if (!size) size = 20;
+    if (page >= 1 && size >= 1) {
+        query.limit = size;
+        query.offset = size * (page - 1);
+    }
+
+    // get spots with search and pagination options
+    const spots = await Spot.findAll(query);
 
     // get spot data from helper function and respond with it
     const spotData = await returnSpotData(spots);
-    return res.json({ 'Spots': spotData });
+    return res.json({
+        'Spots': spotData,
+        "page": page,
+        "size": size
+    });
 })
 
 
