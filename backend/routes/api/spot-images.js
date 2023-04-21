@@ -18,7 +18,21 @@ router.delete("/:imageId", requireAuth, async (req, res, next) => {
         });
     }
 
+    const spot = await Spot.findByPk(spotImage.spotId);
+    const owner = await User.findByPk(spot.ownerId);
+
     // error response for unauthorized user
+    if (owner.id !== user.id) {
+        res.status(403);
+        return res.json({
+            message: "Forbidden"
+        });
+    }
+
+    await spotImage.destroy();
+    return res.json({
+        message: "Successfully deleted"
+    });
 })
 
 module.exports = router;
