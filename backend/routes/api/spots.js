@@ -112,6 +112,43 @@ const validateReview = [
     handleValidationErrors
 ]
 
+// validate query filters
+const validateQuery = [
+    check('page')
+        .optional()
+        .isInt({ min: 1, max: 10 })
+        .withMessage("Page must be greater than or equal to 1"),
+    check('size')
+        .optional()
+        .isInt({ min: 1, max: 20 })
+        .withMessage("Size must be greater than or equal to 1"),
+    check('maxLat')
+        .optional()
+        .isFloat({ min: -90, max: 90})
+        .withMessage("Maximum latitude is invalid"),
+    check('minLat')
+        .optional()
+        .isFloat({ min: -90, max: 90})
+        .withMessage("Minimum latitude is invalid"),
+    check('minLng')
+        .optional()
+        .isFloat({ min: -180, max: 180})
+        .withMessage("Maximum longitude is invalid"),
+    check('maxLng')
+        .optional()
+        .isFloat({ min: -180, max: 180})
+        .withMessage("Minimum longitude is invalid"),
+    check('minPrice')
+        .optional()
+        .isFloat({ min: 0 })
+        .withMessage("Minimum price must be greater than or equal to 0"),
+    check('maxPrice')
+        .optional()
+        .isFloat({ min: 0 })
+        .withMessage("Maximum price must be greater than or equal to 0"),
+    handleValidationErrors
+]
+
 // helper function to return spot data including average rating and preview image
 const returnSpotData = async (spots) => {
     // create an array to push data for each spot to
@@ -475,13 +512,62 @@ router.get('/:spotId', async (req, res, next) => {
 
 
 // get details of all spots
-router.get('/', async (_req, res) => {
-    const spots = await Spot.findAll({
-    });
+router.get('/', validateQuery, async (req, res) => {
+    // query object to build
+    let query = { where: {} };
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+
+    // import operator object for conditionals
+    const { Op } = require('sequelize');
+
+    // query options to add if passed as search parameters
+    if (minLat) {
+        query.where.lat = {[Op.gte]: minLat}
+    }
+    if (maxLat) {
+        query.where.lat = {[Op.lte]: maxLat}
+    }
+    // modify query if multiple search options are selected for a column
+    if (minLat && maxLat) {
+        query.where.lat = {[Op.gte]: minLat, [Op.lte]: maxLat}
+    }
+    if (minLng) {
+        query.where.lng = {[Op.gte]: minLng}
+    }
+    if (maxLng) {
+        query.where.lng = {[Op.lte]: maxLng}
+    }
+    if (minLng && maxLng) {
+        query.where.lng = {[Op.gte]: minLng, [Op.lte]: maxLng}
+    }
+    if (minPrice) {
+        query.where.price = {[Op.gte]: minPrice}
+    }
+    if (maxPrice) {
+        query.where.price = {[Op.lte]: maxPrice}
+    }
+    if (minPrice && maxPrice) {
+        query.where.price = {[Op.gte]: minPrice, [Op.lte]: maxPrice}
+    }
+
+    // set pagination options
+    if (!page) page = 1;
+    if (!size) size = 20;
+    if (page >= 1 && size >= 1) {
+        query.limit = size;
+        query.offset = size * (page - 1);
+    }
+
+    // get spots with search and pagination options
+    const spots = await Spot.findAll(query);
 
     // get spot data from helper function and respond with it
     const spotData = await returnSpotData(spots);
-    return res.json({ 'Spots': spotData });
+    return res.json({
+        'Spots': spotData,
+        "page": page,
+        "size": size
+    });
 })
 
 
