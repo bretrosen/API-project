@@ -32,7 +32,7 @@ export const signupThunk = (user) => async (dispatch) => {
     const data = await response.json();
     dispatch(setUser(data.user));
     return response;
-}
+};
 
 // login
 export const loginThunk = (user) => async (dispatch) => {
@@ -49,13 +49,22 @@ export const loginThunk = (user) => async (dispatch) => {
     return response;
 };
 
+//logout
+export const logoutThunk = () => async (dispatch) => {
+    const response = await csrfFetch('/api/session', {
+        method: 'DELETE',
+    });
+    dispatch(removeUser());
+    return response;
+};
+
 // restore user session
 export const restoreUserThunk = () => async (dispatch) => {
     const response = await csrfFetch('/api/session');
     const data = await response.json();
     dispatch(setUser(data.user));
     return response;
-}
+};
 
 const initialState = { user: null };
 
