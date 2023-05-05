@@ -578,7 +578,7 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
     const ownerId = user.id;
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
-    console.log(ownerId);
+    // console.log(ownerId);
 
     const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
 
@@ -631,7 +631,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
             message: "Spot couldn't be found"
         });
     }
-    console.log(user.id);
+    // console.log(user.id);
 
     // error response if current user doesn't own the spot
     if (spot.ownerId !== user.id) {
