@@ -42,12 +42,10 @@ export const SpotList = () => {
 
     return (
         <>
-            <h1>Spots Index</h1>
             <ul>
                 {spots.map((spot) => (
                     <>
                     <div key={spot.id}>
-                        imageUrl: {spot.previewImage}
                         <img src={spot.previewImage} alt={spot.name}></img>
                     </div>
                     <p>
