@@ -50,10 +50,10 @@ export const SpotList = () => {
                         imageUrl: {spot.previewImage}
                         <img src={spot.previewImage} alt={spot.name}></img>
                     </div>
-                    <p key={spot.id}>
+                    <p>
                         {spot.city}, {spot.state}
                     </p>
-                    <p key={spot.id}>
+                    <p>
                         ${spot.price} night
                         </p>
                     </>
