@@ -14,7 +14,7 @@ h1 {
 .signup-form {
     display: flex;
     flex-direction: column;
-    height: 15rem;
+    height: 25rem;
 }
 
 .wrapper {
@@ -23,13 +23,13 @@ h1 {
     width: 30rem;
 }
 
-input {
+/* input {
     background-color: paleturquoise;
     padding: 0.2rem;
     margin: 0.3rem;
     width: 90%;
     border: 2px solid black;
-}
+} */
 
 input::placeholder {
     font-weight: bold;

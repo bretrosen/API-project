@@ -1,13 +1,13 @@
 
 
 h1 {
-    margin: 1rem;
+    margin: 5rem;
 }
 
 .login-form {
     display: flex;
     flex-direction: column;
-    height: 15rem;
+    height: 14rem;
 }
 
 .modal-button {
@@ -16,8 +16,8 @@ h1 {
     width: 92%;
     margin-bottom: 2rem;
     color: black;
-    background-color: red;
-    box-shadow: 2px 3px grey;
+    background-color: white;
+    box-shadow: 3px 4px grey;
 }
 
 .wrapper {
@@ -27,10 +27,10 @@ h1 {
 }
 
 input {
-    background-color: paleturquoise;
+    background-color: rgb(177, 211, 255);
     padding: 0.2rem;
     margin: 0.5rem;
-    width: 95%;
+    width: 90%;
     border: 2px solid black;
 }
 
