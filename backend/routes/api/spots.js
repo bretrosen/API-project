@@ -25,10 +25,12 @@ const validateSpot = [
         .isLength({ min: 2, max: 30 })
         .withMessage("Country is required"),
     check('lat')
+        .optional()
         .exists({ checkFalsy: true })
         .isLength({ min: 4, max: 20 })
         .withMessage("Latitude is not valid"),
     check('lng')
+        .optional()
         .exists({ checkFalsy: true })
         .isLength({ min: 4, max: 20 })
         .withMessage("Longitude is not valid"),
