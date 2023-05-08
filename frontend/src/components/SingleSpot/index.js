@@ -7,17 +7,17 @@ import './SingleSpot.css';
 export const SingleSpot = () => {
     const dispatch = useDispatch();
     const { spotId } = useParams();
-    // get single spot from the store
+    // get single spot, owner of the spot, and the spot's images from the store
     const spot = useSelector(state => state.spots.singleSpot);
-    console.log("spot in single spot component =>", spot);
     const owner = useSelector(state => state.spots.singleSpot.Owner);
     const spotImages = useSelector(state => state.spots.singleSpot.SpotImages);
 
-    // useEffect to trigger dispatch of thunk
+    // useEffect to trigger dispatch of thunk for the selected spotId
     useEffect(() => {
         dispatch(getSingleSpotThunk(spotId))
     }, [dispatch, spotId]);
 
+    // don't try to render before useEffect registers the spotId
     if (!Object.values(spot).length) return null;
 
     return (
@@ -31,7 +31,7 @@ export const SingleSpot = () => {
                     </div>
                 ))}
             </div>
-            <div classname='spot-text'>
+            <div className='spot-text'>
                 <p>Hosted by {owner.firstName} {owner.lastName}</p>
                 <p>{spot.description}</p>
             </div>
@@ -42,7 +42,7 @@ export const SingleSpot = () => {
                 <div className='reserve-box-rating'>
                     Stars: {spot.avgStarRating}
                 </div>
-                <div classname='reserve-box-reviews'>
+                <div className='reserve-box-reviews'>
                     {spot.numReviews} reviews
                 </div>
 
