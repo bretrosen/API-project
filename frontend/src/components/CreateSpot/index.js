@@ -10,8 +10,8 @@ export const SpotForm = ({ spot }) => {
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
     const [country, setCountry] = useState('');
-    const [lat, setLat] = useState();
-    const [lng, setLng] = useState();
+    const [lat, setLat] = useState('');
+    const [lng, setLng] = useState('');
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
@@ -36,7 +36,7 @@ export const SpotForm = ({ spot }) => {
         // if (typeof lng !== "number") newErrors['lng'] = 'Please enter a valid longitude';
         if (!name.length || typeof name !== "string") newErrors['name'] = 'Name is required';
         if (description.length < 30 || typeof description !== "string") newErrors['description'] = 'Description needs a minimum of 30 characters';
-        // if (!price || typeof price !== "number") newErrors['price'] = 'Price is required';
+        if (!price) newErrors['price'] = 'Price is required';
         if (!previewImage.length) newErrors['previewImage'] = 'Preview image is required';
         if (!(previewImage.endsWith('.jpg') || previewImage.endsWith('.png') || previewImage.endsWith('.jpeg'))) newErrors['previewIimage'] = imageErrorMessage;
         if (url2.length > 0 && !(url2.endsWith('.jpg') || url2.endsWith('.png') || url2.endsWith('.jpeg'))) newErrors['url2'] = imageErrorMessage;
