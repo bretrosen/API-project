@@ -21,34 +21,37 @@ export const SpotForm = ({ spot }) => {
     const [url4, setUrl4] = useState('');
     const [url5, setUrl5] = useState('');
     const [errors, setErrors] = useState({});
+    const [hasSubmitted, setHasSubmitted] = useState(false);
 
     // error handling
-    // useEffect(() => {
-    //     const newErrors = {};
-    //     const imageErrorMessage = 'Image URL must end in .png, .jpg, or .jpeg';
+    useEffect(() => {
+        const newErrors = {};
+        const imageErrorMessage = 'Image URL must end in .png, .jpg, or .jpeg';
 
-    //     if (!address.length || typeof address !== "string") newErrors['address'] = 'Address is required';
-    //     if (!city.length || typeof city !== "string") newErrors['city'] = 'City is required';
-    //     if (!state.length || typeof state !== "string") newErrors['state'] = 'State is required';
-    //     if (!country.length || typeof country !== "string") newErrors['country'] = 'Country is required';
-    //     // if (typeof lat !== "number") newErrors['lat'] = 'Please enter a valid latitude';
-    //     // if (typeof lng !== "number") newErrors['lng'] = 'Please enter a valid longitude';
-    //     if (!name.length || typeof name !== "string") newErrors['name'] = 'Name is required';
-    //     if (description.length < 30 || typeof description !== "string") newErrors['description'] = 'Description needs a minimum of 30 characters';
-    //     // if (!price || typeof price !== "number") newErrors['price'] = 'Price is required';
-    //     if (!previewImage.length) newErrors['previewImage'] = 'Preview image is required';
-    //     if (!(previewImage.endsWith('.jpg') || previewImage.endsWith('.png') || previewImage.endsWith('.jpeg'))) newErrors['previewIimage'] = imageErrorMessage;
-    //     if (!(url2.endsWith('.jpg') || url2.endsWith('.png') || url2.endsWith('.jpeg'))) newErrors['url2'] = imageErrorMessage;
-    //     if (!(url3.endsWith('.jpg') || url3.endsWith('.png') || url3.endsWith('.jpeg'))) newErrors['url3'] = imageErrorMessage;
-    //     if (!(url4.endsWith('.jpg') || url4.endsWith('.png') || url4.endsWith('.jpeg'))) newErrors['previewIimage'] = imageErrorMessage;
-    //     if (!(url5.endsWith('.jpg') || url5.endsWith('.png') || url5.endsWith('.jpeg'))) newErrors['previewIimage'] = imageErrorMessage;
+        if (!address.length || typeof address !== "string") newErrors['address'] = 'Address is required';
+        if (!city.length || typeof city !== "string") newErrors['city'] = 'City is required';
+        if (!state.length || typeof state !== "string") newErrors['state'] = 'State is required';
+        if (!country.length || typeof country !== "string") newErrors['country'] = 'Country is required';
+        // if (typeof lat !== "number") newErrors['lat'] = 'Please enter a valid latitude';
+        // if (typeof lng !== "number") newErrors['lng'] = 'Please enter a valid longitude';
+        if (!name.length || typeof name !== "string") newErrors['name'] = 'Name is required';
+        if (description.length < 30 || typeof description !== "string") newErrors['description'] = 'Description needs a minimum of 30 characters';
+        // if (!price || typeof price !== "number") newErrors['price'] = 'Price is required';
+        if (!previewImage.length) newErrors['previewImage'] = 'Preview image is required';
+        if (!(previewImage.endsWith('.jpg') || previewImage.endsWith('.png') || previewImage.endsWith('.jpeg'))) newErrors['previewIimage'] = imageErrorMessage;
+        if (url2.length > 0 && !(url2.endsWith('.jpg') || url2.endsWith('.png') || url2.endsWith('.jpeg'))) newErrors['url2'] = imageErrorMessage;
+        if (url3.length > 0 && !(url3.endsWith('.jpg') || url3.endsWith('.png') || url3.endsWith('.jpeg'))) newErrors['url3'] = imageErrorMessage;
+        if (url4.length > 0 && !(url4.endsWith('.jpg') || url4.endsWith('.png') || url4.endsWith('.jpeg'))) newErrors['url4'] = imageErrorMessage;
+        if (url5.length > 0 && !(url5.endsWith('.jpg') || url5.endsWith('.png') || url5.endsWith('.jpeg'))) newErrors['url5'] = imageErrorMessage;
 
-    //     setErrors(newErrors);
-    // }, [address, city, state, country, lat, lng, name, description, price, previewImage, url2, url3, url4, url5]);
+        setErrors(newErrors);
+    }, [address, city, state, country, lat, lng, name, description, price, previewImage, url2, url3, url4, url5]);
 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        setHasSubmitted(true);
 
         // object to match request to backend create spot route
         const formInfo = {
@@ -72,6 +75,8 @@ export const SpotForm = ({ spot }) => {
 
         // spot data and preview image are required
         // create other images if they were added
+
+        if (!Object.values(errors).length) {
         const newSpot = await dispatch(createSpotThunk(formInfo));
         await dispatch(createSpotImagesThunk(newSpot.id, preview));
         url2.length && await dispatch(createSpotImagesThunk(newSpot.id, image2));
@@ -79,15 +84,8 @@ export const SpotForm = ({ spot }) => {
         url4.length && await dispatch(createSpotImagesThunk(newSpot.id, image4));
         url5.length && await dispatch(createSpotImagesThunk(newSpot.id, image5));
 
-        console.log("newly created spot from component", newSpot);
-
-
-
-        // redirect to newly created spot if successful, otherwise to spots landing page
-        if (newSpot.id) {
-            history.push(`/spots/${newSpot.id}`);
-        } else {
-            history.push('/');
+        // redirect to newly created spot
+        history.push(`/spots/${newSpot.id}`);
         }
     };
 
@@ -98,7 +96,7 @@ export const SpotForm = ({ spot }) => {
             <h3>Guests will only get your exact address once they book a reservation.</h3>
             <form className='create-spot-form' onSubmit={handleSubmit}>
                 <div>
-                    {errors.country && (
+                    {hasSubmitted && errors.country && (
                         <p>{errors.country}</p>
                     )}
                 </div>
@@ -115,7 +113,7 @@ export const SpotForm = ({ spot }) => {
                 </div>
 
                 <div>
-                    {errors.address && (
+                    {hasSubmitted && errors.address && (
                         <p>{errors.address}</p>
                     )}
                 </div>
@@ -132,7 +130,7 @@ export const SpotForm = ({ spot }) => {
                 </div>
 
                 <div>
-                    {errors.city && (
+                    {hasSubmitted && errors.city && (
                         <p>{errors.city}</p>
                     )}
                 </div>
@@ -149,7 +147,7 @@ export const SpotForm = ({ spot }) => {
                 </div>
 
                 <div>
-                    {errors.state && (
+                    {hasSubmitted && errors.state && (
                         <p>{errors.state}</p>
                     )}
                 </div>
@@ -166,7 +164,7 @@ export const SpotForm = ({ spot }) => {
                 </div>
 
                 <div>
-                    {errors.lat && (
+                    {hasSubmitted && errors.lat && (
                         <p>{errors.lat}</p>
                     )}
                 </div>
@@ -183,7 +181,7 @@ export const SpotForm = ({ spot }) => {
                 </div>
 
                 <div>
-                    {errors.lng && (
+                    {hasSubmitted && errors.lng && (
                         <p>{errors.lng}</p>
                     )}
                 </div>
@@ -212,7 +210,7 @@ export const SpotForm = ({ spot }) => {
                     </label>
                 </div>
                 <div>
-                    {errors.description && (
+                    {hasSubmitted && errors.description && (
                         <p>{errors.description}</p>
                     )}
                 </div>
@@ -231,8 +229,8 @@ export const SpotForm = ({ spot }) => {
                     </label>
                 </div>
                 <div>
-                    {errors.description && (
-                        <p>{errors.description}</p>
+                    {hasSubmitted && errors.name && (
+                        <p>{errors.name}</p>
                     )}
                 </div>
 
@@ -251,7 +249,7 @@ export const SpotForm = ({ spot }) => {
                     </label>
                 </div>
                 <div>
-                    {errors.price && (
+                    {hasSubmitted && errors.price && (
                         <p>{errors.price}</p>
                     )}
                 </div>
@@ -268,7 +266,7 @@ export const SpotForm = ({ spot }) => {
                         />
                     </label>
                     <div>
-                        {errors.previewImage && (
+                        {hasSubmitted && errors.previewImage && (
                             <p>{errors.previewImage}</p>
                         )}
                     </div>
@@ -279,7 +277,7 @@ export const SpotForm = ({ spot }) => {
                             onChange={e => setUrl2(e.target.value)}
                         />
                     <div>
-                        {errors.url2 && (
+                        {hasSubmitted && errors.url2 && (
                             <p>{errors.url2}</p>
                         )}
                     </div>
@@ -290,7 +288,7 @@ export const SpotForm = ({ spot }) => {
                             onChange={e => setUrl3(e.target.value)}
                         />
                     <div>
-                        {errors.url3 && (
+                        {hasSubmitted && errors.url3 && (
                             <p>{errors.url3}</p>
                         )}
                     </div>
@@ -301,7 +299,7 @@ export const SpotForm = ({ spot }) => {
                             onChange={e => setUrl4(e.target.value)}
                         />
                     <div>
-                        {errors.url4 && (
+                        {hasSubmitted && errors.url4 && (
                             <p>{errors.url4}</p>
                         )}
                     </div>
@@ -312,7 +310,7 @@ export const SpotForm = ({ spot }) => {
                             onChange={e => setUrl5(e.target.value)}
                         />
                     <div>
-                        {errors.url5 && (
+                        {hasSubmitted && errors.url5 && (
                             <p>{errors.url5}</p>
                         )}
                     </div>
