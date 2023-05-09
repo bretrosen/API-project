@@ -65,7 +65,7 @@ export const createSpotThunk = (spot) => async (dispatch) => {
     if (response.ok) {
         const spotData = await response.json();
         dispatch(createSpot(spotData));
-        console.log("returning created spot to frontend", spot);
+        console.log("returning created spot to frontend", spotData);
         return spot;
     }
 }
