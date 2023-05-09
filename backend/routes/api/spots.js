@@ -27,12 +27,12 @@ const validateSpot = [
     check('lat')
         .optional()
         .exists({ checkFalsy: true })
-        .isLength({ min: 4, max: 20 })
+        .isLength({ min: 1, max: 20 })
         .withMessage("Latitude is not valid"),
     check('lng')
         .optional()
         .exists({ checkFalsy: true })
-        .isLength({ min: 4, max: 20 })
+        .isLength({ min: 1, max: 20 })
         .withMessage("Longitude is not valid"),
     check('name')
         .exists({ checkFalsy: true })
@@ -576,6 +576,7 @@ router.get('/', validateQuery, async (req, res) => {
 // create a new spot
 router.post('/', requireAuth, validateSpot, async (req, res) => {
     // get the current user's id to use in creating the new spot
+    console.log("req.body in backend", req.body);
     const { user } = req;
     const ownerId = user.id;
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
