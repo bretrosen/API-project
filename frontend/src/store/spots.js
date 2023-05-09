@@ -33,6 +33,7 @@ const deleteSpot = (spotId) => ({
 
 export const getAllSpotsThunk = () => async (dispatch) => {
     const response = await csrfFetch('/api/spots');
+    console.log("all spots response", response);
 
     if (response.ok) {
         const spots = await response.json();
@@ -59,10 +60,12 @@ export const createSpotThunk = (spot) => async (dispatch) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(spot)
     });
+    console.log("sending create spot thunk to backend", response);
 
     if (response.ok) {
-        const spot = await response.json();
-        dispatch(createSpot(spot));
+        const spotData = await response.json();
+        dispatch(createSpot(spotData));
+        console.log("returning created spot to frontend", spot);
         return spot;
     }
 }
@@ -99,6 +102,7 @@ const spotsReducer = (state = initialState, action) => {
         case CREATE_SPOT: {
             const newState = {...state, allSpots: {...action.spot}, singleSpot: {}};
             return newState;
+            // return {...state, [action.spot.id]: action.spot}
         }
         case DELETE_SPOT: {
             const newState = {...state};

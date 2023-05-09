@@ -17,20 +17,18 @@ export const SpotList = () => {
         <>
             <ul>
                 {spots.map((spot) => (
-                    <>
                     <div key={spot.id}>
                         <a href={`/spots/${spot.id}`}>
-                        <img src={spot.previewImage} alt={spot.name}></img>
+                            <img src={spot.previewImage} alt={spot.name}></img>
                         </a>
-                    </div>
-                    <p>
-                        {spot.city}, {spot.state}
-                    </p>
-                    <p>
-                        ${spot.price} night
+                        <p>
+                            {spot.city}, {spot.state}
                         </p>
-                    </>
-    ))}
+                        <p>
+                            ${spot.price} night
+                        </p>
+                    </div>
+                ))}
             </ul>
         </>
     );

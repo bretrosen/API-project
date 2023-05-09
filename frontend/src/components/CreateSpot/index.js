@@ -1,27 +1,28 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createSpotThunk } from '../../store/spots';
 
 export const SpotForm = ({ spot }) => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const [address, setAddress] = useState(spot?.address);
-    const [city, setCity] = useState(spot?.city);
-    const [state, setState] = useState(spot?.state);
-    const [country, setCountry] = useState(spot?.country);
-    const [lat, setLat] = useState(spot?.lat);
-    const [lng, setLng] = useState(spot?.lng);
-    const [name, setName] = useState(spot?.name);
-    const [description, setDescription] = useState(spot?.description);
-    const [price, setPrice] = useState(spot?.price);
-    const [previewImage, setPreviewImage] = useState(spot?.previewImage);
-    const [url2, setUrl2] = useState(spot?.url2);
-    const [url3, setUrl3] = useState(spot?.url3);
-    const [url4, setUrl4] = useState(spot?.url4);
-    const [url5, setUrl5] = useState(spot?.url5);
+    const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [country, setCountry] = useState('');
+    const [lat, setLat] = useState();
+    const [lng, setLng] = useState();
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [price, setPrice] = useState('');
+    const [previewImage, setPreviewImage] = useState('');
+    const [url2, setUrl2] = useState('');
+    const [url3, setUrl3] = useState('');
+    const [url4, setUrl4] = useState('');
+    const [url5, setUrl5] = useState('');
     const [errors, setErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false);
+    const userId = useSelector(state => state.session.user.id);
 
     // error handling
     useEffect(() => {
@@ -53,22 +54,24 @@ export const SpotForm = ({ spot }) => {
         const formInfo = {
             address,
             city,
+            state,
             country,
             lat,
             lng,
             name,
             description,
-            price,
-            previewImage,
-            url2,
-            url3,
-            url4,
-            url5
-        };
+            price
+        }
+        //     previewImage,
+        //     url2,
+        //     url3,
+        //     url4,
+        //     url5
+        // };
 
         const newSpot = dispatch(createSpotThunk(formInfo));
 
-        if (newSpot) {
+        if (newSpot.id) {
             history.push(`/spots/${newSpot.id}`);
         } else {
             history.push('/');
@@ -162,7 +165,7 @@ export const SpotForm = ({ spot }) => {
                     <label>
                         Latitude
                         <input
-                            type='text'
+                            type='number'
                             name='lat'
                             placeholder='Latitude'
                             value={lat}
@@ -180,7 +183,7 @@ export const SpotForm = ({ spot }) => {
                     <label>
                         Longitude
                         <input
-                            type='text'
+                            type='number'
                             name='lng'
                             placeholder='Longitude'
                             value={lng}
