@@ -53,13 +53,13 @@ module.exports = (sequelize, DataTypes) => {
     lat: {
       type: DataTypes.DECIMAL,
       validate: {
-        len: [4, 20]
+        len: [1, 20]
       }
     },
     lng: {
       type: DataTypes.DECIMAL,
       validate: {
-        len: [4, 20]
+        len: [1, 20]
       }
     },
     name: {

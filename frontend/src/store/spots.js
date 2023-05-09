@@ -66,7 +66,7 @@ export const createSpotThunk = (spot) => async (dispatch) => {
         const spotData = await response.json();
         dispatch(createSpot(spotData));
         console.log("returning created spot to frontend", spotData);
-        return spot;
+        return spotData;
     }
 }
 
@@ -97,12 +97,11 @@ const spotsReducer = (state = initialState, action) => {
             return newState;
         };
         case GET_SINGLE_SPOT: {
-            return {...state, allSpots: {}, singleSpot: {...action.spot}}
+            return {...state, allSpots: {}, singleSpot: {...action.spot}};
         }
         case CREATE_SPOT: {
             const newState = {...state, allSpots: {...action.spot}, singleSpot: {}};
             return newState;
-            // return {...state, [action.spot.id]: action.spot}
         }
         case DELETE_SPOT: {
             const newState = {...state};

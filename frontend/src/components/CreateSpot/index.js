@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { createSpotThunk } from '../../store/spots';
 
 export const SpotForm = ({ spot }) => {
@@ -21,36 +21,38 @@ export const SpotForm = ({ spot }) => {
     const [url4, setUrl4] = useState('');
     const [url5, setUrl5] = useState('');
     const [errors, setErrors] = useState({});
-    const [hasSubmitted, setHasSubmitted] = useState(false);
-    const userId = useSelector(state => state.session.user.id);
+    // will need userId
+    // const userId = useSelector(state => state.session.user.id);
 
     // error handling
-    useEffect(() => {
-        const newErrors = {};
-        const imageErrorMessage = 'Image URL must end in .png, .jpg, or .jpeg';
-        if (!address.length || typeof address !== "string") newErrors['address'] = 'Address is required';
-        if (!city.length || typeof city !== "string") newErrors['city'] = 'City is required';
-        if (!state.length || typeof state !== "string") newErrors['state'] = 'State is required';
-        if (!country.length || typeof country !== "string") newErrors['country'] = 'Country is required';
-        if (typeof lat !== "number") newErrors['lat'] = 'Please enter a valid latitude';
-        if (typeof lng !== "number") newErrors['lng'] = 'Please enter a valid longitude';
-        if (!name.length || typeof name !== "string") newErrors['name'] = 'Name is required';
-        if (description.length < 30 || typeof description !== "string") newErrors['description'] = 'Description needs a minimum of 30 characters';
-        if (!price || typeof price !== "number") newErrors['price'] = 'Price is required';
-        if (!previewImage.length) newErrors['previewImage'] = 'Preview image is required';
-        setErrors(newErrors);
-        if (!(previewImage.endsWith('.jpg') || previewImage.endsWith('.png') || previewImage.endsWith('.jpeg'))) newErrors['previewIimage'] = imageErrorMessage;
-        if (!(url2.endsWith('.jpg') || url2.endsWith('.png') || url2.endsWith('.jpeg'))) newErrors['url2'] = imageErrorMessage;
-        if (!(url3.endsWith('.jpg') || url3.endsWith('.png') || url3.endsWith('.jpeg'))) newErrors['url3'] = imageErrorMessage;
-        if (!(url4.endsWith('.jpg') || url4.endsWith('.png') || url4.endsWith('.jpeg'))) newErrors['previewIimage'] = imageErrorMessage;
-        if (!(url5.endsWith('.jpg') || url5.endsWith('.png') || url5.endsWith('.jpeg'))) newErrors['previewIimage'] = imageErrorMessage;
-    }, [address, city, state, country, lat, lng, name, description, price, previewImage, url2, url3, url4, url5]);
+    // useEffect(() => {
+    //     const newErrors = {};
+    //     const imageErrorMessage = 'Image URL must end in .png, .jpg, or .jpeg';
+
+    //     if (!address.length || typeof address !== "string") newErrors['address'] = 'Address is required';
+    //     if (!city.length || typeof city !== "string") newErrors['city'] = 'City is required';
+    //     if (!state.length || typeof state !== "string") newErrors['state'] = 'State is required';
+    //     if (!country.length || typeof country !== "string") newErrors['country'] = 'Country is required';
+    //     // if (typeof lat !== "number") newErrors['lat'] = 'Please enter a valid latitude';
+    //     // if (typeof lng !== "number") newErrors['lng'] = 'Please enter a valid longitude';
+    //     if (!name.length || typeof name !== "string") newErrors['name'] = 'Name is required';
+    //     if (description.length < 30 || typeof description !== "string") newErrors['description'] = 'Description needs a minimum of 30 characters';
+    //     // if (!price || typeof price !== "number") newErrors['price'] = 'Price is required';
+    //     if (!previewImage.length) newErrors['previewImage'] = 'Preview image is required';
+    //     if (!(previewImage.endsWith('.jpg') || previewImage.endsWith('.png') || previewImage.endsWith('.jpeg'))) newErrors['previewIimage'] = imageErrorMessage;
+    //     if (!(url2.endsWith('.jpg') || url2.endsWith('.png') || url2.endsWith('.jpeg'))) newErrors['url2'] = imageErrorMessage;
+    //     if (!(url3.endsWith('.jpg') || url3.endsWith('.png') || url3.endsWith('.jpeg'))) newErrors['url3'] = imageErrorMessage;
+    //     if (!(url4.endsWith('.jpg') || url4.endsWith('.png') || url4.endsWith('.jpeg'))) newErrors['previewIimage'] = imageErrorMessage;
+    //     if (!(url5.endsWith('.jpg') || url5.endsWith('.png') || url5.endsWith('.jpeg'))) newErrors['previewIimage'] = imageErrorMessage;
+
+    //     setErrors(newErrors);
+    // }, [address, city, state, country, lat, lng, name, description, price, previewImage, url2, url3, url4, url5]);
 
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        setHasSubmitted(true);
 
+        // object to match request to backend create spot route
         const formInfo = {
             address,
             city,
@@ -62,15 +64,21 @@ export const SpotForm = ({ spot }) => {
             description,
             price
         }
+        // need to get image data to backend create spot image route
         //     previewImage,
         //     url2,
         //     url3,
         //     url4,
         //     url5
         // };
+        // also need to get user data to backend for adding ownerId to spot
 
-        const newSpot = dispatch(createSpotThunk(formInfo));
+        const newSpot = await dispatch(createSpotThunk(formInfo));
+        console.log("newly created spot from component", newSpot);
 
+
+
+        // redirect to newly created spot if successful, otherwise to spots landing page
         if (newSpot.id) {
             history.push(`/spots/${newSpot.id}`);
         } else {
@@ -85,7 +93,7 @@ export const SpotForm = ({ spot }) => {
             <h3>Guests will only get your exact address once they book a reservation.</h3>
             <form className='create-spot-form' onSubmit={handleSubmit}>
                 <div>
-                    {hasSubmitted && errors.country && (
+                    {errors.country && (
                         <p>{errors.country}</p>
                     )}
                 </div>
@@ -94,7 +102,6 @@ export const SpotForm = ({ spot }) => {
                         Country
                         <input
                             type='text'
-                            name='country'
                             placeholder='Country'
                             value={country}
                             onChange={e => setCountry(e.target.value)}
@@ -103,7 +110,7 @@ export const SpotForm = ({ spot }) => {
                 </div>
 
                 <div>
-                    {hasSubmitted && errors.address && (
+                    {errors.address && (
                         <p>{errors.address}</p>
                     )}
                 </div>
@@ -112,7 +119,6 @@ export const SpotForm = ({ spot }) => {
                         Street Address
                         <input
                             type='text'
-                            name='address'
                             placeholder='Address'
                             value={address}
                             onChange={e => setAddress(e.target.value)}
@@ -121,7 +127,7 @@ export const SpotForm = ({ spot }) => {
                 </div>
 
                 <div>
-                    {hasSubmitted && errors.city && (
+                    {errors.city && (
                         <p>{errors.city}</p>
                     )}
                 </div>
@@ -130,7 +136,6 @@ export const SpotForm = ({ spot }) => {
                         City
                         <input
                             type='text'
-                            name='city'
                             placeholder='City'
                             value={city}
                             onChange={e => setCity(e.target.value)}
@@ -139,7 +144,7 @@ export const SpotForm = ({ spot }) => {
                 </div>
 
                 <div>
-                    {hasSubmitted && errors.state && (
+                    {errors.state && (
                         <p>{errors.state}</p>
                     )}
                 </div>
@@ -148,7 +153,6 @@ export const SpotForm = ({ spot }) => {
                         State
                         <input
                             type='text'
-                            name='state'
                             placeholder='STATE'
                             value={state}
                             onChange={e => setState(e.target.value)}
@@ -157,7 +161,7 @@ export const SpotForm = ({ spot }) => {
                 </div>
 
                 <div>
-                    {hasSubmitted && errors.lat && (
+                    {errors.lat && (
                         <p>{errors.lat}</p>
                     )}
                 </div>
@@ -166,7 +170,6 @@ export const SpotForm = ({ spot }) => {
                         Latitude
                         <input
                             type='number'
-                            name='lat'
                             placeholder='Latitude'
                             value={lat}
                             onChange={e => setLat(e.target.value)}
@@ -175,7 +178,7 @@ export const SpotForm = ({ spot }) => {
                 </div>
 
                 <div>
-                    {hasSubmitted && errors.lng && (
+                    {errors.lng && (
                         <p>{errors.lng}</p>
                     )}
                 </div>
@@ -184,7 +187,6 @@ export const SpotForm = ({ spot }) => {
                         Longitude
                         <input
                             type='number'
-                            name='lng'
                             placeholder='Longitude'
                             value={lng}
                             onChange={e => setLng(e.target.value)}
@@ -198,7 +200,6 @@ export const SpotForm = ({ spot }) => {
                         <p>Mention the best features of your space, any special amentities like
                             fast wif or parking, and what you love about the neighborhood.</p>
                         <textarea
-                            name='description'
                             placeholder='Description'
                             value={description}
                             onChange={e => setDescription(e.target.value)}
@@ -206,7 +207,7 @@ export const SpotForm = ({ spot }) => {
                     </label>
                 </div>
                 <div>
-                    {hasSubmitted && errors.description && (
+                    {errors.description && (
                         <p>{errors.description}</p>
                     )}
                 </div>
@@ -218,7 +219,6 @@ export const SpotForm = ({ spot }) => {
                             your place special.</p>
                         <input
                             type='text'
-                            name='name'
                             placeholder='Name of your spot'
                             value={name}
                             onChange={e => setName(e.target.value)}
@@ -226,7 +226,7 @@ export const SpotForm = ({ spot }) => {
                     </label>
                 </div>
                 <div>
-                    {hasSubmitted && errors.description && (
+                    {errors.description && (
                         <p>{errors.description}</p>
                     )}
                 </div>
@@ -239,7 +239,6 @@ export const SpotForm = ({ spot }) => {
                             in search results</p>
                         <input
                             type='number'
-                            name='price'
                             placeholder='Price per night (USD)'
                             value={price}
                             onChange={e => setPrice(e.target.value)}
@@ -247,7 +246,7 @@ export const SpotForm = ({ spot }) => {
                     </label>
                 </div>
                 <div>
-                    {hasSubmitted && errors.price && (
+                    {errors.price && (
                         <p>{errors.price}</p>
                     )}
                 </div>
@@ -258,62 +257,57 @@ export const SpotForm = ({ spot }) => {
                         <p>Submit a link to at least one photo to publish your spot.</p>
                         <input
                             type='text'
-                            name='previewImage'
                             placeholder='Preview Image URL'
                             value={previewImage}
                             onChange={e => setPreviewImage(e.target.value)}
                         />
                     </label>
                     <div>
-                        {hasSubmitted && errors.previewImage && (
+                        {errors.previewImage && (
                             <p>{errors.previewImage}</p>
                         )}
                     </div>
                     <input
                             type='text'
-                            name='url2'
                             placeholder='Image URL'
                             value={url2}
                             onChange={e => setUrl2(e.target.value)}
                         />
                     <div>
-                        {hasSubmitted && errors.url2 && (
+                        {errors.url2 && (
                             <p>{errors.url2}</p>
                         )}
                     </div>
                     <input
                             type='text'
-                            name='url3'
                             placeholder='Image URL'
                             value={url3}
                             onChange={e => setUrl3(e.target.value)}
                         />
                     <div>
-                        {hasSubmitted && errors.url3 && (
+                        {errors.url3 && (
                             <p>{errors.url3}</p>
                         )}
                     </div>
                     <input
                             type='text'
-                            name='url4'
                             placeholder='Image URL'
                             value={url4}
                             onChange={e => setUrl4(e.target.value)}
                         />
                     <div>
-                        {hasSubmitted && errors.url4 && (
+                        {errors.url4 && (
                             <p>{errors.url4}</p>
                         )}
                     </div>
                     <input
                             type='text'
-                            name='url5'
                             placeholder='Image URL'
                             value={url5}
                             onChange={e => setUrl5(e.target.value)}
                         />
                     <div>
-                        {hasSubmitted && errors.url5 && (
+                        {errors.url5 && (
                             <p>{errors.url5}</p>
                         )}
                     </div>
