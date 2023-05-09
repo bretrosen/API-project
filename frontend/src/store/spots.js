@@ -70,6 +70,22 @@ export const createSpotThunk = (spot) => async (dispatch) => {
     }
 }
 
+export const createSpotImagesThunk = (spotId, imgObj) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spotId}/images`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(imgObj)
+    });
+    console.log("sending create spot image thunk to backend", response);
+
+    if (response.ok) {
+        const spotImage = await response.json();
+        dispatch(createSpot(spotImage));
+        console.log("returning created spot image thunk to frontend", spotImage);
+        return spotImage;
+    }
+}
+
 export const deleteSpotThunk = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`, {
         method: 'DELETE',

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { createSpotThunk } from '../../store/spots';
+import { createSpotThunk, createSpotImagesThunk } from '../../store/spots';
 
 export const SpotForm = ({ spot }) => {
     const history = useHistory();
@@ -21,8 +21,6 @@ export const SpotForm = ({ spot }) => {
     const [url4, setUrl4] = useState('');
     const [url5, setUrl5] = useState('');
     const [errors, setErrors] = useState({});
-    // will need userId
-    // const userId = useSelector(state => state.session.user.id);
 
     // error handling
     // useEffect(() => {
@@ -64,16 +62,23 @@ export const SpotForm = ({ spot }) => {
             description,
             price
         }
-        // need to get image data to backend create spot image route
-        //     previewImage,
-        //     url2,
-        //     url3,
-        //     url4,
-        //     url5
-        // };
-        // also need to get user data to backend for adding ownerId to spot
 
+        // objects to match request to backend to add image to spot
+        const preview = {url: previewImage, preview: true};
+        const image2 = {url: url2, preview: false};
+        const image3 = {url: url3, preview: false};
+        const image4 = {url: url4, preview: false};
+        const image5 = {url: url5, preview: false};
+
+        // spot data and preview image are required
+        // create other images if they were added
         const newSpot = await dispatch(createSpotThunk(formInfo));
+        await dispatch(createSpotImagesThunk(newSpot.id, preview));
+        url2.length && await dispatch(createSpotImagesThunk(newSpot.id, image2));
+        url3.length && await dispatch(createSpotImagesThunk(newSpot.id, image3));
+        url4.length && await dispatch(createSpotImagesThunk(newSpot.id, image4));
+        url5.length && await dispatch(createSpotImagesThunk(newSpot.id, image5));
+
         console.log("newly created spot from component", newSpot);
 
 
