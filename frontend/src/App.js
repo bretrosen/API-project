@@ -6,6 +6,7 @@ import Navigation from './components/Navigation';
 import { SpotList } from './components/Spots';
 import { SingleSpot } from './components/SingleSpot';
 import { SpotForm } from './components/CreateSpot';
+import { CurrentUserSpotList} from './components/ManageSpots';
 
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
       <Switch>
         <Route exact path='/'>
           <SpotList />
+        </Route>
+        <Route path='/spots/current'>
+          <CurrentUserSpotList />
         </Route>
         <Route path='/spots/new'>
           <SpotForm />
