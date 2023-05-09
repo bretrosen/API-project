@@ -42,9 +42,21 @@ export const getAllSpotsThunk = () => async (dispatch) => {
     }
 };
 
+export const getCurrentUserSpotsThunk = () => async (dispatch) => {
+    const response = await csrfFetch('/api/spots/current');
+    console.log("sending current user spots thunk", response);
+
+    if (response.ok) {
+        const spots = await response.json();
+        console.log("returning current user spots thunk", spots)
+        dispatch(getAllSpots(spots));
+        return spots;
+    }
+}
+
 export const getSingleSpotThunk = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`);
-    console.log('sending single spot thunk');
+    console.log('sending single spot thunk',);
 
     if (response.ok) {
         const spot = await response.json();

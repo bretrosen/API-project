@@ -22,7 +22,7 @@ export const SingleSpot = () => {
 
     return (
         <div className='spot-wrapper'>
-            {console.log(spot)}
+            {console.log("spot in single spot details", spot)}
             <h1>{spot.name}</h1>
             <h2>{spot.city}, {spot.state}, {spot.country}</h2>
             <div className='spot-images'>
