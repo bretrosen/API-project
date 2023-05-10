@@ -24,16 +24,16 @@ const validateSpot = [
         .exists({ checkFalsy: true })
         .isLength({ min: 2, max: 30 })
         .withMessage("Country is required"),
-    check('lat')
-        .optional()
-        .exists({ checkFalsy: true })
-        .isLength({ min: 1, max: 20 })
-        .withMessage("Latitude is not valid"),
-    check('lng')
-        .optional()
-        .exists({ checkFalsy: true })
-        .isLength({ min: 1, max: 20 })
-        .withMessage("Longitude is not valid"),
+    // check('lat')
+    //     .optional()
+    //     .exists({ checkFalsy: true })
+    //     .isLength({ max: 20 })
+    //     .withMessage("Latitude is not valid"),
+    // check('lng')
+    //     .optional()
+    //     .exists({ checkFalsy: true })
+    //     .isLength({ max: 20 })
+    //     .withMessage("Longitude is not valid"),
     check('name')
         .exists({ checkFalsy: true })
         .isLength({ min: 5, max: 50 })
@@ -72,16 +72,16 @@ const validateUpdatedSpot = [
         .exists({ checkFalsy: true })
         .isLength({ min: 2, max: 30 })
         .withMessage("Country is required"),
-    check('lat')
-        .optional()
-        .exists({ checkFalsy: true })
-        .isLength({ min: 4, max: 20 })
-        .withMessage("Latitude is not valid"),
-    check('lng')
-        .optional()
-        .exists({ checkFalsy: true })
-        .isLength({ min: 4, max: 20 })
-        .withMessage("Longitude is not valid"),
+    // check('lat')
+    //     .optional()
+    //     .exists({ checkFalsy: true })
+    //     .isLength({max: 20 })
+    //     .withMessage("Latitude is not valid"),
+    // check('lng')
+    //     .optional()
+    //     .exists({ checkFalsy: true })
+    //     .isLength({max: 20})
+    //     .withMessage("Longitude is not valid"),
     check('name')
         .optional()
         .exists({ checkFalsy: true })
