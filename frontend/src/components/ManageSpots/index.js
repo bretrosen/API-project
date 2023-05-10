@@ -10,9 +10,8 @@ export const CurrentUserSpotList = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    // this is kinda janky, there should be a clean way to do it with useEffect
-    // where it registers the current user and rerenders
-    // but it works on refresh so for now...
+    // this is kinda janky, it should work like getting all spots
+    // but it works so for now...
     const allSpots = useSelector(state => (Object.values(state.spots.allSpots)));
     const currentUserId = useSelector(state => state.session.user?.id)
     const spots = [];
@@ -21,12 +20,19 @@ export const CurrentUserSpotList = () => {
             spots.push(spot);
         }
     })
-    console.log("current user spots", spots);
+
+    // same logic as getting all spots from store
+    // just getting different list of spots from backend
+    // this should work but only does on refresh
+    // const spots = useSelector(state => (Object.values(state.spots.allSpots)));
 
     // useEffect to trigger dispatch of thunk
     useEffect(() => {
+        console.log("use effect in manage spots ran");
         dispatch(getCurrentUserSpotsThunk());
-    }, [dispatch]);
+    }, [dispatch, spots]);
+
+
 
     return (
         <>

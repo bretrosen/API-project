@@ -42,6 +42,7 @@ export const getAllSpotsThunk = () => async (dispatch) => {
     }
 };
 
+// use same logic as get all spots with different fetch
 export const getCurrentUserSpotsThunk = () => async (dispatch) => {
     const response = await csrfFetch('/api/spots/current');
     console.log("sending current user spots thunk", response);
@@ -128,6 +129,7 @@ export const deleteSpotThunk = (spotId) => async (dispatch) => {
 }
 
 const initialState = {allSpots: {}, singleSpot: {}};
+
 
 // reducer
 const spotsReducer = (state = initialState, action) => {

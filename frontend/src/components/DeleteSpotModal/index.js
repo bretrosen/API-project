@@ -1,18 +1,26 @@
 import React from "react";
+// import { useHistory } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { deleteSpotThunk } from '../../store/spots';
 import "./DeleteSpot.css";
 
 const DeleteSpotModal = ({ spotId }) => {
+    // const history = useHistory();
     const dispatch = useDispatch();
     const { closeModal } = useModal();
-    console.log("spotId in delete modal", spotId);
 
+    // dispatch the thunk to delete then close the modal
+    // can a useEffect go here to update the manage spots page...
     const handleDelete = (event) => {
         event.preventDefault();
         return dispatch(deleteSpotThunk(spotId))
             .then(closeModal);
+
+        // dispatch(deleteSpotThunk(spotId));
+        // closeModal();
+        // history.push('/spots/current');
+
     };
 
     return (
