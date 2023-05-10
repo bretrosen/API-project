@@ -152,9 +152,9 @@ const spotsReducer = (state = initialState, action) => {
             // const newState = {...state};
             // delete newState[action.spotId];
             // return newState;
-            const { spotToDelete } = action.spotId;
-            const { allSpots } = state.allSpots;
-            const updatedSpots = {...allSpots};
+            const spotToDelete = action.spotId;
+            const allUserSpots = state.allSpots;
+            const updatedSpots = {...allUserSpots};
             delete updatedSpots[spotToDelete];
             return {...state, allSpots: updatedSpots};
         }

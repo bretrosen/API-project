@@ -3,6 +3,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { deleteSpotThunk } from '../../store/spots';
+// import { getCurrentUserSpotsThunk } from '../../store/spots';
 import "./DeleteSpot.css";
 
 const DeleteSpotModal = ({ spotId }) => {
@@ -13,13 +14,14 @@ const DeleteSpotModal = ({ spotId }) => {
     // dispatch the thunk to delete then close the modal
     // can a useEffect go here to update the manage spots page...
     const handleDelete = (event) => {
-        event.preventDefault();
+        // event.preventDefault();
         return dispatch(deleteSpotThunk(spotId))
             .then(closeModal);
 
         // dispatch(deleteSpotThunk(spotId));
         // closeModal();
         // history.push('/spots/current');
+
 
     };
 

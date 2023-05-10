@@ -30,7 +30,7 @@ export const CurrentUserSpotList = () => {
     useEffect(() => {
         console.log("use effect in manage spots ran");
         dispatch(getCurrentUserSpotsThunk());
-    }, [dispatch, spots]);
+    }, [dispatch]);
 
 
 
