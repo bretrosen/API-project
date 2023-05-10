@@ -21,6 +21,7 @@ export const CurrentUserSpotList = () => {
             spots.push(spot);
         }
     })
+    console.log("current user spots", spots);
 
     // useEffect to trigger dispatch of thunk
     useEffect(() => {
