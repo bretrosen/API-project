@@ -3,6 +3,8 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getSingleSpotThunk } from '../../store/spots';
 import { getSpotReviewsThunk } from '../../store/reviews';
+import OpenModalButton from "../OpenModalButton";
+import CreateReviewFormModal from '../CreateReviewFormModal';
 import './SingleSpot.css';
 
 export const SingleSpot = () => {
@@ -14,9 +16,21 @@ export const SingleSpot = () => {
     const spotImages = useSelector(state => state.spots.singleSpot.SpotImages);
     // get reviews from the store
     const reviews = useSelector(state => Object.values(state.reviews.spot));
-    console.log("reviews from single spot", reviews);
 
-    // useEffect to trigger dispatch of thunk for the selected spotId
+    // get user id to check if they're allowed to review the spot
+    const userId = useSelector(state => state.session.user?.id);
+
+
+    // user can create a review if they aren't the spot owner and they don't have a review for the spot
+    let userCanReview = false;
+    const foundReview = reviews.find(review => review.userId === userId);
+    if (userId !== spot.ownerId && !foundReview) {
+        userCanReview = true;
+    }
+    console.log("user can review?", userCanReview);
+
+
+    // useEffect to trigger dispatch of thunks for the selected spotId
     useEffect(() => {
         dispatch(getSingleSpotThunk(spotId));
         dispatch(getSpotReviewsThunk(spotId));
@@ -26,6 +40,7 @@ export const SingleSpot = () => {
     if (!Object.values(spot).length) return null;
 
     return (
+
         <div className='spot-wrapper'>
             {console.log("spot in single spot details", spot)}
             <h1>{spot.name}</h1>
@@ -53,42 +68,52 @@ export const SingleSpot = () => {
                 </div>
             </div>
             <br></br>
-            <div>
-                {reviews.length &&
-                    <>
-                        <div>
-                            <div>
-                                Stars: {spot.avgStarRating}
-                            </div>
-                            <div>
-                                {spot.numReviews} reviews
-                            </div>
-                        </div>
+            <br></br>
 
-                        <div>
-                        {reviews.map((review) => (
-                            <div key={review.id}>
-                                <p>{review.User.firstName}</p>
-                                <p>{review.createdAt}</p>
-                                <p>{review.review}</p>
-                            </div>
-                        ))}
-                        </div>
-                    </>
-                }
-                {!reviews.length &&
+            {reviews.length &&
+                <div>
                     <div>
-                        <div>
-                            Stars: New
-                        </div>
-                        <button type='submit'>Post Your Review</button>
-                        <p>Be the first to post a review!</p>
+                        Stars: {spot.avgStarRating}
                     </div>
-                }
+                    <div>
+                        {spot.numReviews} reviews
+                    </div>
+                    {userCanReview &&
+                        <OpenModalButton
+                            buttonText='Post Your Review'
+                            modalComponent={<CreateReviewFormModal spotId={spot.id} />}
+                        />
+                    }
+                </div>
+            }
+
+            {reviews.length && reviews.map((review) => (
+                <div key={review.id}>
+                    <p>{review.User.firstName}</p>
+                    <p>{review.createdAt}</p>
+                    <p>{review.review}</p>
+
+                </div>
+            ))}
+
+            {!reviews.length &&
+                <div>
+                    <div>
+                        Stars: New
+                    </div>
+                    {userCanReview &&
+                        <OpenModalButton
+                            buttonText='Post Your Review'
+                            modalComponent={<CreateReviewFormModal spotId={spot.id} />}
+                        />}
+                    <p>Be the first to post a review!</p>
+                </div>
+            }
 
 
 
-            </div>
+
         </div>
+
     );
 }
