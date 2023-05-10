@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getSingleSpotThunk } from '../../store/spots';
+import { getSpotReviewsThunk } from '../../store/reviews';
 import './SingleSpot.css';
 
 export const SingleSpot = () => {
@@ -11,10 +12,14 @@ export const SingleSpot = () => {
     const spot = useSelector(state => state.spots.singleSpot);
     const owner = useSelector(state => state.spots.singleSpot.Owner);
     const spotImages = useSelector(state => state.spots.singleSpot.SpotImages);
+    // get reviews from the store
+    const reviews = useSelector(state => Object.values(state.reviews.spot));
+    console.log("reviews from single spot", reviews);
 
     // useEffect to trigger dispatch of thunk for the selected spotId
     useEffect(() => {
-        dispatch(getSingleSpotThunk(spotId))
+        dispatch(getSingleSpotThunk(spotId));
+        dispatch(getSpotReviewsThunk(spotId));
     }, [dispatch, spotId]);
 
     // don't try to render before useEffect registers the spotId
@@ -46,6 +51,42 @@ export const SingleSpot = () => {
                 <div className='reserve-box-reviews'>
                     {spot.numReviews} reviews
                 </div>
+            </div>
+            <br></br>
+            <div>
+                {reviews.length &&
+                    <>
+                        <div>
+                            <div>
+                                Stars: {spot.avgStarRating}
+                            </div>
+                            <div>
+                                {spot.numReviews} reviews
+                            </div>
+                        </div>
+
+                        <div>
+                        {reviews.map((review) => (
+                            <div key={review.id}>
+                                <p>{review.User.firstName}</p>
+                                <p>{review.createdAt}</p>
+                                <p>{review.review}</p>
+                            </div>
+                        ))}
+                        </div>
+                    </>
+                }
+                {!reviews.length &&
+                    <div>
+                        <div>
+                            Stars: New
+                        </div>
+                        <button type='submit'>Post Your Review</button>
+                        <p>Be the first to post a review!</p>
+                    </div>
+                }
+
+
 
             </div>
         </div>
