@@ -78,7 +78,7 @@ export const SpotForm = ({ spot, formType }) => {
 
         if (!Object.values(errors).length) {
 
-            // conditional here to dispatch update thunk?
+            // conditional here to dispatch update thunk
             if (formType === 'Update') {
                 const updatedSpot = await dispatch(updateSpotThunk(spot.id, formInfo));
                 // redirect to updated spot

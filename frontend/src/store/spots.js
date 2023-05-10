@@ -42,6 +42,7 @@ export const getAllSpotsThunk = () => async (dispatch) => {
     }
 };
 
+// use same logic as get all spots with different fetch
 export const getCurrentUserSpotsThunk = () => async (dispatch) => {
     const response = await csrfFetch('/api/spots/current');
     console.log("sending current user spots thunk", response);
@@ -117,8 +118,7 @@ export const updateSpotThunk = (spotId, spot) => async (dispatch) => {
 export const deleteSpotThunk = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: { "message": "Successfully deleted"}
+        headers: { 'Content-Type': 'application/json' }
     });
 
     if (response.ok) {
@@ -129,6 +129,7 @@ export const deleteSpotThunk = (spotId) => async (dispatch) => {
 }
 
 const initialState = {allSpots: {}, singleSpot: {}};
+
 
 // reducer
 const spotsReducer = (state = initialState, action) => {
@@ -148,9 +149,14 @@ const spotsReducer = (state = initialState, action) => {
             return newState;
         }
         case DELETE_SPOT: {
-            const newState = {...state};
-            delete newState[action.spotId];
-            return newState;
+            // const newState = {...state};
+            // delete newState[action.spotId];
+            // return newState;
+            const spotToDelete = action.spotId;
+            const allUserSpots = state.allSpots;
+            const updatedSpots = {...allUserSpots};
+            delete updatedSpots[spotToDelete];
+            return {...state, allSpots: updatedSpots};
         }
         default:
             return state;
