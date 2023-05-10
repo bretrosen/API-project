@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { createSpotThunk, createSpotImagesThunk } from '../../store/spots';
+import { createSpotThunk, createSpotImagesThunk, updateSpotThunk } from '../../store/spots';
 
-export const SpotForm = ({ spot }) => {
+export const SpotForm = ({ spot, formType }) => {
     const history = useHistory();
     const dispatch = useDispatch();
     const [address, setAddress] = useState(spot?.address || '');
@@ -67,25 +67,34 @@ export const SpotForm = ({ spot }) => {
         }
 
         // objects to match request to backend to add image to spot
-        const preview = {url: previewImage, preview: true};
-        const image2 = {url: url2, preview: false};
-        const image3 = {url: url3, preview: false};
-        const image4 = {url: url4, preview: false};
-        const image5 = {url: url5, preview: false};
+        const preview = { url: previewImage, preview: true };
+        const image2 = { url: url2, preview: false };
+        const image3 = { url: url3, preview: false };
+        const image4 = { url: url4, preview: false };
+        const image5 = { url: url5, preview: false };
 
         // spot data and preview image are required
         // create other images if they were added
 
         if (!Object.values(errors).length) {
-        const newSpot = await dispatch(createSpotThunk(formInfo));
-        await dispatch(createSpotImagesThunk(newSpot.id, preview));
-        url2.length && await dispatch(createSpotImagesThunk(newSpot.id, image2));
-        url3.length && await dispatch(createSpotImagesThunk(newSpot.id, image3));
-        url4.length && await dispatch(createSpotImagesThunk(newSpot.id, image4));
-        url5.length && await dispatch(createSpotImagesThunk(newSpot.id, image5));
 
-        // redirect to newly created spot
-        history.push(`/spots/${newSpot.id}`);
+            // conditional here to dispatch update thunk?
+            if (formType === 'Update') {
+                const updatedSpot = await dispatch(updateSpotThunk(spot.id, formInfo));
+                // redirect to updated spot
+                history.push(`/spots/${updatedSpot.id}`);
+            } else {
+                const newSpot = await dispatch(createSpotThunk(formInfo));
+                await dispatch(createSpotImagesThunk(newSpot.id, preview));
+                url2.length && await dispatch(createSpotImagesThunk(newSpot.id, image2));
+                url3.length && await dispatch(createSpotImagesThunk(newSpot.id, image3));
+                url4.length && await dispatch(createSpotImagesThunk(newSpot.id, image4));
+                url5.length && await dispatch(createSpotImagesThunk(newSpot.id, image5));
+                // redirect to newly created spot
+                history.push(`/spots/${newSpot.id}`);
+            }
+
+
         }
     };
 
@@ -271,44 +280,44 @@ export const SpotForm = ({ spot }) => {
                         )}
                     </div>
                     <input
-                            type='text'
-                            placeholder='Image URL'
-                            value={url2}
-                            onChange={e => setUrl2(e.target.value)}
-                        />
+                        type='text'
+                        placeholder='Image URL'
+                        value={url2}
+                        onChange={e => setUrl2(e.target.value)}
+                    />
                     <div>
                         {hasSubmitted && errors.url2 && (
                             <p>{errors.url2}</p>
                         )}
                     </div>
                     <input
-                            type='text'
-                            placeholder='Image URL'
-                            value={url3}
-                            onChange={e => setUrl3(e.target.value)}
-                        />
+                        type='text'
+                        placeholder='Image URL'
+                        value={url3}
+                        onChange={e => setUrl3(e.target.value)}
+                    />
                     <div>
                         {hasSubmitted && errors.url3 && (
                             <p>{errors.url3}</p>
                         )}
                     </div>
                     <input
-                            type='text'
-                            placeholder='Image URL'
-                            value={url4}
-                            onChange={e => setUrl4(e.target.value)}
-                        />
+                        type='text'
+                        placeholder='Image URL'
+                        value={url4}
+                        onChange={e => setUrl4(e.target.value)}
+                    />
                     <div>
                         {hasSubmitted && errors.url4 && (
                             <p>{errors.url4}</p>
                         )}
                     </div>
                     <input
-                            type='text'
-                            placeholder='Image URL'
-                            value={url5}
-                            onChange={e => setUrl5(e.target.value)}
-                        />
+                        type='text'
+                        placeholder='Image URL'
+                        value={url5}
+                        onChange={e => setUrl5(e.target.value)}
+                    />
                     <div>
                         {hasSubmitted && errors.url5 && (
                             <p>{errors.url5}</p>
