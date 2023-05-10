@@ -41,7 +41,7 @@ export const CurrentUserSpotList = () => {
                         <p>
                             ${spot.price} night
                         </p>
-                        <button onClick={() => history.push('/spots/new')}>Update</button>
+                        <button onClick={() => history.push(`/spots/${spot.id}/edit`)}>Update</button>
                         <button onClick={() => history.push('spots/new')}>Delete</button>
                     </div>
                 ))}

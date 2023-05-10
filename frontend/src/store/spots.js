@@ -98,6 +98,22 @@ export const createSpotImagesThunk = (spotId, imgObj) => async (dispatch) => {
     }
 }
 
+export const updateSpotThunk = (spotId, spot) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spotId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(spot)
+    });
+    console.log("sending update spot thunk to backend");
+
+    if (response.ok) {
+        const updatedSpot = await response.json();
+        dispatch(createSpot(updatedSpot));
+        console.log("returning updated spot thunk to frontend", updatedSpot);
+        return updatedSpot;
+    }
+}
+
 export const deleteSpotThunk = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`, {
         method: 'DELETE',
