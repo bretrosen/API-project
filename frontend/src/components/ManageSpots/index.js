@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { getCurrentUserSpotsThunk } from '../../store/spots';
+import OpenModalButton from "../OpenModalButton";
+import DeleteSpotModal from '../DeleteSpotModal';
 import './ManageSpots.css';
 
 export const CurrentUserSpotList = () => {
@@ -42,7 +44,10 @@ export const CurrentUserSpotList = () => {
                             ${spot.price} night
                         </p>
                         <button onClick={() => history.push(`/spots/${spot.id}/edit`)}>Update</button>
-                        <button onClick={() => history.push('spots/new')}>Delete</button>
+                        <OpenModalButton
+                            buttonText='Delete'
+                            modalComponent={<DeleteSpotModal spotId={spot.id} />}
+                        />
                     </div>
                 ))}
             </ul>
