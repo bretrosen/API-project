@@ -16,10 +16,12 @@ export const SingleSpot = () => {
     const spotImages = useSelector(state => state.spots.singleSpot.SpotImages);
     // get reviews from the store
     const reviews = useSelector(state => Object.values(state.reviews.spot));
-    console.log("reviews in single spot", reviews);
+    // console.log("reviews in single spot", reviews);
 
     // get user id to check if they're allowed to review the spot
     const userId = useSelector(state => state.session.user?.id);
+    // get user first name for newly created reviews
+    const userFirstName = useSelector(state => state.session.user?.firstName)
 
     // user can create a review if they aren't the spot owner and they don't have a review for the spot
     let userCanReview = false;
@@ -86,11 +88,10 @@ export const SingleSpot = () => {
                 </div>
             }
 
-            {console.log("reviews before mapping over them", reviews)}
-
             {reviews.length && reviews.map((review) => (
                 <div key={review.id}>
-                    {/* <p>{review.User.firstName}</p> */}
+                    {/* userFirstName variable is for newly created reviews */}
+                    <p>{review.User?.firstName || userFirstName}</p>
                     <p>{review.createdAt}</p>
                     <p>{review.review}</p>
 
