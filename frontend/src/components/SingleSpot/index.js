@@ -17,19 +17,13 @@ export const SingleSpot = () => {
     const spotImages = useSelector(state => state.spots.singleSpot.SpotImages);
     // get reviews from the store
     const reviews = useSelector(state => Object.values(state.reviews.spot));
-    console.log("reviews in single spot", reviews);
-
-    // const month = new Date(reviews[0]?.createdAt).getMonth();
-    // // const date2 = new Date(date);
-    // // const month = date2?.getMonth();
-    // console.log('month', month);
-    // const year = new Date(reviews[0]?.createdAt).getYear();
-    // console.log('year', year);
 
     // get user id to check if they're allowed to review the spot
     const userId = useSelector(state => state.session.user?.id);
-    // get user first name for newly created reviews
-    const userFirstName = useSelector(state => state.session.user?.firstName)
+
+    // get user first name from session
+    // shouldn't need to do this...?
+    const userFirstName = useSelector(state => state.session.user?.firstName);
 
     // user can create a review if they aren't the spot owner and they don't have a review for the spot
     let userCanReview = false;
@@ -38,11 +32,16 @@ export const SingleSpot = () => {
         userCanReview = true;
     }
 
-    // useEffect to trigger dispatch of thunks for the selected spotId
+    // useEffect to trigger dispatch of thunk for getting spot
+    // added reviews dependency to dynamically update review aggregate data
     useEffect(() => {
         dispatch(getSingleSpotThunk(spotId));
-        dispatch(getSpotReviewsThunk(spotId));
-    }, [dispatch, spotId]);
+    }, [dispatch, spotId, reviews]);
+
+    // useEffect to trigger dispatch of thunk for getting spot reviews
+    useEffect(() => {
+        dispatch(getSpotReviewsThunk(spotId))
+    }, [dispatch, spotId])
 
     // don't try to render before useEffect registers the spotId
     if (!Object.values(spot).length) return null;
@@ -63,9 +62,6 @@ export const SingleSpot = () => {
         const year = 1900 + new Date(date).getYear();
         return (monthString + " " + year.toString());
     }
-
-    const dateReturn = formatDate(reviews[0]?.createdAt);
-    console.log("returned date", dateReturn);
 
     return (
 
@@ -128,7 +124,6 @@ export const SingleSpot = () => {
 
                 {reviews.length && reviews.map((review) => (
                     <div className='single-review' key={review.id}>
-                        {/* userFirstName variable is for newly created reviews */}
                         <h2>{review.User?.firstName || userFirstName}</h2>
                         <p className="review-date">{formatDate(review.createdAt)}</p>
                         <p>{review.review}</p>

@@ -22,7 +22,7 @@ module.exports = {
    await queryInterface.bulkInsert(options, [
     {
       spotId: 1,
-      url: "https://i.imgur.com/QdNvr1z.jpg",
+      url: "https://i.imgur.com/v6qNH86.jpg",
       preview: true
     },
     {
@@ -37,13 +37,13 @@ module.exports = {
     },
     {
       spotId: 1,
-      url: "https://i.imgur.com/pzkp4uC.jpg",
+      url: "https://i.imgur.com/ZbGvs4Y.jpg",
       preview: false
     },
     {
       spotId: 1,
       url: "https://i.imgur.com/X7Q1fCe.jpg",
-      preview: true
+      preview: false
     },
     {
       spotId: 2,
