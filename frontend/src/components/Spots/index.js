@@ -14,22 +14,20 @@ export const SpotList = () => {
     }, [dispatch]);
 
     return (
-        <>
-            <ul>
-                {spots.map((spot) => (
-                    <div key={spot.id}>
-                        <a href={`/spots/${spot.id}`}>
-                            <img src={spot.previewImage} alt={spot.name}></img>
-                        </a>
-                        <p>
-                            {spot.city}, {spot.state}
-                        </p>
-                        <p>
-                            ${spot.price} night
-                        </p>
-                    </div>
-                ))}
-            </ul>
-        </>
+        <div className='spots-list-wrapper'>
+            {spots.map((spot) => (
+                <div className='spots-list-item' key={spot.id}>
+                    <a href={`/spots/${spot.id}`}>
+                        <img src={spot.previewImage} alt={spot.name}></img>
+                    </a>
+                    <p>
+                        {spot.city}, {spot.state}, {spot.avgRating}
+                    </p>
+                    <p>
+                        ${spot.price} night
+                    </p>
+                </div>
+            ))}
+        </div>
     );
 };
