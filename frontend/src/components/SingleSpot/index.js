@@ -16,10 +16,10 @@ export const SingleSpot = () => {
     const spotImages = useSelector(state => state.spots.singleSpot.SpotImages);
     // get reviews from the store
     const reviews = useSelector(state => Object.values(state.reviews.spot));
+    console.log("reviews in single spot", reviews);
 
     // get user id to check if they're allowed to review the spot
     const userId = useSelector(state => state.session.user?.id);
-
 
     // user can create a review if they aren't the spot owner and they don't have a review for the spot
     let userCanReview = false;
@@ -27,8 +27,6 @@ export const SingleSpot = () => {
     if (userId !== spot.ownerId && !foundReview) {
         userCanReview = true;
     }
-    console.log("user can review?", userCanReview);
-
 
     // useEffect to trigger dispatch of thunks for the selected spotId
     useEffect(() => {
@@ -42,9 +40,10 @@ export const SingleSpot = () => {
     return (
 
         <div className='spot-wrapper'>
-            {console.log("spot in single spot details", spot)}
+            {/* spot heading */}
             <h1>{spot.name}</h1>
             <h2>{spot.city}, {spot.state}, {spot.country}</h2>
+            {/* spot images */}
             <div className='spot-images'>
                 {spotImages.map((image) => (
                     <div className='single-spot-image' key={image.id}>
@@ -87,9 +86,11 @@ export const SingleSpot = () => {
                 </div>
             }
 
+            {console.log("reviews before mapping over them", reviews)}
+
             {reviews.length && reviews.map((review) => (
                 <div key={review.id}>
-                    <p>{review.User.firstName}</p>
+                    {/* <p>{review.User.firstName}</p> */}
                     <p>{review.createdAt}</p>
                     <p>{review.review}</p>
 
