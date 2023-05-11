@@ -28,9 +28,64 @@
     grid-area: image5;
 }
 
+.reserve-box {
+    width: 30%;
+    height: 5rem;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+
+.reserve-box-rating {
+    margin-left: 20%;
+}
+
+.reserve-button {
+    background: lightcoral;
+    color: white;
+    height: 4rem;
+    border: 2px solid black;
+    box-shadow: 2px 3px black;
+}
+
+.reserve-top {
+    width: 100%;
+    height: 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.review-date {
+    color: gray;
+}
+
+.review-info {
+    margin-top: 2rem;
+}
+
+.reviews-heading {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    margin-bottom: 2rem;
+}
+
+.single-review {
+    margin-bottom: 3rem;
+}
+
 .single-spot-image {
     width: 100%;
     height: 250px;
+}
+
+.spot-host {
+    font-size: 24px;
 }
 
 .spot-images {
@@ -42,6 +97,14 @@
         "image1 image1 image4 image5"
         ". . . ."
         ". . . .";
+}
+
+.spot-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid black;
 }
 
 .spot-name {

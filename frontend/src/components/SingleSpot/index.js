@@ -17,7 +17,14 @@ export const SingleSpot = () => {
     const spotImages = useSelector(state => state.spots.singleSpot.SpotImages);
     // get reviews from the store
     const reviews = useSelector(state => Object.values(state.reviews.spot));
-    // console.log("reviews in single spot", reviews);
+    console.log("reviews in single spot", reviews);
+
+    // const month = new Date(reviews[0]?.createdAt).getMonth();
+    // // const date2 = new Date(date);
+    // // const month = date2?.getMonth();
+    // console.log('month', month);
+    // const year = new Date(reviews[0]?.createdAt).getYear();
+    // console.log('year', year);
 
     // get user id to check if they're allowed to review the spot
     const userId = useSelector(state => state.session.user?.id);
@@ -43,6 +50,23 @@ export const SingleSpot = () => {
     // variable to increment for each image to place in grid display
     let count = 1;
 
+    //button alert for non-existent bookings
+    const handleClick = () => {
+        return alert('Feature Coming Soon...')
+    };
+
+    //helper function to format date
+    const formatDate = (date) => {
+        const months = ['January', 'Februrary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const monthNum = new Date(date).getMonth();
+        const monthString = months[monthNum];
+        const year = 1900 + new Date(date).getYear();
+        return (monthString + " " + year.toString());
+    }
+
+    const dateReturn = formatDate(reviews[0]?.createdAt);
+    console.log("returned date", dateReturn);
+
     return (
 
         <div className='spot-wrapper'>
@@ -60,74 +84,78 @@ export const SingleSpot = () => {
                 ))}
             </div>
 
-            <div className='spot-text'>
-                <h2>Hosted by {owner.firstName} {owner.lastName}</h2>
-                <p>{spot.description}</p>
-            </div>
+            <div className='spot-info'>
+                <div className='spot-text'>
+                    <div className='spot-host'>Hosted by {owner.firstName} {owner.lastName}</div>
+                    <p>{spot.description}</p>
+                </div>
 
-            <div className='reserve-box'>
-                <div className='reserve-box-price'>
-                    ${spot.price} night
-                </div>
-                <div className='reserve-box-rating'>
-                    <i className="fa-solid fa-star" />
-                    {spot.avgStarRating}
-                    {!spot.avgStarRating && `New`}
-                </div>
-                <div className='reserve-box-reviews'>
-                    {spot.numReviews} reviews
-                </div>
-            </div>
-            <br></br>
-            <br></br>
-
-            {reviews.length &&
-                <div>
-                    <div>
-                        Stars: {spot.avgStarRating}
+                <div className='reserve-box'>
+                    <div className='reserve-top'>
+                        <div className='reserve-top-left'>
+                            <b>${spot.price}</b> &nbsp;night
+                        </div>
+                        <div className='reserve-box-rating'>
+                            <i className="fa-solid fa-star" />
+                            {spot.avgStarRating}
+                            {!spot.avgStarRating && `New`}
+                        </div>
+                        ·
+                        <div className='reserve-box-reviews'>
+                            {spot.numReviews} reviews
+                        </div>
                     </div>
-                    <div>
+                    <button className='reserve-button' onClick={handleClick}>Reserve</button>
+                </div>
+            </div>
+
+            <div className='review-info'>
+                {reviews.length &&
+                    <div className='reviews-heading'>
+                        <i className="fa-solid fa-star" />
+                        {spot.avgStarRating}
+                        {!spot.avgStarRating && `New`}
+                        &nbsp;·&nbsp;
                         {spot.numReviews} reviews
+                        {userCanReview &&
+                            <OpenModalButton
+                                buttonText='Post Your Review'
+                                modalComponent={<CreateReviewFormModal spotId={spot.id} />}
+                            />
+                        }
                     </div>
-                    {userCanReview &&
-                        <OpenModalButton
-                            buttonText='Post Your Review'
-                            modalComponent={<CreateReviewFormModal spotId={spot.id} />}
-                        />
-                    }
-                </div>
-            }
+                }
 
-            {reviews.length && reviews.map((review) => (
-                <div key={review.id}>
-                    {/* userFirstName variable is for newly created reviews */}
-                    <p>{review.User?.firstName || userFirstName}</p>
-                    <p>{review.createdAt}</p>
-                    <p>{review.review}</p>
-                    {review.userId === userId &&
-                        <OpenModalButton
-                            buttonText='Delete'
-                            modalComponent={<DeleteReviewModal reviewId={review.id} />}
-                        />}
-                </div>
-            ))}
+                {reviews.length && reviews.map((review) => (
+                    <div className='single-review' key={review.id}>
+                        {/* userFirstName variable is for newly created reviews */}
+                        <h2>{review.User?.firstName || userFirstName}</h2>
+                        <p className="review-date">{formatDate(review.createdAt)}</p>
+                        <p>{review.review}</p>
+                        {review.userId === userId &&
+                            <OpenModalButton
+                                buttonText='Delete'
+                                modalComponent={<DeleteReviewModal reviewId={review.id} />}
+                            />}
+                    </div>
+                ))}
 
-            {!reviews.length &&
-                <div>
+                {!reviews.length &&
                     <div>
-                        Stars: New
+                        <div>
+                            Stars: New
+                        </div>
+                        {userCanReview &&
+                            <OpenModalButton
+                                buttonText='Post Your Review'
+                                modalComponent={<CreateReviewFormModal spotId={spot.id} />}
+                            />}
+                        <p>Be the first to post a review!</p>
                     </div>
-                    {userCanReview &&
-                        <OpenModalButton
-                            buttonText='Post Your Review'
-                            modalComponent={<CreateReviewFormModal spotId={spot.id} />}
-                        />}
-                    <p>Be the first to post a review!</p>
-                </div>
-            }
+                }
 
 
-
+            </div>
 
         </div>
 
