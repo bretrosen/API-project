@@ -5,6 +5,7 @@ import { getSingleSpotThunk } from '../../store/spots';
 import { getSpotReviewsThunk } from '../../store/reviews';
 import OpenModalButton from "../OpenModalButton";
 import CreateReviewFormModal from '../CreateReviewFormModal';
+import DeleteReviewModal from '../DeleteReviewModal';
 import './SingleSpot.css';
 
 export const SingleSpot = () => {
@@ -94,7 +95,11 @@ export const SingleSpot = () => {
                     <p>{review.User?.firstName || userFirstName}</p>
                     <p>{review.createdAt}</p>
                     <p>{review.review}</p>
-
+                    {review.userId === userId &&
+                        <OpenModalButton
+                            buttonText='Delete'
+                            modalComponent={<DeleteReviewModal reviewId={review.id}/>}
+                        />}
                 </div>
             ))}
 
