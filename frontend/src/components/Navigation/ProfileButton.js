@@ -39,14 +39,17 @@ const ProfileButton = ({ user }) => {
 
     return (
         <>
+            <div className='nav-right-menu'>
+            <i className='fa-solid fa-bars' />
             <button className='profile-menu' onClick={openMenu}>
                 <i className="fa-regular fa-compass" />
                 {/* <i className="fa-solid fa-book-atlas" /> */}
             </button>
+            </div>
             <ul className={ulClassName} ref={ulRef}>
                 <li>Hello, {user.firstName}</li>
                 <li>{user.email}</li>
-                <li><Link to='/spots/current'>Manage Spots</Link></li>
+                <li className='profile-manage-spots-link'><Link to='/spots/current'>Manage Spots</Link></li>
                 <li>
                     <button className='profile-logout-button' onClick={logout}>Log Out</button>
                 </li>
