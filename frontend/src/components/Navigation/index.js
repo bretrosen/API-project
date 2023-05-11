@@ -33,16 +33,23 @@ function Navigation({ isLoaded }) {
     }
 
     return (
-        <ul>
-            <li>
-                <NavLink exact to='/'>Home</NavLink>
-
-            </li>
-            <li>
-                <NavLink to='/spots/new'>Create a New Spot</NavLink>
-            </li>
-            {isLoaded && sessionLinks}
-        </ul>
+        <div className='nav-wrapper'>
+            <div className='nav-logo'>
+                <a href='/'>
+                    <i className="fa-solid fa-book-atlas" />
+                </a>
+            </div>
+            <div className='nav-logo-text'>
+                bookfairBnB
+            </div>
+            {sessionUser &&
+                <div className='nav-create-spot-text'>
+                    <NavLink to='/spots/new'>Create a New Spot</NavLink>
+                </div>}
+            <div className='nav-menu'>
+                {isLoaded && sessionLinks}
+            </div>
+        </div>
     );
 }
 
