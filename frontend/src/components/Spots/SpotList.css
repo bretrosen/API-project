@@ -1,4 +1,12 @@
-img {
+* {
+    font-size: 15px;
+}
+
+.fa-star {
+    font-size: 12px;
+}
+
+.spots-list-image {
     width: 300px;
     height: 300px;
     object-fit: cover;
@@ -6,7 +14,52 @@ img {
 }
 
 .spots-list-item {
+    position: relative;
     margin: 1rem;
+}
+
+.spots-list-item-location {
+    font-weight: bold;
+}
+
+.spots-list-item-price {
+    font-weight: bold;
+    margin-right: 0.2rem;
+}
+
+.spots-list-item-text-1 {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: black;
+}
+
+.spots-list-item-text-2 {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: black;
+}
+
+.spots-list-tooltip:before {
+    font-size: 18px;
+    text-align: center;
+    content: attr(data-text);
+    position: relative;
+    width: 50%;
+    left: 25%;
+    top: -2%;
+    border: 2px solid black;
+    border-radius: 5px;
+    background: black;
+    color: white;
+    display: none;
+}
+
+.spots-list-tooltip:hover:before {
+    display: block;
 }
 
 .spots-list-wrapper {
