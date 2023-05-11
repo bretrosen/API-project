@@ -40,30 +40,39 @@ export const SingleSpot = () => {
     // don't try to render before useEffect registers the spotId
     if (!Object.values(spot).length) return null;
 
+    // variable to increment for each image to place in grid display
+    let count = 1;
+
     return (
 
         <div className='spot-wrapper'>
             {/* spot heading */}
-            <h1>{spot.name}</h1>
+            <div className='spot-name'>{spot.name}</div>
             <h2>{spot.city}, {spot.state}, {spot.country}</h2>
             {/* spot images */}
             <div className='spot-images'>
                 {spotImages.map((image) => (
-                    <div  key={image.id}>
-                        <img className={(image.preview ? "preview-image" : "single-spot-image")}src={image.url} alt={spot.name}></img>
+                    <div className={` image${count}`} key={image.id}>
+                        <img className={(image.preview ? "preview-image" : "single-spot-image")} src={image.url} alt={spot.name}></img>
+                        <div className='hide-this-janky-variable'>{count++}</div>
                     </div>
+
                 ))}
             </div>
+
             <div className='spot-text'>
-                <p>Hosted by {owner.firstName} {owner.lastName}</p>
+                <h2>Hosted by {owner.firstName} {owner.lastName}</h2>
                 <p>{spot.description}</p>
             </div>
+
             <div className='reserve-box'>
                 <div className='reserve-box-price'>
                     ${spot.price} night
                 </div>
                 <div className='reserve-box-rating'>
-                    Stars: {spot.avgStarRating}
+                    <i className="fa-solid fa-star" />
+                    {spot.avgStarRating}
+                    {!spot.avgStarRating && `New`}
                 </div>
                 <div className='reserve-box-reviews'>
                     {spot.numReviews} reviews
@@ -98,7 +107,7 @@ export const SingleSpot = () => {
                     {review.userId === userId &&
                         <OpenModalButton
                             buttonText='Delete'
-                            modalComponent={<DeleteReviewModal reviewId={review.id}/>}
+                            modalComponent={<DeleteReviewModal reviewId={review.id} />}
                         />}
                 </div>
             ))}
