@@ -49,8 +49,8 @@ export const SingleSpot = () => {
             {/* spot images */}
             <div className='spot-images'>
                 {spotImages.map((image) => (
-                    <div className='single-spot-image' key={image.id}>
-                        <img src={image.url} alt={spot.name}></img>
+                    <div  key={image.id}>
+                        <img className={(image.preview ? "preview-image" : "single-spot-image")}src={image.url} alt={spot.name}></img>
                     </div>
                 ))}
             </div>

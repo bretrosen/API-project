@@ -29,6 +29,7 @@ export const SpotList = () => {
                                 <div className='spots-list-item-star-rating'>
                                     <i className="fa-solid fa-star" />
                                     {spot.avgRating}
+                                    {!spot.avgRating && `New`}
                                 </div>
                             </div>
                             <div className='spots-list-item-text-2'>

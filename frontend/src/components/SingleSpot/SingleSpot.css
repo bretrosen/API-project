@@ -1,0 +1,17 @@
+.preview-image {
+    width: 500px;
+    height: 500px;
+    object-fit: cover;
+
+}
+
+.single-spot-image {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+}
+
+.spot-images {
+    display: flex;
+    flex-wrap: wrap;
+}
