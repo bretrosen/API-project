@@ -16,17 +16,33 @@ export const SpotList = () => {
     return (
         <div className='spots-list-wrapper'>
             {spots.map((spot) => (
+
                 <div className='spots-list-item' key={spot.id}>
-                    <a href={`/spots/${spot.id}`}>
-                        <img src={spot.previewImage} alt={spot.name}></img>
-                    </a>
-                    <p>
-                        {spot.city}, {spot.state}, {spot.avgRating}
-                    </p>
-                    <p>
-                        ${spot.price} night
-                    </p>
+                    <span data-text={spot.name} className='spots-list-tooltip'>
+                        <a href={`/spots/${spot.id}`}>
+
+                            <img className='spots-list-image' src={spot.previewImage} alt={spot.name}></img>
+                            <div className='spots-list-item-text-1'>
+                                <div className='spots-list-item-location'>
+                                    {spot.city}, {spot.state}
+                                </div>
+                                <div className='spots-list-item-star-rating'>
+                                    <i className="fa-solid fa-star" />
+                                    {spot.avgRating}
+                                </div>
+                            </div>
+                            <div className='spots-list-item-text-2'>
+                                <div className='spots-list-item-price'>
+                                    ${spot.price}
+                                </div>
+                                <div className='spots-list-item-night'>
+                                    night
+                                </div>
+                            </div>
+                        </a>
+                    </span>
                 </div>
+
             ))}
         </div>
     );
