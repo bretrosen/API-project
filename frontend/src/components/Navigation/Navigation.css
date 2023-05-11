@@ -1,8 +1,93 @@
-.profile-dropdown {
+* {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(58, 141, 219);
+}
+
+.fa-bars {
+    color: gray;
+    font-size: 1.2rem;
+}
+
+.fa-compass {
+    color: black;
+    opacity: 1;
+    font-size: 2rem;
+}
+
+.fa-book-atlas {
+    opacity: 0.6;
     color: red;
-    font-size: 18px;
+    font-size: 3rem;
 }
 
 .hidden {
     display: none;
+}
+
+
+
+.nav-create-spot-text {
+    font-size: 16px;
+    position: absolute;
+    right: 8rem;
+}
+
+
+.nav-logo-text {
+    color: red;
+    font-size: 24px;
+    position: absolute;
+    left: 5rem;
+}
+
+.nav-right-menu {
+    display: flex;
+    align-items: center;
+}
+
+.nav-wrapper {
+    height: 4rem;
+    border-bottom: solid 1px grey;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.profile-dropdown {
+    text-align: center;
+    position: absolute;
+    top: 4rem;
+    right: 3rem;
+    height: 8rem;
+    color: black;
+    font-size: 16px;
+    padding: 2px;
+    opacity: 1;
+    border: 1px solid black;
+}
+
+.profile-logout-button {
+    height: 2rem;
+    border-radius: 0.7rem;
+    border: 1px solid black;
+    color: white;
+    background: rgb(80, 76, 76);
+}
+
+.profile-manage-spots-link {
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    padding: 0.5rem;
+    margin: 0.5rem;
+}
+
+.profile-menu {
+    background-color: white;
+    border: none;
 }

@@ -213,6 +213,8 @@ export const SpotForm = ({ spot, formType }) => {
                             fast wif or parking, and what you love about the neighborhood.</p>
                         <textarea
                             placeholder='Description'
+                            rows='10'
+                            cols='50'
                             value={description}
                             onChange={e => setDescription(e.target.value)}
                         />

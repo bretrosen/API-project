@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as sessionActions from '../../store/session';
+import './Navigation.css';
 
 
 const ProfileButton = ({ user }) => {
@@ -38,16 +39,19 @@ const ProfileButton = ({ user }) => {
 
     return (
         <>
-            <button onClick={openMenu}>
-                <i className="fa-solid fa-book-atlas" />
+            <div className='nav-right-menu'>
+            <i className='fa-solid fa-bars' />
+            <button className='profile-menu' onClick={openMenu}>
+                <i className="fa-regular fa-compass" />
+                {/* <i className="fa-solid fa-book-atlas" /> */}
             </button>
+            </div>
             <ul className={ulClassName} ref={ulRef}>
-                <li>{user.username}</li>
-                <li>{user.firstName} {user.lastName}</li>
+                <li>Hello, {user.firstName}</li>
                 <li>{user.email}</li>
-                <li><Link to='/spots/current'>Manage Spots</Link></li>
+                <li className='profile-manage-spots-link'><Link to='/spots/current'>Manage Spots</Link></li>
                 <li>
-                    <button onClick={logout}>Log Out</button>
+                    <button className='profile-logout-button' onClick={logout}>Log Out</button>
                 </li>
             </ul>
         </>

@@ -22,12 +22,12 @@ const getSingleSpot = (spot) => ({
 const createSpot = (spot) => ({
     type: CREATE_SPOT,
     spot
-})
+});
 
 const deleteSpot = (spotId) => ({
     type: DELETE_SPOT,
     spotId
-})
+});
 
 // thunk action creators
 
@@ -53,7 +53,7 @@ export const getCurrentUserSpotsThunk = () => async (dispatch) => {
         dispatch(getAllSpots(spots));
         return spots;
     }
-}
+};
 
 export const getSingleSpotThunk = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`);
@@ -65,7 +65,7 @@ export const getSingleSpotThunk = (spotId) => async (dispatch) => {
         console.log('returning single spot thunk');
         return spot;
     }
-}
+};
 
 export const createSpotThunk = (spot) => async (dispatch) => {
     const response = await csrfFetch('/api/spots', {
@@ -81,7 +81,7 @@ export const createSpotThunk = (spot) => async (dispatch) => {
         console.log("returning created spot to frontend", spotData);
         return spotData;
     }
-}
+};
 
 export const createSpotImagesThunk = (spotId, imgObj) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}/images`, {
@@ -97,7 +97,7 @@ export const createSpotImagesThunk = (spotId, imgObj) => async (dispatch) => {
         console.log("returning created spot image thunk to frontend", spotImage);
         return spotImage;
     }
-}
+};
 
 export const updateSpotThunk = (spotId, spot) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`, {
@@ -113,7 +113,7 @@ export const updateSpotThunk = (spotId, spot) => async (dispatch) => {
         console.log("returning updated spot thunk to frontend", updatedSpot);
         return updatedSpot;
     }
-}
+};
 
 export const deleteSpotThunk = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`, {
@@ -126,7 +126,7 @@ export const deleteSpotThunk = (spotId) => async (dispatch) => {
         dispatch(deleteSpot(spotId));
         return;
     }
-}
+};
 
 const initialState = {allSpots: {}, singleSpot: {}};
 
@@ -140,7 +140,7 @@ const spotsReducer = (state = initialState, action) => {
                 newState.allSpots[spot.id] = spot;
             });
             return newState;
-        };
+        }
         case GET_SINGLE_SPOT: {
             return {...state, allSpots: {}, singleSpot: {...action.spot}};
         }
@@ -161,6 +161,6 @@ const spotsReducer = (state = initialState, action) => {
         default:
             return state;
     }
-}
+};
 
 export default spotsReducer;
