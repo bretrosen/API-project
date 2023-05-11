@@ -16,14 +16,15 @@ const CreateReviewFormModal = ({ spotId }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        setErrors({});
         return dispatch(createReviewThunk(spotId, { review, stars }))
             .then(closeModal)
-            // .catch(async (res) => {
-            //     const data = await res.json();
-            //     if (data && data.errors) {
-            //         setErrors(data.errors);
-            //     }
-            // });
+            .catch(async (res) => {
+                const data = await res.json();
+                if (data && data.errors) {
+                    setErrors(data.errors);
+                }
+            });
     };
 
     return (
