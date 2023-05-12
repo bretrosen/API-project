@@ -1,1 +1,57 @@
 
+
+.create-spot-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.create-spot-form-heading {
+
+}
+
+.create-spot-form-wrapper {
+    width: 40%;
+    position: absolute;
+    left: 30%;
+}
+
+.create-spot-header {
+
+}
+
+.create-spot-input {
+    margin: 0.5rem 0rem;
+    background-color: rgb(177, 211, 255);
+    border: 2px solid black;
+    width: 100%;
+}
+
+.create-spot-submit {
+    position: relative;
+    width: 20%;
+    left: 40%;
+    height: 26px;
+    margin: 1rem 0rem;
+    border: 2px solid black;
+    box-shadow: 3px 2px black;
+    background-color: lightcoral;
+    color: white;
+}
+
+.create-spot-submit:hover {
+    cursor: pointer;
+}
+
+.city {
+    width: 50%;
+}
+
+.price {
+    width: 90%;
+    position: relative;
+    left: 10%;
+}
+
+.state {
+    width: 30%;
+}

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { createSpotThunk, createSpotImagesThunk, updateSpotThunk } from '../../store/spots';
+import './CreateSpot.css';
 
 export const SpotForm = ({ spot, formType }) => {
     const history = useHistory();
@@ -10,8 +11,8 @@ export const SpotForm = ({ spot, formType }) => {
     const [city, setCity] = useState(spot?.city || '');
     const [state, setState] = useState(spot?.state || '');
     const [country, setCountry] = useState(spot?.country || '');
-    const [lat, setLat] = useState(spot?.lat || '');
-    const [lng, setLng] = useState(spot?.lng || '');
+    // const [lat, setLat] = useState(spot?.lat || '');
+    // const [lng, setLng] = useState(spot?.lng || '');
     const [name, setName] = useState(spot?.name || '');
     const [description, setDescription] = useState(spot?.description || '');
     const [price, setPrice] = useState(spot?.price || '');
@@ -45,7 +46,7 @@ export const SpotForm = ({ spot, formType }) => {
         if (url5.length > 0 && !(url5.endsWith('.jpg') || url5.endsWith('.png') || url5.endsWith('.jpeg'))) newErrors['url5'] = imageErrorMessage;
 
         setErrors(newErrors);
-    }, [address, city, state, country, lat, lng, name, description, price, previewImage, url2, url3, url4, url5]);
+    }, [address, city, state, country, name, description, price, previewImage, url2, url3, url4, url5]);
 
 
     const handleSubmit = async (event) => {
@@ -59,8 +60,8 @@ export const SpotForm = ({ spot, formType }) => {
             city,
             state,
             country,
-            lat,
-            lng,
+            lat: 45.4545,
+            lng: 65.6565,
             name,
             description,
             price
@@ -100,19 +101,22 @@ export const SpotForm = ({ spot, formType }) => {
 
     return (
         <div className='create-spot-form-wrapper'>
-            <h1>Create a new Spot</h1>
-            <h2>Where's your place located?</h2>
-            <h3>Guests will only get your exact address once they book a reservation.</h3>
+            <div className='create-spot-header'>
+                <h2>Create a new Spot</h2>
+                <h3>Where's your place located?</h3>
+                <p>Guests will only get your exact address once they book a reservation.</p>
+            </div>
             <form className='create-spot-form' onSubmit={handleSubmit}>
-                <div>
+                <div className='form-errors'>
                     {hasSubmitted && errors.country && (
                         <p>{errors.country}</p>
                     )}
                 </div>
-                <div>
-                    <label>
+                <div className='create-spot-form-heading'>
+                    <label className='create-spot-form-label'>
                         Country
                         <input
+                            className='create-spot-input'
                             type='text'
                             placeholder='Country'
                             value={country}
@@ -126,10 +130,11 @@ export const SpotForm = ({ spot, formType }) => {
                         <p>{errors.address}</p>
                     )}
                 </div>
-                <div>
+                <div className='create-spot-form-heading'>
                     <label>
                         Street Address
                         <input
+                            className='create-spot-input'
                             type='text'
                             placeholder='Address'
                             value={address}
@@ -143,10 +148,11 @@ export const SpotForm = ({ spot, formType }) => {
                         <p>{errors.city}</p>
                     )}
                 </div>
-                <div>
+                <div className='create-spot-form-heading'>
                     <label>
                         City
                         <input
+                            className='create-spot-input city'
                             type='text'
                             placeholder='City'
                             value={city}
@@ -160,10 +166,11 @@ export const SpotForm = ({ spot, formType }) => {
                         <p>{errors.state}</p>
                     )}
                 </div>
-                <div>
+                <div className='create-spot-form-heading'>
                     <label>
                         State
                         <input
+                            className='create-spot-input state'
                             type='text'
                             placeholder='STATE'
                             value={state}
@@ -172,7 +179,7 @@ export const SpotForm = ({ spot, formType }) => {
                     </label>
                 </div>
 
-                <div>
+                {/* <div>
                     {hasSubmitted && errors.lat && (
                         <p>{errors.lat}</p>
                     )}
@@ -204,15 +211,16 @@ export const SpotForm = ({ spot, formType }) => {
                             onChange={e => setLng(e.target.value)}
                         />
                     </label>
-                </div>
+                </div> */}
 
                 <div>
                     <label>
                         <h2>Describe your place to guests</h2>
                         <p>Mention the best features of your space, any special amentities like
-                            fast wif or parking, and what you love about the neighborhood.</p>
+                            fast wifi or parking, and what you love about the neighborhood.</p>
                         <textarea
-                            placeholder='Description'
+                            className='create-spot-input'
+                            placeholder='Please write at least 30 characters'
                             rows='10'
                             cols='50'
                             value={description}
@@ -232,6 +240,7 @@ export const SpotForm = ({ spot, formType }) => {
                         <p>Catch guests' attention with a spot title that highlights what makes
                             your place special.</p>
                         <input
+                            className='create-spot-input'
                             type='text'
                             placeholder='Name of your spot'
                             value={name}
@@ -246,12 +255,13 @@ export const SpotForm = ({ spot, formType }) => {
                 </div>
 
 
-                <div>
+                <div className='create-spot-form-heading'>
                     <label>
                         <h2>Set a base price for your spot</h2>
                         <p>Competitive pricing can help your listing stand out and rank higher
                             in search results</p>
                         <input
+                            className='create-spot-input price'
                             type='number'
                             placeholder='Price per night (USD)'
                             value={price}
@@ -270,6 +280,7 @@ export const SpotForm = ({ spot, formType }) => {
                         <h2>Liven up your spot with photos</h2>
                         <p>Submit a link to at least one photo to publish your spot.</p>
                         <input
+                            className='create-spot-input'
                             type='text'
                             placeholder='Preview Image URL'
                             value={previewImage}
@@ -282,6 +293,7 @@ export const SpotForm = ({ spot, formType }) => {
                         )}
                     </div>
                     <input
+                        className='create-spot-input'
                         type='text'
                         placeholder='Image URL'
                         value={url2}
@@ -293,6 +305,7 @@ export const SpotForm = ({ spot, formType }) => {
                         )}
                     </div>
                     <input
+                        className='create-spot-input'
                         type='text'
                         placeholder='Image URL'
                         value={url3}
@@ -304,6 +317,7 @@ export const SpotForm = ({ spot, formType }) => {
                         )}
                     </div>
                     <input
+                        className='create-spot-input'
                         type='text'
                         placeholder='Image URL'
                         value={url4}
@@ -315,6 +329,7 @@ export const SpotForm = ({ spot, formType }) => {
                         )}
                     </div>
                     <input
+                        className='create-spot-input'
                         type='text'
                         placeholder='Image URL'
                         value={url5}
@@ -328,7 +343,7 @@ export const SpotForm = ({ spot, formType }) => {
                 </div>
 
                 <div>
-                    <button type='submit'>Create Spot</button>
+                    <button className='create-spot-submit' type='submit'>Create Spot</button>
                 </div>
 
             </form>
