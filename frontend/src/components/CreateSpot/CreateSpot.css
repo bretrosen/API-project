@@ -1,1 +1,113 @@
+.address-text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 
+.city-text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.create-spot-form {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+}
+
+.create-spot-form-city {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+.create-spot-form-comma {
+    width: 5%;
+    font-size: 18px;
+}
+
+.create-spot-form-state {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+.create-spot-form-wrapper {
+    width: 40%;
+    position: absolute;
+    left: 30%;
+}
+
+.create-spot-input {
+    height: 1.2rem;
+    margin: 0.3rem 0rem;
+    background-color: rgb(177, 211, 255);
+    border: 2px solid black;
+    width: 100%;
+}
+
+.create-spot-submit {
+    position: relative;
+    width: 30%;
+    left: 30%;
+    height: 30px;
+    margin: 1rem 0rem;
+    border: 2px solid black;
+    box-shadow: 3px 2px black;
+    background-color: lightcoral;
+    color: white;
+}
+
+.create-spot-submit:hover {
+    cursor: pointer;
+}
+
+.create-spot-errors {
+    color:red;
+}
+
+.city {
+    width: 95%;
+}
+
+.city-and-state {
+    display: flex;
+    flex-direction: row;
+}
+
+.country-text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.description {
+    border-top: 2px solid black;
+}
+
+.price {
+    width: 95%;
+    position: relative;
+    left: 3%;
+}
+
+.price-line {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.state {
+    width: 100%;
+}
+
+.state-text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.textarea {
+    height: 9rem;
+}

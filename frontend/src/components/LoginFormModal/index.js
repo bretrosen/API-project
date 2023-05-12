@@ -29,6 +29,7 @@ function LoginFormModal() {
                 <div className='login-form'>
                     <label  >
                         <input
+                            className='login-form-input'
                             type='text'
                             placeholder='Username or Email'
                             value={credential}
@@ -38,6 +39,7 @@ function LoginFormModal() {
                     </label>
                     <label>
                         <input
+                            className='login-form-input'
                             type='password'
                             value={password}
                             placeholder='Password'

@@ -113,12 +113,14 @@ export const SingleSpot = () => {
                         {!spot.avgStarRating && `New`}
                         &nbsp;·&nbsp;
                         {spot.numReviews} reviews
+                        <div className='post-review-top'>
                         {userCanReview &&
                             <OpenModalButton
                                 buttonText='Post Your Review'
                                 modalComponent={<CreateReviewFormModal spotId={spot.id} />}
                             />
                         }
+                        </div>
                     </div>
                 }
 
@@ -138,14 +140,19 @@ export const SingleSpot = () => {
                 {!reviews.length &&
                     <div>
                         <div>
-                            Stars: New
+                        <i className="fa-solid fa-star" /> New
                         </div>
                         {userCanReview &&
+                        <>
                             <OpenModalButton
                                 buttonText='Post Your Review'
+                                className='post-review'
                                 modalComponent={<CreateReviewFormModal spotId={spot.id} />}
-                            />}
-                        <p>Be the first to post a review!</p>
+                            />
+                            <p>Be the first to post a review!</p>
+                            </>
+                            }
+
                     </div>
                 }
 

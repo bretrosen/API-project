@@ -34,14 +34,10 @@ function Navigation({ isLoaded }) {
 
     return (
         <div className='nav-wrapper'>
-            <div className='nav-logo'>
-                <a href='/'>
+                <a className='nav-logo' href='/'>
                     <i className="fa-solid fa-book-atlas" />
+                    &nbsp; bookfairBnb
                 </a>
-            </div>
-            <div className='nav-logo-text'>
-                bookfairBnB
-            </div>
             {sessionUser &&
                 <div className='nav-create-spot-text'>
                     <NavLink to='/spots/new'>Create a New Spot</NavLink>
