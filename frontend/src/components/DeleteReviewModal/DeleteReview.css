@@ -1,0 +1,37 @@
+.delete-review-button {
+    background: lightcoral;
+    color: white;
+    height: 3rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    border: 2px solid black;
+    box-shadow: 2px 3px black;
+}
+
+.delete-review-button:hover {
+    cursor: pointer;
+}
+
+.delete-review-heading {
+    text-align: center;
+}
+
+.delete-review-wrapper {
+    margin: 1rem;
+    width: 23rem;
+    height: 12.5rem;
+}
+
+.keep-review-button {
+    background: gray;
+    color: white;
+    height: 3rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    border: 2px solid black;
+    box-shadow: 2px 3px black;
+}
+
+.keep-review-button:hover {
+    cursor: pointer;
+}
