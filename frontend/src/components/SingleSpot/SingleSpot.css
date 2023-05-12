@@ -34,6 +34,10 @@
     box-shadow: 3px 2px black;
 }
 
+.post-review:hover {
+    cursor: pointer;
+}
+
 .post-review-top {
     position: absolute;
     top: 59rem;
@@ -48,7 +52,6 @@
     border: 2px solid black;
     border-radius: 10px;
 }
-
 
 .reserve-box-rating {
     margin-left: 20%;

@@ -1,0 +1,37 @@
+.delete-spot-button {
+    background: lightcoral;
+    color: white;
+    height: 3rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    border: 2px solid black;
+    box-shadow: 2px 3px black;
+}
+
+.delete-spot-button:hover {
+    cursor: pointer;
+}
+
+.delete-spot-heading {
+    text-align: center;
+}
+
+.delete-spot-wrapper {
+    margin: 1rem;
+    width: 22rem;
+    height: 14rem;
+}
+
+.keep-spot-button {
+    background: gray;
+    color: white;
+    height: 3rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    border: 2px solid black;
+    box-shadow: 2px 3px black;
+}
+
+.keep-spot-button:hover {
+    cursor: pointer;
+}
