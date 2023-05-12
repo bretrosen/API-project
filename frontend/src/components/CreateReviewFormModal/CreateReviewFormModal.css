@@ -31,6 +31,10 @@
     box-shadow: 2px 3px black;
 }
 
+.submit-review-button:hover {
+    cursor: pointer;
+}
+
 .submit-review-button-disabled {
     background: whitesmoke;
     color: gray;
