@@ -20,6 +20,7 @@
 }
 
 .create-spot-input {
+    height: 1.2rem;
     margin: 0.5rem 0rem;
     background-color: rgb(177, 211, 255);
     border: 2px solid black;
@@ -54,4 +55,12 @@
 
 .state {
     width: 30%;
+}
+
+.textarea {
+    height: 9rem;
+}
+
+.description {
+    border-top: 2px solid black;
 }

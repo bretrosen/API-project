@@ -213,16 +213,14 @@ export const SpotForm = ({ spot, formType }) => {
                     </label>
                 </div> */}
 
-                <div>
+                <div classname='create-spot-form-heading description'>
                     <label>
                         <h2>Describe your place to guests</h2>
                         <p>Mention the best features of your space, any special amentities like
                             fast wifi or parking, and what you love about the neighborhood.</p>
                         <textarea
-                            className='create-spot-input'
+                            className='create-spot-input textarea'
                             placeholder='Please write at least 30 characters'
-                            rows='10'
-                            cols='50'
                             value={description}
                             onChange={e => setDescription(e.target.value)}
                         />
