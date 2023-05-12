@@ -80,15 +80,9 @@ const reviewsReducer = (state = initialState, action) => {
             return newState;
         }
         case CREATE_REVIEW: {
-            // const newState = {...state, spot: {...action.review}};
-            // return newState;
             const id = action.review.id;
-            console.log("id in reducer", id);
             const newState = state.spot;
-            console.log("newState in reducer before norm", newState);
             newState[id] = {...action.review};
-            // console.log("newState in reducer after norm", newState);
-            console.log("return value in reducer", {...state, spot: newState});
             return {...state, spot: newState}
         }
         case DELETE_REVIEW: {

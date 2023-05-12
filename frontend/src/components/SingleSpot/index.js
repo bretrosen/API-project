@@ -23,6 +23,7 @@ export const SingleSpot = () => {
 
     // get user first name from session
     // shouldn't need to do this...?
+    // but this gets the first name for a newly created review
     const userFirstName = useSelector(state => state.session.user?.firstName);
 
     // user can create a review if they aren't the spot owner and they don't have a review for the spot
@@ -93,12 +94,12 @@ export const SingleSpot = () => {
                         </div>
                         <div className='reserve-box-rating'>
                             <i className="fa-solid fa-star" />
-                            {spot.avgStarRating}
+                            {spot.avgStarRating?.toFixed(1)}
                             {!spot.avgStarRating && `New`}
                         </div>
                         ·
                         <div className='reserve-box-reviews'>
-                            {spot.numReviews} reviews
+                            {reviews.length && spot.numReviews} reviews
                         </div>
                     </div>
                     <button className='reserve-button' onClick={handleClick}>Reserve</button>
@@ -109,10 +110,10 @@ export const SingleSpot = () => {
                 {reviews.length &&
                     <div className='reviews-heading'>
                         <i className="fa-solid fa-star" />
-                        {spot.avgStarRating}
+                        {spot.avgStarRating?.toFixed(1)}
                         {!spot.avgStarRating && `New`}
                         &nbsp;·&nbsp;
-                        {spot.numReviews} reviews
+                        {reviews.length && spot.numReviews} reviews
                         <div className='post-review-top'>
                         {userCanReview &&
                             <OpenModalButton
