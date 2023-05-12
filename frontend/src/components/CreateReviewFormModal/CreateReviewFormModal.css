@@ -1,0 +1,42 @@
+.create-review-wrapper {
+    text-align: center;
+    width: 24rem;
+    height: 19rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rating-input {
+    position: relative;
+    left: 25%;
+    margin: 1rem;
+    display: flex;
+    flex-direction: row;
+}
+
+.review-text {
+    width: 22rem;
+    height: 7rem;
+    background-color: rgb(177, 211, 255);
+}
+
+.submit-review-button {
+    background: lightcoral;
+    color: white;
+    height: 3rem;
+    width: 90%;
+    margin-bottom: 1rem;
+    border: 2px solid black;
+    box-shadow: 2px 3px black;
+}
+
+.submit-review-button-disabled {
+    background: whitesmoke;
+    color: gray;
+    height: 3rem;
+    width: 90%;
+    margin-bottom: 1rem;
+    border: 2px solid black;
+    box-shadow: 2px 3px black;
+}
