@@ -16,7 +16,8 @@ export const SingleSpot = () => {
     const owner = useSelector(state => state.spots.singleSpot.Owner);
     const spotImages = useSelector(state => state.spots.singleSpot.SpotImages);
     // get reviews from the store
-    const reviews = useSelector(state => Object.values(state.reviews.spot));
+    const reviewsObj = useSelector(state => state.reviews.spot);
+    const reviews = Object.values(reviewsObj);
 
     // get user id to check if they're allowed to review the spot
     const userId = useSelector(state => state.session.user?.id);
@@ -34,13 +35,15 @@ export const SingleSpot = () => {
     }
 
     // useEffect to trigger dispatch of thunk for getting spot
-    // added reviews dependency to dynamically update review aggregate data
+    // added reviews dependency to update review aggregate data
     useEffect(() => {
+        console.log("useEffect for single spot thunk ran")
         dispatch(getSingleSpotThunk(spotId));
-    }, [dispatch, spotId, reviews]);
+    }, [dispatch, spotId, reviewsObj]);
 
     // useEffect to trigger dispatch of thunk for getting spot reviews
     useEffect(() => {
+        console.log("useEffect for spot reviews thunk ran")
         dispatch(getSpotReviewsThunk(spotId))
     }, [dispatch, spotId])
 

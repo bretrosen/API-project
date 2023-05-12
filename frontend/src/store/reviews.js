@@ -67,13 +67,15 @@ export const deleteReviewThunk = (reviewId) => async (dispatch) => {
     }
 }
 
+// spot: {}
+
 const initialState = {spot: {}};
 
 // reducer
 const reviewsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_SPOT_REVIEWS: {
-            const newState = {...state};
+            const newState = {...state, spot: {}};
             action.reviews.Reviews.forEach((review) => {
                 newState.spot[review.id] = review;
             });
@@ -81,8 +83,8 @@ const reviewsReducer = (state = initialState, action) => {
         }
         case CREATE_REVIEW: {
             const id = action.review.id;
-            const newState = state.spot;
-            newState[id] = {...action.review};
+            const newState = {...state.spot};
+            newState[id] = action.review;
             return {...state, spot: newState}
         }
         case DELETE_REVIEW: {
