@@ -35,14 +35,16 @@ export const CurrentUserSpotList = () => {
 
 
     return (
-        <>
-            <h1>Manage Your Spots</h1>
-            <button onClick={() => history.push('/spots/new')}>Create a New Spot</button>
-            <ul>
+        <div className='manage-spots-wrapper'>
+            <div className='manage-spots-header'>
+                <div className='manage-spots-title'>Manage Your Spots</div>
+                <button className='post-review' onClick={() => history.push('/spots/new')}>Create a New Spot</button>
+            </div>
+            <div className='manage-spots-images-list'>
                 {spots.map((spot) => (
-                    <div key={spot.id}>
+                    <div className='manage-spots-item' key={spot.id}>
                         <a href={`/spots/${spot.id}`}>
-                            <img src={spot.previewImage} alt={spot.name}></img>
+                            <img className='manage-spots-image' src={spot.previewImage} alt={spot.name}></img>
                         </a>
                         <p>
                             {spot.city}, {spot.state}
@@ -50,14 +52,17 @@ export const CurrentUserSpotList = () => {
                         <p>
                             ${spot.price} night
                         </p>
-                        <button onClick={() => history.push(`/spots/${spot.id}/edit`)}>Update</button>
-                        <OpenModalButton
-                            buttonText='Delete'
-                            modalComponent={<DeleteSpotModal spotId={spot.id} />}
-                        />
+                        <div className='manage-spots-update-delete'>
+                            <button className='post-review' onClick={() => history.push(`/spots/${spot.id}/edit`)}>Update</button>
+                            <div>&nbsp;&nbsp;</div>
+                            <OpenModalButton
+                                buttonText='Delete'
+                                modalComponent={<DeleteSpotModal spotId={spot.id} />}
+                            />
+                        </div>
                     </div>
                 ))}
-            </ul>
-        </>
+            </div>
+        </div>
     );
 };

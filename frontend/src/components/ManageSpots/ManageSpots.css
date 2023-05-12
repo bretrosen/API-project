@@ -1,0 +1,31 @@
+.manage-spots-header {
+    padding-left: 1rem;
+}
+
+.manage-spots-image {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+
+.manage-spots-images-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.manage-spots-item {
+    margin: 1rem;
+}
+
+.manage-spots-title {
+    font-size: 20px;
+}
+
+.manage-spots-update-delete {
+    display: flex;
+}
+
+.manage-spots-wrapper {
+    margin: 1rem;
+}
