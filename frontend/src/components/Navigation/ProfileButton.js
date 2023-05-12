@@ -49,7 +49,7 @@ const ProfileButton = ({ user }) => {
             <ul className={ulClassName} ref={ulRef}>
                 <li>Hello, {user.firstName}</li>
                 <li>{user.email}</li>
-                <li className='profile-manage-spots-link'><Link to='/spots/current'>Manage Spots</Link></li>
+                <li className='profile-manage-spots-link'><Link className='profile-manage-spots-link-a' to='/spots/current'>Manage Spots</Link></li>
                 <li>
                     <button className='profile-logout-button' onClick={logout}>Log Out</button>
                 </li>

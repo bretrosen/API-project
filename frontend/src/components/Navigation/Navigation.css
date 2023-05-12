@@ -28,25 +28,29 @@ a {
     display: none;
 }
 
-
-
 .nav-create-spot-text {
     font-size: 16px;
     position: absolute;
     right: 8rem;
+    color: rgb(58, 141, 219);
 }
 
-
-.nav-logo-text {
+.nav-logo {
     color: red;
-    font-size: 24px;
-    position: absolute;
-    left: 5rem;
+    font-size: 20px;
+    text-align: center;
 }
 
 .nav-right-menu {
     display: flex;
     align-items: center;
+    padding: 5px 5px 5px 10px;
+    border: 1px solid gray;
+    border-radius: 25px;
+}
+
+.nav-right-menu:hover {
+    cursor: pointer;
 }
 
 .nav-wrapper {
@@ -68,8 +72,10 @@ a {
     color: black;
     font-size: 16px;
     padding: 2px;
+    background-color: white;
     opacity: 1;
-    border: 1px solid black;
+    border: 2px solid black;
+    z-index: 10;
 }
 
 .profile-logout-button {
@@ -80,14 +86,27 @@ a {
     background: rgb(80, 76, 76);
 }
 
+.profile-logout-button:hover {
+    cursor: pointer;
+}
+
 .profile-manage-spots-link {
     border-top: 1px solid gray;
     border-bottom: 1px solid gray;
     padding: 0.5rem;
     margin: 0.5rem;
+    color: black;
+}
+
+.profile-manage-spots-link-a {
+    color: black;
 }
 
 .profile-menu {
     background-color: white;
     border: none;
+}
+
+.profile-menu:hover {
+    cursor: pointer;
 }
