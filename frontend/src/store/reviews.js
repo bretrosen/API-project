@@ -67,28 +67,24 @@ export const deleteReviewThunk = (reviewId) => async (dispatch) => {
     }
 }
 
+// spot: {}
+
 const initialState = {spot: {}};
 
 // reducer
 const reviewsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_SPOT_REVIEWS: {
-            const newState = {...state};
+            const newState = {...state, spot: {}};
             action.reviews.Reviews.forEach((review) => {
                 newState.spot[review.id] = review;
             });
             return newState;
         }
         case CREATE_REVIEW: {
-            // const newState = {...state, spot: {...action.review}};
-            // return newState;
             const id = action.review.id;
-            console.log("id in reducer", id);
-            const newState = state.spot;
-            console.log("newState in reducer before norm", newState);
-            newState[id] = {...action.review};
-            // console.log("newState in reducer after norm", newState);
-            console.log("return value in reducer", {...state, spot: newState});
+            const newState = {...state.spot};
+            newState[id] = action.review;
             return {...state, spot: newState}
         }
         case DELETE_REVIEW: {

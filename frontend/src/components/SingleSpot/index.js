@@ -16,13 +16,15 @@ export const SingleSpot = () => {
     const owner = useSelector(state => state.spots.singleSpot.Owner);
     const spotImages = useSelector(state => state.spots.singleSpot.SpotImages);
     // get reviews from the store
-    const reviews = useSelector(state => Object.values(state.reviews.spot));
+    const reviewsObj = useSelector(state => state.reviews.spot);
+    const reviews = Object.values(reviewsObj);
 
     // get user id to check if they're allowed to review the spot
     const userId = useSelector(state => state.session.user?.id);
 
     // get user first name from session
     // shouldn't need to do this...?
+    // but this gets the first name for a newly created review
     const userFirstName = useSelector(state => state.session.user?.firstName);
 
     // user can create a review if they aren't the spot owner and they don't have a review for the spot
@@ -33,13 +35,15 @@ export const SingleSpot = () => {
     }
 
     // useEffect to trigger dispatch of thunk for getting spot
-    // added reviews dependency to dynamically update review aggregate data
+    // added reviews dependency to update review aggregate data
     useEffect(() => {
+        console.log("useEffect for single spot thunk ran")
         dispatch(getSingleSpotThunk(spotId));
-    }, [dispatch, spotId, reviews]);
+    }, [dispatch, spotId, reviewsObj]);
 
     // useEffect to trigger dispatch of thunk for getting spot reviews
     useEffect(() => {
+        console.log("useEffect for spot reviews thunk ran")
         dispatch(getSpotReviewsThunk(spotId))
     }, [dispatch, spotId])
 
@@ -93,12 +97,13 @@ export const SingleSpot = () => {
                         </div>
                         <div className='reserve-box-rating'>
                             <i className="fa-solid fa-star" />
-                            {spot.avgStarRating}
+                            {spot.avgStarRating?.toFixed(1)}
                             {!spot.avgStarRating && `New`}
                         </div>
-                        ·
+                        {spot.numReviews >=1 && `·`}
                         <div className='reserve-box-reviews'>
-                            {spot.numReviews} reviews
+                            {spot.numReviews === 1 && `1 review`}
+                            {spot.numReviews > 1 && `${spot.numReviews} reviews`}
                         </div>
                     </div>
                     <button className='reserve-button' onClick={handleClick}>Reserve</button>
@@ -106,25 +111,26 @@ export const SingleSpot = () => {
             </div>
 
             <div className='review-info'>
-                {reviews.length &&
+                {spot.numReviews >= 1 &&
                     <div className='reviews-heading'>
                         <i className="fa-solid fa-star" />
-                        {spot.avgStarRating}
+                        {spot.avgStarRating?.toFixed(1)}
                         {!spot.avgStarRating && `New`}
                         &nbsp;·&nbsp;
-                        {spot.numReviews} reviews
+                        {spot.numReviews === 1 && `1 review`}
+                        {spot.numReviews > 1 && `${spot.numReviews} reviews`}
                         <div className='post-review-top'>
-                        {userCanReview &&
-                            <OpenModalButton
-                                buttonText='Post Your Review'
-                                modalComponent={<CreateReviewFormModal spotId={spot.id} />}
-                            />
-                        }
+                            {userCanReview && userId && 
+                                <OpenModalButton
+                                    buttonText='Post Your Review'
+                                    modalComponent={<CreateReviewFormModal spotId={spot.id} />}
+                                />
+                            }
                         </div>
                     </div>
                 }
 
-                {reviews.length && reviews.map((review) => (
+                {spot.numReviews >= 1 && reviews.map((review) => (
                     <div className='single-review' key={review.id}>
                         <h2>{review.User?.firstName || userFirstName}</h2>
                         <p className="review-date">{formatDate(review.createdAt)}</p>
@@ -140,18 +146,18 @@ export const SingleSpot = () => {
                 {!reviews.length &&
                     <div>
                         <div>
-                        <i className="fa-solid fa-star" /> New
+                            <i className="fa-solid fa-star" /> New
                         </div>
-                        {userCanReview &&
-                        <>
-                            <OpenModalButton
-                                buttonText='Post Your Review'
-                                className='post-review'
-                                modalComponent={<CreateReviewFormModal spotId={spot.id} />}
-                            />
-                            <p>Be the first to post a review!</p>
+                        {userCanReview && userId &&
+                            <>
+                                <OpenModalButton
+                                    buttonText='Post Your Review'
+                                    className='post-review'
+                                    modalComponent={<CreateReviewFormModal spotId={spot.id} />}
+                                />
+                                <p>Be the first to post a review!</p>
                             </>
-                            }
+                        }
 
                     </div>
                 }

@@ -1,15 +1,11 @@
-/* .modal-button {
-    margin: 0.3rem;
-    height: 3rem;
-    width: 92%;
-    margin-bottom: 2rem;
-    background-color: white;
-    box-shadow: 2px 3px grey;
-} */
+input::placeholder {
+    font-weight: bold;
+    opacity: 0.5;
+}
 
-/* h1 {
-    margin: 1rem;
-} */
+.signup-errors {
+    color: red;
+}
 
 .signup-form {
     display: flex;
@@ -25,21 +21,32 @@
     border: 2px solid black;
 }
 
-.wrapper {
-    font-family: Arial, Helvetica, sans-serif;
+.signup-form-wrapper {
     text-align: center;
     width: 30rem;
+
 }
 
-/* input {
-    background-color: paleturquoise;
-    padding: 0.2rem;
-    margin: 0.3rem;
-    width: 90%;
+.submit-signup-button {
+    background: lightcoral;
+    color: white;
+    height: 3rem;
+    width: 92.5%;
+    margin: 1rem;
     border: 2px solid black;
-} */
+    box-shadow: 2px 3px black;
+}
 
-input::placeholder {
-    font-weight: bold;
-    opacity: 0.5;
+.submit-signup-button:hover {
+    cursor: pointer;
+}
+
+.submit-signup-button-disabled {
+    background: whitesmoke;
+    color: gray;
+    height: 3rem;
+    width: 92.5%;
+    margin: 1rem;
+    border: 2px solid black;
+    box-shadow: 2px 3px black;
 }
