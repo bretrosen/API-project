@@ -28,6 +28,10 @@
     grid-area: image5;
 }
 
+.new-star-bottom {
+    margin-bottom: 6px;
+}
+
 .post-review {
     background-color: rgb(95, 90, 90);
     color: white;
@@ -54,7 +58,7 @@
 }
 
 .reserve-box-rating {
-    margin-left: 20%;
+    /* margin-left: 20%; */
 }
 
 .reserve-button {

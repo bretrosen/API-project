@@ -20,6 +20,8 @@
 
 .spots-list-item-location {
     font-weight: bold;
+    color: black;
+    font-size: 14px;
 }
 
 .spots-list-item-price {
@@ -33,6 +35,7 @@
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     color: black;
+    width: 100%;
 }
 
 .spots-list-item-text-2 {
@@ -41,6 +44,7 @@
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     color: black;
+    font-size: 14px;
 }
 
 .spots-list-tooltip:before {

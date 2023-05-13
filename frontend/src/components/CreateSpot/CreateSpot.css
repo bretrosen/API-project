@@ -74,6 +74,7 @@
 .city-and-state {
     display: flex;
     flex-direction: row;
+    margin-bottom: 10px;
 }
 
 .country-text {
@@ -84,6 +85,22 @@
 
 .description {
     border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+}
+
+.form-photos {
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+}
+.form-price {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    padding-bottom: 14px;
+}
+
+.form-title {
+    margin-bottom: 1rem;
 }
 
 .price {

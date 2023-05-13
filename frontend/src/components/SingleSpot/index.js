@@ -87,18 +87,19 @@ export const SingleSpot = () => {
 
                 ))}
             </div>
-
+            {/* spot description */}
             <div className='spot-info'>
                 <div className='spot-text'>
                     <div className='spot-host'>Hosted by {owner.firstName} {owner.lastName}</div>
                     <p>{spot.description}</p>
                 </div>
-
+                {/* spot reserve box */}
                 <div className='reserve-box'>
                     <div className='reserve-top'>
                         <div className='reserve-top-left'>
                             <b>${spot.price}</b> &nbsp;night
                         </div>
+                        {/*
                         <div className='reserve-box-rating'>
                             <i className="fa-solid fa-star" />
                             {spot.avgStarRating?.toFixed(1)}
@@ -108,7 +109,19 @@ export const SingleSpot = () => {
                         <div className='reserve-box-reviews'>
                             {spot.numReviews === 1 && `1 review`}
                             {spot.numReviews > 1 && `${spot.numReviews} reviews`}
+                        </div> */}
+
+                        <div className='reserve-box-rating'>
+                            <i className="fa-solid fa-star" />
+                            {spot.avgStarRating?.toFixed(1)}
+                            {!spot.avgStarRating && `New`}
+                            &nbsp;
+                            {spot.numReviews >= 1 && `·`}
+                            &nbsp;
+                            {spot.numReviews === 1 && `1 review`}
+                            {spot.numReviews > 1 && `${spot.numReviews} reviews`}
                         </div>
+
                     </div>
                     <button className='reserve-button' onClick={handleClick}>Reserve</button>
                 </div>
@@ -149,7 +162,7 @@ export const SingleSpot = () => {
 
                 {!reviews.length &&
                     <div>
-                        <div>
+                        <div className='new-star-bottom'>
                             <i className="fa-solid fa-star" /> New
                         </div>
                         {userCanReview && userId &&

@@ -45,13 +45,19 @@ export const CurrentUserSpotList = () => {
                     <div className='manage-spots-item' key={spot.id}>
                         <a href={`/spots/${spot.id}`}>
                             <img className='manage-spots-image' src={spot.previewImage} alt={spot.name}></img>
-                        </a>
-                        <p>
+
+                        <div className='spots-list-item-location'>
                             {spot.city}, {spot.state}
-                        </p>
-                        <p>
-                            ${spot.price} night
-                        </p>
+                        </div>
+                        <div className='spots-list-item-text-2'>
+                                <div className='spots-list-item-price'>
+                                    ${spot.price}
+                                </div>
+                                <div className='spots-list-item-night'>
+                                    night
+                                </div>
+                            </div>
+                            </a>
                         <div className='manage-spots-update-delete'>
                             <button className='post-review' onClick={() => history.push(`/spots/${spot.id}/edit`)}>Update</button>
                             <div>&nbsp;&nbsp;</div>

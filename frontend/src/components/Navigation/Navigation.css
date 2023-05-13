@@ -19,9 +19,9 @@ a {
 }
 
 .fa-book-atlas {
-    opacity: 0.6;
+    opacity: 0.8;
     color: red;
-    font-size: 3rem;
+    font-size: 30px;
 }
 
 .hidden {
@@ -36,6 +36,7 @@ a {
 }
 
 .nav-logo {
+    opacity: 0.8;
     color: red;
     font-size: 20px;
     text-align: center;
