@@ -11,6 +11,9 @@ function LoginFormModal() {
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
 
+    let canSubmit = false;
+    if (credential.length > 3 && password.length > 5) canSubmit = true;
+
     const handleSubmit = (event) => {
         event.preventDefault();
         setErrors({});
@@ -22,9 +25,15 @@ function LoginFormModal() {
             });
     };
 
+    const demoUserLogin = async () => {
+        return dispatch(sessionActions.loginThunk({credential: "Demo-lition", password: "password"}))
+            .then(closeModal)
+    };
+
     return (
         <div className='wrapper'>
             <h1>Log In</h1>
+            {errors.credential && <p className='login-errors'>{errors.credential}</p>}
             <form onSubmit={handleSubmit}>
                 <div className='login-form'>
                     <label  >
@@ -47,8 +56,18 @@ function LoginFormModal() {
                             required
                         />
                     </label>
-                    {errors.credential && <p>{errors.credential}</p>}
-                    <button className='modal-button' type='submit'>Log In</button>
+                    <button className=
+                    {canSubmit ? 'submit-login-button' :
+                        'submit-login-button-disabled'}
+                    type='submit'
+                    disabled={!canSubmit}
+                    >Log In
+                        </button>
+                        <button
+                        className='demo-user'
+                        onClick={() => demoUserLogin()}>
+                            Demo User
+                        </button>
                 </div>
             </form>
 

@@ -1,3 +1,25 @@
+input::placeholder {
+    font-weight: bold;
+    opacity: 0.5;
+}
+
+.demo-user {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 18px;
+    text-decoration: underline;
+    color:  rgb(107, 149, 204)
+}
+
+.demo-user:hover {
+    cursor: pointer;
+}
+
+.login-errors {
+    color: red;
+}
+
 .login-form {
     display: flex;
     flex-direction: column;
@@ -22,13 +44,32 @@
     box-shadow: 3px 4px grey;
 }
 
+.submit-login-button {
+    background: lightcoral;
+    color: white;
+    height: 3rem;
+    width: 92.5%;
+    margin: 1rem;
+    border: 2px solid black;
+    box-shadow: 2px 3px black;
+}
+
+.submit-login-button:hover {
+    cursor: pointer;
+}
+
+.submit-login-button-disabled {
+    background: whitesmoke;
+    color: gray;
+    height: 3rem;
+    width: 92.5%;
+    margin: 1rem;
+    border: 2px solid black;
+    box-shadow: 2px 3px black;
+}
+
 .wrapper {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     width: 30rem;
-}
-
-input::placeholder {
-    font-weight: bold;
-    opacity: 0.5;
 }
