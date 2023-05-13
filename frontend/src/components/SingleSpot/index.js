@@ -100,9 +100,10 @@ export const SingleSpot = () => {
                             {spot.avgStarRating?.toFixed(1)}
                             {!spot.avgStarRating && `New`}
                         </div>
-                        ·
+                        {spot.numReviews >=1 && `·`}
                         <div className='reserve-box-reviews'>
-                            {reviews.length && spot.numReviews} reviews
+                            {spot.numReviews === 1 && `1 review`}
+                            {spot.numReviews > 1 && `${spot.numReviews} reviews`}
                         </div>
                     </div>
                     <button className='reserve-button' onClick={handleClick}>Reserve</button>
@@ -110,25 +111,26 @@ export const SingleSpot = () => {
             </div>
 
             <div className='review-info'>
-                {reviews.length &&
+                {spot.numReviews >= 1 &&
                     <div className='reviews-heading'>
                         <i className="fa-solid fa-star" />
                         {spot.avgStarRating?.toFixed(1)}
                         {!spot.avgStarRating && `New`}
                         &nbsp;·&nbsp;
-                        {reviews.length && spot.numReviews} reviews
+                        {spot.numReviews === 1 && `1 review`}
+                        {spot.numReviews > 1 && `${spot.numReviews} reviews`}
                         <div className='post-review-top'>
-                        {userCanReview &&
-                            <OpenModalButton
-                                buttonText='Post Your Review'
-                                modalComponent={<CreateReviewFormModal spotId={spot.id} />}
-                            />
-                        }
+                            {userCanReview && userId && 
+                                <OpenModalButton
+                                    buttonText='Post Your Review'
+                                    modalComponent={<CreateReviewFormModal spotId={spot.id} />}
+                                />
+                            }
                         </div>
                     </div>
                 }
 
-                {reviews.length && reviews.map((review) => (
+                {spot.numReviews >= 1 && reviews.map((review) => (
                     <div className='single-review' key={review.id}>
                         <h2>{review.User?.firstName || userFirstName}</h2>
                         <p className="review-date">{formatDate(review.createdAt)}</p>
@@ -144,18 +146,18 @@ export const SingleSpot = () => {
                 {!reviews.length &&
                     <div>
                         <div>
-                        <i className="fa-solid fa-star" /> New
+                            <i className="fa-solid fa-star" /> New
                         </div>
-                        {userCanReview &&
-                        <>
-                            <OpenModalButton
-                                buttonText='Post Your Review'
-                                className='post-review'
-                                modalComponent={<CreateReviewFormModal spotId={spot.id} />}
-                            />
-                            <p>Be the first to post a review!</p>
+                        {userCanReview && userId &&
+                            <>
+                                <OpenModalButton
+                                    buttonText='Post Your Review'
+                                    className='post-review'
+                                    modalComponent={<CreateReviewFormModal spotId={spot.id} />}
+                                />
+                                <p>Be the first to post a review!</p>
                             </>
-                            }
+                        }
 
                     </div>
                 }
