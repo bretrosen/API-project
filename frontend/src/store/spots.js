@@ -130,12 +130,11 @@ export const deleteSpotThunk = (spotId) => async (dispatch) => {
 
 const initialState = {allSpots: {}, singleSpot: {}};
 
-
 // reducer
 const spotsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_ALL_SPOTS: {
-            const newState = {...state};
+            const newState = {...state, allSpots: {}};
             action.spots.Spots.forEach((spot) => {
                 newState.allSpots[spot.id] = spot;
             });
