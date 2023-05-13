@@ -24,6 +24,8 @@ export const SpotForm = ({ spot, formType }) => {
     const [errors, setErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
+    console.log("form type in create/update form", formType);
+
     // error handling
     useEffect(() => {
         const newErrors = {};
@@ -102,7 +104,12 @@ export const SpotForm = ({ spot, formType }) => {
     return (
         <div className='create-spot-form-wrapper'>
             <div>
-                <h2>Create a new Spot</h2>
+                {formType &&
+                <h2>Update Spot</h2>}
+                {!formType &&
+                <h2>Create a new Spot</h2>}
+
+                {/* <h2>Create a new Spot</h2> */}
                 <h3>Where's your place located?</h3>
                 <p>Guests will only get your exact address once they book a reservation.</p>
             </div>
@@ -130,8 +137,6 @@ export const SpotForm = ({ spot, formType }) => {
                     />
                 </div>
 
-
-
                 <div>
                     <div className='address-text'>
                         <label>
@@ -150,7 +155,6 @@ export const SpotForm = ({ spot, formType }) => {
                         value={address}
                         onChange={e => setAddress(e.target.value)}
                     />
-
                 </div>
 
                 <div className='city-and-state'>
@@ -236,7 +240,7 @@ export const SpotForm = ({ spot, formType }) => {
                     </label>
                 </div> */}
 
-                <div classname='description'>
+                <div className='description'>
                     <label>
                         <h2>Describe your place to guests</h2>
                         <p>Mention the best features of your space, any special amentities like
@@ -255,9 +259,10 @@ export const SpotForm = ({ spot, formType }) => {
                     )}
                 </div>
 
-                <div>
+                <div className='form-title'>
                     <label>
-                        <h2>Create a title for your spot</h2>
+                        {formType && <h2>Update title for your spot</h2>}
+                        {!formType && <h2>Create a title for your spot</h2>}
                         <p>Catch guests' attention with a spot title that highlights what makes
                             your place special.</p>
                         <input
@@ -276,7 +281,7 @@ export const SpotForm = ({ spot, formType }) => {
                 </div>
 
 
-                <div>
+                <div className='form-price'>
                     <label>
                         <h2>Set a base price for your spot</h2>
                         <p>Competitive pricing can help your listing stand out and rank higher
@@ -299,7 +304,7 @@ export const SpotForm = ({ spot, formType }) => {
                     )}
                 </div>
 
-                <div>
+                <div className='form-photos'>
                     <label>
                         <h2>Liven up your spot with photos</h2>
                         <p>Submit a link to at least one photo to publish your spot.</p>
@@ -367,7 +372,10 @@ export const SpotForm = ({ spot, formType }) => {
                 </div>
 
                 <div>
-                    <button className='create-spot-submit' type='submit'>Create Spot</button>
+                    <button className='create-spot-submit' type='submit'>
+                        {formType && 'Update Spot'}
+                        {!formType && 'Create Spot'}
+                        </button>
                 </div>
 
             </form>
