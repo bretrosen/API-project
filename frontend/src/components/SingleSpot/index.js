@@ -17,7 +17,11 @@ export const SingleSpot = () => {
     const spotImages = useSelector(state => state.spots.singleSpot.SpotImages);
     // get reviews from the store
     const reviewsObj = useSelector(state => state.reviews.spot);
-    const reviews = Object.values(reviewsObj);
+    // const reviews = Object.values(reviewsObj);
+
+    // reverse reviews array to put new reviews at top
+    const normalReviews = Object.values(reviewsObj);
+    const reviews = normalReviews.reverse();
 
     // get user id to check if they're allowed to review the spot
     const userId = useSelector(state => state.session.user?.id);
@@ -120,7 +124,7 @@ export const SingleSpot = () => {
                         {spot.numReviews === 1 && `1 review`}
                         {spot.numReviews > 1 && `${spot.numReviews} reviews`}
                         <div className='post-review-top'>
-                            {userCanReview && userId && 
+                            {userCanReview && userId &&
                                 <OpenModalButton
                                     buttonText='Post Your Review'
                                     modalComponent={<CreateReviewFormModal spotId={spot.id} />}

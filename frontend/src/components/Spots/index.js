@@ -6,7 +6,9 @@ import './SpotList.css';
 export const SpotList = () => {
     const dispatch = useDispatch();
     // get spots from store
-    const spots = useSelector(state => (Object.values(state.spots.allSpots)));
+    // const spots = useSelector(state => (Object.values(state.spots.allSpots)));
+    const spotsObj = useSelector(state => state.spots.allSpots);
+    const spots = Object.values(spotsObj);
 
     // useEffect to trigger dispatch of thunk
     useEffect(() => {
