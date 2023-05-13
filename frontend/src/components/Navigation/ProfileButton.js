@@ -73,7 +73,7 @@ const ProfileButton = ({ user }) => {
                                 modalComponent={<SignupFormModal />}
                             />
                         </li>
-                        <li li className='profile-button-link'>
+                        <li className='profile-button-link'>
                             <OpenModalMenuItem
                                 itemText='Log In'
                                 onItemClick={closeMenu}
