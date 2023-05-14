@@ -12,6 +12,7 @@ export const CurrentUserSpotList = () => {
 
     // this is kinda janky, it should work like getting all spots
     // but it works so for now...
+    // work on making this cleaner
     const allSpots = useSelector(state => (Object.values(state.spots.allSpots)));
     const currentUserId = useSelector(state => state.session.user?.id)
     const spots = [];
