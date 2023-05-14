@@ -73,7 +73,7 @@ a {
     position: absolute;
     top: 4rem;
     right: 3rem;
-    width: 10rem;
+    /* width: 10rem; */
     color: black;
     font-size: 16px;
     padding: 2px;
