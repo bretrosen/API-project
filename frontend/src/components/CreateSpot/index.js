@@ -41,7 +41,7 @@ export const SpotForm = ({ spot, formType }) => {
         if (description.length < 30 || typeof description !== "string") newErrors['description'] = 'Description needs a minimum of 30 characters';
         if (!price) newErrors['price'] = 'Price is required';
         if (!previewImage.length) newErrors['previewImage'] = 'Preview image is required';
-        if (!(previewImage.endsWith('.jpg') || previewImage.endsWith('.png') || previewImage.endsWith('.jpeg'))) newErrors['previewIimage'] = imageErrorMessage;
+        if (previewImage.length > 0 && !(previewImage.endsWith('.jpg') || previewImage.endsWith('.png') || previewImage.endsWith('.jpeg'))) newErrors['previewImage'] = 'Preview image must end in .png, .jpg, or .jpeg';
         if (url2.length > 0 && !(url2.endsWith('.jpg') || url2.endsWith('.png') || url2.endsWith('.jpeg'))) newErrors['url2'] = imageErrorMessage;
         if (url3.length > 0 && !(url3.endsWith('.jpg') || url3.endsWith('.png') || url3.endsWith('.jpeg'))) newErrors['url3'] = imageErrorMessage;
         if (url4.length > 0 && !(url4.endsWith('.jpg') || url4.endsWith('.png') || url4.endsWith('.jpeg'))) newErrors['url4'] = imageErrorMessage;
@@ -105,9 +105,9 @@ export const SpotForm = ({ spot, formType }) => {
         <div className='create-spot-form-wrapper'>
             <div>
                 {formType &&
-                <h2>Update Spot</h2>}
+                    <h2>Update Spot</h2>}
                 {!formType &&
-                <h2>Create a new Spot</h2>}
+                    <h2>Create a new Spot</h2>}
 
                 {/* <h2>Create a new Spot</h2> */}
                 <h3>Where's your place located?</h3>
@@ -252,12 +252,13 @@ export const SpotForm = ({ spot, formType }) => {
                             onChange={e => setDescription(e.target.value)}
                         />
                     </label>
+                    <div className='create-spot-errors'>
+                        {hasSubmitted && errors.description && (
+                            <p>{errors.description}</p>
+                        )}
+                    </div>
                 </div>
-                <div className='create-spot-errors'>
-                    {hasSubmitted && errors.description && (
-                        <p>{errors.description}</p>
-                    )}
-                </div>
+
 
                 <div className='form-title'>
                     <label>
@@ -297,11 +298,11 @@ export const SpotForm = ({ spot, formType }) => {
                             />
                         </div>
                     </label>
-                </div>
-                <div className='create-spot-errors'>
-                    {hasSubmitted && errors.price && (
-                        <p>{errors.price}</p>
-                    )}
+                    <div className='create-spot-errors'>
+                        {hasSubmitted && errors.price && (
+                            <p>{errors.price}</p>
+                        )}
+                    </div>
                 </div>
 
                 <div className='form-photos'>
@@ -375,7 +376,7 @@ export const SpotForm = ({ spot, formType }) => {
                     <button className='create-spot-submit' type='submit'>
                         {formType && 'Update Spot'}
                         {!formType && 'Create Spot'}
-                        </button>
+                    </button>
                 </div>
 
             </form>
