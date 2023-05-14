@@ -24,7 +24,7 @@ export const SpotForm = ({ spot, formType }) => {
     const [errors, setErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
-    console.log("form type in create/update form", formType);
+    // console.log("form type in create/update form", formType);
 
     // error handling
     useEffect(() => {
