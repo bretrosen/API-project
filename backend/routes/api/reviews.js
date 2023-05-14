@@ -11,7 +11,7 @@ const validateReview = [
     check('review')
         .optional()
         .exists({ checkFalsy: true })
-        .isLength({ min: 4, max: 255 })
+        // .isLength({ min: 4, max: 255 })
         .withMessage("Review text is required"),
     check('stars')
         .optional()

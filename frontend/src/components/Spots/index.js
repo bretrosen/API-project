@@ -6,6 +6,7 @@ import './SpotList.css';
 export const SpotList = () => {
     const dispatch = useDispatch();
     // get spots from store
+    // don't call Object.values inside useSelector, creates new refs/weird behavior
     // const spots = useSelector(state => (Object.values(state.spots.allSpots)));
     const spotsObj = useSelector(state => state.spots.allSpots);
     const spots = Object.values(spotsObj);
@@ -22,7 +23,6 @@ export const SpotList = () => {
                 <div className='spots-list-item' key={spot.id}>
                     <span data-text={spot.name} className='spots-list-tooltip'>
                         <a href={`/spots/${spot.id}`}>
-
                             <img className='spots-list-image' src={spot.previewImage} alt={spot.name}></img>
                             <div className='spots-list-item-text-1'>
                                 <div className='spots-list-item-location'>
@@ -45,7 +45,6 @@ export const SpotList = () => {
                         </a>
                     </span>
                 </div>
-
             ))}
         </div>
     );
