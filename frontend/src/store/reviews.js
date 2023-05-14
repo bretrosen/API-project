@@ -28,11 +28,11 @@ const deleteReview = (reviewId) => ({
 
 export const getSpotReviewsThunk = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
-    console.log("sending get reviews by spot thunk", response);
+    // console.log("sending get reviews by spot thunk", response);
 
     if (response.ok) {
         const reviews = await response.json();
-        console.log("returning reviews by spot thunk", reviews);
+        // console.log("returning reviews by spot thunk", reviews);
         dispatch(getSpotReviews(reviews));
         return reviews;
     }
@@ -44,11 +44,11 @@ export const createReviewThunk = (spotId, review) => async (dispatch) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(review)
     });
-    console.log('sending create spot thunk to backend');
+    // console.log('sending create spot thunk to backend');
 
     if (response.ok) {
         const reviewData = await response.json();
-        console.log('returning created review to frontend', reviewData);
+        // console.log('returning created review to frontend', reviewData);
         dispatch(createReview(reviewData));
         return reviewData;
     }

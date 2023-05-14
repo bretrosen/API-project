@@ -33,7 +33,7 @@ const deleteSpot = (spotId) => ({
 
 export const getAllSpotsThunk = () => async (dispatch) => {
     const response = await csrfFetch('/api/spots');
-    console.log("all spots response", response);
+    // console.log("all spots response", response);
 
     if (response.ok) {
         const spots = await response.json();
@@ -45,11 +45,11 @@ export const getAllSpotsThunk = () => async (dispatch) => {
 // use same logic as get all spots with different fetch
 export const getCurrentUserSpotsThunk = () => async (dispatch) => {
     const response = await csrfFetch('/api/spots/current');
-    console.log("sending current user spots thunk", response);
+    // console.log("sending current user spots thunk", response);
 
     if (response.ok) {
         const spots = await response.json();
-        console.log("returning current user spots thunk", spots)
+        // console.log("returning current user spots thunk", spots)
         dispatch(getAllSpots(spots));
         return spots;
     }
@@ -57,12 +57,12 @@ export const getCurrentUserSpotsThunk = () => async (dispatch) => {
 
 export const getSingleSpotThunk = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`);
-    console.log('sending single spot thunk',);
+    // console.log('sending single spot thunk',);
 
     if (response.ok) {
         const spot = await response.json();
         dispatch(getSingleSpot(spot));
-        console.log('returning single spot thunk');
+        // console.log('returning single spot thunk');
         return spot;
     }
 };
@@ -73,12 +73,12 @@ export const createSpotThunk = (spot) => async (dispatch) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(spot)
     });
-    console.log("sending create spot thunk to backend", response);
+    // console.log("sending create spot thunk to backend", response);
 
     if (response.ok) {
         const spotData = await response.json();
         dispatch(createSpot(spotData));
-        console.log("returning created spot to frontend", spotData);
+        // console.log("returning created spot to frontend", spotData);
         return spotData;
     }
 };
@@ -89,12 +89,12 @@ export const createSpotImagesThunk = (spotId, imgObj) => async (dispatch) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(imgObj)
     });
-    console.log("sending create spot image thunk to backend", response);
+    // console.log("sending create spot image thunk to backend", response);
 
     if (response.ok) {
         const spotImage = await response.json();
         dispatch(createSpot(spotImage));
-        console.log("returning created spot image thunk to frontend", spotImage);
+        // console.log("returning created spot image thunk to frontend", spotImage);
         return spotImage;
     }
 };
@@ -105,12 +105,12 @@ export const updateSpotThunk = (spotId, spot) => async (dispatch) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(spot)
     });
-    console.log("sending update spot thunk to backend");
+    // console.log("sending update spot thunk to backend");
 
     if (response.ok) {
         const updatedSpot = await response.json();
         dispatch(createSpot(updatedSpot));
-        console.log("returning updated spot thunk to frontend", updatedSpot);
+        // console.log("returning updated spot thunk to frontend", updatedSpot);
         return updatedSpot;
     }
 };

@@ -29,7 +29,7 @@ export const CurrentUserSpotList = () => {
 
     // useEffect to trigger dispatch of thunk
     useEffect(() => {
-        console.log("use effect in manage spots ran");
+        // console.log("use effect in manage spots ran");
         dispatch(getCurrentUserSpotsThunk());
     }, [dispatch]);
 

@@ -41,13 +41,13 @@ export const SingleSpot = () => {
     // useEffect to trigger dispatch of thunk for getting spot
     // added reviews dependency to update review aggregate data
     useEffect(() => {
-        console.log("useEffect for single spot thunk ran")
+        // console.log("useEffect for single spot thunk ran")
         dispatch(getSingleSpotThunk(spotId));
     }, [dispatch, spotId, reviewsObj]);
 
     // useEffect to trigger dispatch of thunk for getting spot reviews
     useEffect(() => {
-        console.log("useEffect for spot reviews thunk ran")
+        // console.log("useEffect for spot reviews thunk ran")
         dispatch(getSpotReviewsThunk(spotId))
     }, [dispatch, spotId])
 
