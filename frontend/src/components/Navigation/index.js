@@ -7,31 +7,18 @@ import './Navigation.css';
 function Navigation({ isLoaded }) {
     const sessionUser = useSelector(state => state.session.user);
 
-    // let sessionLinks;
-    // if (sessionUser) {
-    //     sessionLinks = (
-    //         <li>
-    //             <ProfileButton user={sessionUser} />
-    //         </li>
-    //     );
-    // } else {
-    //     sessionLinks = (
-
-    //     );
-    // }
-
     return (
         <div className='nav-wrapper'>
-                <a className='nav-logo' href='/'>
+                <NavLink className='nav-logo' to='/'>
                     <i className="fa-solid fa-book-atlas" />
                     &nbsp; bookfairBnb
-                </a>
+                </NavLink>
             {sessionUser &&
                 <div className='nav-create-spot-text'>
                     <NavLink to='/spots/new'>Create a New Spot</NavLink>
                 </div>}
             <div className='nav-menu'>
-                {isLoaded &&  (
+                {isLoaded && (
                     <li>
                         <ProfileButton user={sessionUser} />
                     </li>

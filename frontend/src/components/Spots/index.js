@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { getAllSpotsThunk } from '../../store/spots';
 import './SpotList.css';
 
@@ -22,7 +23,7 @@ export const SpotList = () => {
 
                 <div className='spots-list-item' key={spot.id}>
                     <span data-text={spot.name} className='spots-list-tooltip'>
-                        <a href={`/spots/${spot.id}`}>
+                        <Link to={`/spots/${spot.id}`}>
                             <img className='spots-list-image' src={spot.previewImage} alt={spot.name}></img>
                             <div className='spots-list-item-text-1'>
                                 <div className='spots-list-item-location'>
@@ -42,7 +43,7 @@ export const SpotList = () => {
                                     night
                                 </div>
                             </div>
-                        </a>
+                        </Link>
                     </span>
                 </div>
             ))}
