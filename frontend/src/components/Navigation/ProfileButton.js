@@ -49,8 +49,8 @@ const ProfileButton = ({ user }) => {
             <div className='nav-right-menu'>
                 <button className='profile-menu' onClick={openMenu}>
                     <i className='fa-solid fa-bars' />
-                    <i className="fa-regular fa-compass" />
-                    {/* <i className="fa-solid fa-book-atlas" /> */}
+                    <i className="fa-solid fa-compass" />
+
                 </button>
             </div>
             <ul className={ulClassName} ref={ulRef}>

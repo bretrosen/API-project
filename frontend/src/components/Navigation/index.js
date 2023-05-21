@@ -9,14 +9,15 @@ function Navigation({ isLoaded }) {
 
     return (
         <div className='nav-wrapper'>
-                <NavLink className='nav-logo' to='/'>
-                    <i className="fa-solid fa-book-atlas" />
-                    &nbsp; bookfairBnb
-                </NavLink>
-            {sessionUser &&
-                <div className='nav-create-spot-text'>
-                    <NavLink to='/spots/new'>Create a New Spot</NavLink>
-                </div>}
+            <NavLink className='nav-logo' to='/'>
+                <i className="fa-solid fa-book-atlas" />
+                &nbsp; bookfairBnb
+            </NavLink>
+            <div className='nav-create-spot-text'>
+                <NavLink className='create-spot-text' to='/spots/new'>Create a New Spot &nbsp;&nbsp;</NavLink>
+                <i className="fa-solid fa-globe"></i>
+            </div>
+
             <div className='nav-menu'>
                 {isLoaded && (
                     <li>
