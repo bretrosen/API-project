@@ -7,35 +7,30 @@ import './Navigation.css';
 function Navigation({ isLoaded }) {
     const sessionUser = useSelector(state => state.session.user);
 
-    // let sessionLinks;
-    // if (sessionUser) {
-    //     sessionLinks = (
-    //         <li>
-    //             <ProfileButton user={sessionUser} />
-    //         </li>
-    //     );
-    // } else {
-    //     sessionLinks = (
-
-    //     );
-    // }
-
     return (
         <div className='nav-wrapper'>
-                <a className='nav-logo' href='/'>
-                    <i className="fa-solid fa-book-atlas" />
-                    &nbsp; bookfairBnb
-                </a>
-            {sessionUser &&
-                <div className='nav-create-spot-text'>
-                    <NavLink to='/spots/new'>Create a New Spot</NavLink>
-                </div>}
-            <div className='nav-menu'>
-                {isLoaded &&  (
-                    <li>
-                        <ProfileButton user={sessionUser} />
-                    </li>
-                )}
+            <NavLink className='nav-logo' to='/'>
+                <i className="fa-solid fa-book-atlas" />
+                &nbsp; bookfairBnb
+            </NavLink>
+            <div className='nav-menu-center'>
+                <div className='center-1'>Anywhere</div>
+                <div className='center-2'>Any week</div>
+                <div className='center-3'>Add guests</div>
+                <i className="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div className='nav-wrapper-right'>
+                <NavLink className='create-spot-text' to='/spots/new'>Bookfairbnb your home</NavLink>
+                <button className='settings-button' onClick={() => { return alert('Feature coming soon...') }}>
+                    <i className="fa-solid fa-globe"></i>
+                </button>
+                <div>
+                    {isLoaded && (
+                        <li>
+                            <ProfileButton user={sessionUser} />
+                        </li>
+                    )}
+                </div>
             </div>
         </div>
     );
