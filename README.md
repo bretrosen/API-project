@@ -1,21 +1,38 @@
-<!--!!START SILENT -->
-# AirBnB Clone
-<!--!!END -->
-<!--!!ADD -->
-<!-- # `<name of application here>` -->
-<!--!!END_ADD -->
+
+# BookfairBnB
+Welcome to BookfairBnb, a clone of the website airBnb featuring homes from famous literary works. The backend server was created with SQLite/Sequelize and Express; the frontend was created with React/Redux/JavaScript and styled with vanilla CSS.
+
+Users of BookfairBnb can:
+* Create new accounts
+* Create new spots
+  * Add images to their spot
+  * Update details of their spot
+  * Delete their spots
+* Create new reviews
+  * Update details of their own reviews
+  * Delete their own reviews
+* View and manage all their spots
+
+## Screenshots
+### Landing Page
+The landing page shows all spots; each spot has a preview image and details about the spot, including the average of all reviews of the spot.
+![img01](screenshots/bookfair1.png)
+The spot details page includes all the spot's images, the spot's details, and all reviews of the spot (including links to edit or delete reviews made by the logged-in user).
+### Spot Details Page
+![img02](screenshots/bookfair2.png)
+### Manage Spots Page
+The manage spots page show all of a user's spots, along with links to edit or delete those spots.
+![img03](screenshots/bookfair3.png)
+
 
 ## Database Schema Design
 
-<!--!!START SILENT -->
+
 ![airbnb-database-schema]
 
 [airbnb-database-schema]: https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-12/airbnb-db-schema.png
 [airbnb-db-diagram-info]: https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-12/airbnb-db-diagram-info.txt
-<!--!!END -->
-<!--!!ADD -->
-<!-- `<insert database schema design here>` -->
-<!--!!END_ADD -->
+
 
 ## API Documentation
 
