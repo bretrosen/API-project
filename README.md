@@ -24,6 +24,7 @@ The spot details page includes all the spot's images, the spot's details, and al
 The manage spots page show all of a user's spots, along with links to edit or delete those spots.
 ![img03](screenshots/bookfair3.png)
 
+The site is currently live at: https://authenticate-me-zbb6.onrender.com/.
 
 ## Database Schema Design
 
