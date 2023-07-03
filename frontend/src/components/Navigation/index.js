@@ -13,12 +13,14 @@ function Navigation({ isLoaded }) {
                 <i className="fa-solid fa-book-atlas" />
                 &nbsp; bookfairBnb
             </NavLink>
+            <button className='settings-button' onClick={() => { return alert ('Feature coming soon...')}}>
             <div className='nav-menu-center'>
                 <div className='center-1'>Anywhere</div>
                 <div className='center-2'>Any week</div>
                 <div className='center-3'>Add guests</div>
                 <i className="fa-solid fa-magnifying-glass"></i>
             </div>
+            </button>
             <div className='nav-wrapper-right'>
                 <NavLink className='create-spot-text' to='/spots/new'>Bookfairbnb your home</NavLink>
                 <button className='settings-button' onClick={() => { return alert('Feature coming soon...') }}>
